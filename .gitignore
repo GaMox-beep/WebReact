@@ -1,0 +1,12 @@
+# Workspace level gitignore
+.agents/
+.vscode/
+.idea/
+*.suo
+*.sln
+*.sw?
+.DS_Store
+node_modules/
+dist/
+dist-ssr/
+*.log
