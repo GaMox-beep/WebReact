@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid()) // Unique identifier (UUID string)
+  email     String   @unique              // Email used for login (must be unique)
+  username  String   @unique              // Username displayed on the site
+  password  String                        // Hashed password
+  avatar    String?                       // Optional avatar URL
+  role      Role     @default(USER)       // User role (USER, AUTHOR, ADMIN)
+  coins     Int      @default(0)          // Coin balance to unlock paid chapters
+  createdAt DateTime @default(now())      // Time when user was created
+  updatedAt DateTime @updatedAt           // Time when user was last updated
+
+  @@map("users") // Maps the Prisma model to a PostgreSQL table named "users"
+}
+
+enum Role {
+  USER
+  AUTHOR
+  ADMIN
+}
+
