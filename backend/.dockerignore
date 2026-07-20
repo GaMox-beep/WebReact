@@ -1,0 +1,26 @@
+# Ignore node_modules from local machine
+node_modules
+/node_modules
+
+# Ignore local build output
+dist
+build
+
+# Ignore Docker configurations
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Ignore Git directory
+.git
+.gitignore
+.agents

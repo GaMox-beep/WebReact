@@ -1,5 +1,13 @@
 node_modules
-# Keep environment variables out of version control
+
+# Environment variables
 .env
 
-/generated/prisma
+# Build output (compiled JS - rebuilt by Docker/build command)
+dist/
+
+# Prisma generated client
+/generated/
+
+# Test coverage
+coverage/
