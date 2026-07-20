@@ -29,11 +29,12 @@ services:
     container_name: webnovel-backend-local
     restart: always
     ports:
-      - '3000:3000' # Maps host port 3000 to container port 3000
+      - '${PORT}:${PORT}' # Maps host port to container port from .env
     environment:
       # Note: We use "postgres" as the host since it matches the service name of the database container
       - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}?schema=public
-      - PORT=3000
+      - PORT=${PORT}
+      - FRONTEND_URL=${FRONTEND_URL}
     depends_on:
       - postgres
     networks:
