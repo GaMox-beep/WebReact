@@ -46,32 +46,32 @@ const renderAdminIcon = (iconName?: string) => {
 
 const AdminLayout = () => {
   return (
-    <div className="d-flex min-vh-100" style={{ backgroundColor: 'var(--bg-main)' }}>
+    <div className="flex min-h-screen bg-[#0a0b10]">
       {/* Admin Sidebar */}
-      <aside className="d-flex flex-column p-3 border-end border-secondary border-opacity-10" style={{ width: '260px', minWidth: '260px', backgroundColor: 'var(--bg-surface)' }}>
-        <div className="d-flex align-items-center gap-2 pb-3 mb-3 border-bottom border-secondary border-opacity-10">
-          <div className="p-1.5 rounded-3" style={{ background: 'rgba(245, 158, 11, 0.12)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <aside className="w-64 min-w-[16rem] bg-[#11131e] border-r border-white/10 flex flex-col p-4">
+        <div className="flex items-center gap-3 pb-4 mb-4 border-b border-white/10">
+          <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
           </div>
           <div>
-            <h6 className="fw-bold mb-0 text-white">Novelis Admin</h6>
-            <span className="text-muted small" style={{ fontSize: '0.75rem' }}>Quản trị hệ thống</span>
+            <h6 className="font-bold text-white text-base leading-tight">Novelis Admin</h6>
+            <span className="text-slate-400 text-xs">Quản trị hệ thống</span>
           </div>
         </div>
 
-        <nav className="nav nav-pills flex-column gap-1">
+        <nav className="flex flex-col gap-1.5">
           {adminNavItems.map((item) => (
             <NavLink
               key={item.id}
               to={item.path}
               end={item.path === '/admin'}
               className={({ isActive }) =>
-                `nav-link d-flex align-items-center gap-2.5 px-3 py-2.5 rounded-3 text-decoration-none ${
+                `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive
-                    ? 'bg-warning bg-opacity-10 text-warning fw-semibold border border-warning border-opacity-25'
-                    : 'text-secondary hover-white'
+                    ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 font-semibold'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`
               }
             >
@@ -81,8 +81,8 @@ const AdminLayout = () => {
           ))}
         </nav>
 
-        <div className="mt-auto pt-3 border-top border-secondary border-opacity-10">
-          <NavLink to="/" className="btn btn-premium-outline w-100 d-flex align-items-center justify-content-center gap-2">
+        <div className="mt-auto pt-4 border-t border-white/10">
+          <NavLink to="/" className="flex items-center justify-center gap-2 w-full py-2.5 text-xs font-medium text-white border border-white/10 hover:bg-white/10 rounded-xl transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" x2="5" y1="12" y2="12" />
               <polyline points="12 19 5 12 12 5" />
@@ -93,7 +93,7 @@ const AdminLayout = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-grow-1 p-4 overflow-auto">
+      <main className="flex-1 p-6 overflow-auto">
         <Outlet />
       </main>
     </div>

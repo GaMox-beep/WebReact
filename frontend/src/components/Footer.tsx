@@ -1,23 +1,19 @@
-import { Container, Row, Col } from 'react-bootstrap';
-
 const FooterComponent = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="py-4 mt-auto border-top w-100" style={{ backgroundColor: 'var(--bg-main)', borderColor: 'var(--border-color) !important' }}>
-      <Container>
-        <Row className="align-items-center">
-          <Col md={6} className="text-center text-md-start mb-3 mb-md-0">
-            <span className="fw-bold fs-5 text-white">Novelis</span>
-            <p className="text-muted mb-0 small">Nền tảng đọc truyện chữ trực tuyến cao cấp và mượt mà.</p>
-          </Col>
-          <Col md={6} className="text-center text-md-end">
-            <p className="mb-0 text-muted small">
-              &copy; {currentYear} Novelis. All rights reserved.
-            </p>
-          </Col>
-        </Row>
-      </Container>
+    <footer className="py-6 mt-auto border-t border-white/10 w-full bg-[#0a0b10]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="text-center md:text-left">
+          <span className="font-bold text-lg text-white">Novelis</span>
+          <p className="text-slate-400 text-sm mb-0">Nền tảng đọc truyện chữ trực tuyến cao cấp và mượt mà.</p>
+        </div>
+        <div className="text-center md:text-right">
+          <p className="text-slate-500 text-sm mb-0">
+            &copy; {currentYear} Novelis. All rights reserved.
+          </p>
+        </div>
+      </div>
     </footer>
   );
 };

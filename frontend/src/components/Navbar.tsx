@@ -1,4 +1,4 @@
-import { Container, Navbar, Nav, Form, NavDropdown } from 'react-bootstrap'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { customerNavItems } from '../menu-items/customerMenu'
 
@@ -43,19 +43,22 @@ const renderIcon = (iconName?: string) => {
 }
 
 const NavbarComponent = () => {
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
   return (
-    <Navbar expand="lg" className="navbar-glass sticky-top py-2.5 mb-4" variant="dark">
-      <Container fluid="xl">
+    <header className="sticky top-0 z-50 bg-[#0a0b10]/90 backdrop-blur-md border-b border-white/10 py-3 mb-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
         {/* Brand Logo */}
-        <Navbar.Brand as={NavLink} to="/" className="fw-bold fs-4 d-flex align-items-center gap-2 text-white text-nowrap me-lg-3">
-          <div className="d-flex align-items-center justify-content-center p-1.5 rounded-3" style={{ background: 'rgba(245, 158, 11, 0.12)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+        <NavLink to="/" className="flex items-center gap-2 text-white font-bold text-xl whitespace-nowrap">
+          <div className="flex items-center justify-center p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
               height="22"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="var(--accent-gold)"
+              stroke="#f59e0b"
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -65,31 +68,35 @@ const NavbarComponent = () => {
               <path d="M6 10h10" />
             </svg>
           </div>
-          <span style={{ letterSpacing: '-0.03em' }}>Novelis</span>
-        </Navbar.Brand>
+          <span className="tracking-tight">Novelis</span>
+        </NavLink>
 
-        {/* Mobile Toggle */}
-        <Navbar.Toggle aria-controls="novelis-navbar-nav" className="border-0 shadow-none p-2">
+        {/* Mobile Toggle Button */}
+        <button
+          type="button"
+          className="lg:hidden p-2 text-slate-300 hover:text-white focus:outline-none"
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+          aria-label="Toggle navigation"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="4" x2="20" y1="12" y2="12" />
             <line x1="4" x2="20" y1="6" y2="6" />
             <line x1="4" x2="20" y1="18" y2="18" />
           </svg>
-        </Navbar.Toggle>
+        </button>
 
-        {/* Navbar Collapse */}
-        <Navbar.Collapse id="novelis-navbar-nav" className="justify-content-between align-items-center mt-3 mt-lg-0">
+        {/* Navbar Content */}
+        <div className={`${isMobileOpen ? 'flex' : 'hidden'} lg:flex flex-col lg:flex-row items-center justify-between w-full lg:w-auto flex-1 gap-4`}>
           {/* Central Search Bar */}
-          <div className="search-container mx-lg-auto my-2 my-lg-0">
-            <Form onSubmit={(e) => e.preventDefault()}>
-              <Form.Control
+          <div className="relative w-full lg:w-72 mx-auto">
+            <form onSubmit={(e) => e.preventDefault()}>
+              <input
                 type="search"
                 placeholder="Tìm kiếm tên truyện, tác giả..."
-                className="search-input"
-                aria-label="Search"
+                className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-full pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
               />
               <svg
-                className="search-icon"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -103,66 +110,86 @@ const NavbarComponent = () => {
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" x2="16.65" y1="21" y2="16.65" />
               </svg>
-            </Form>
+            </form>
           </div>
 
-          {/* Main Navigation Links Mapped from customerNavItems */}
-          <Nav className="align-items-lg-center gap-1 my-2 my-lg-0">
+          {/* Main Navigation Links */}
+          <nav className="flex flex-col lg:flex-row items-center gap-2 w-full lg:w-auto">
             {customerNavItems.map((item) => {
               if (item.id === 'categories') {
                 return (
-                  <NavDropdown
-                    key={item.id}
-                    title={
-                      <span className="d-inline-flex align-items-center gap-2 text-nowrap">
+                  <div key={item.id} className="relative w-full lg:w-auto">
+                    <button
+                      type="button"
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-lg whitespace-nowrap w-full lg:w-auto justify-between lg:justify-start"
+                    >
+                      <span className="flex items-center gap-2">
                         {renderIcon(item.icon)}
                         {item.label}
                       </span>
-                    }
-                    id="category-dropdown"
-                    className="nav-link-custom-dropdown"
-                  >
-                    <NavDropdown.Item href="#tiem-hiep" onClick={(e) => e.preventDefault()}>Tiên Hiệp</NavDropdown.Item>
-                    <NavDropdown.Item href="#huyen-huyen" onClick={(e) => e.preventDefault()}>Huyền Huyễn</NavDropdown.Item>
-                    <NavDropdown.Item href="#do-thi" onClick={(e) => e.preventDefault()}>Đô Thị</NavDropdown.Item>
-                    <NavDropdown.Item href="#khoa-hoc" onClick={(e) => e.preventDefault()}>Khoa Huyễn</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#all" onClick={(e) => e.preventDefault()}>Tất Cả Thể Loại</NavDropdown.Item>
-                  </NavDropdown>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {isDropdownOpen && (
+                      <div className="static lg:absolute left-0 mt-2 w-full lg:w-48 bg-[#161927] border border-white/10 rounded-xl shadow-2xl p-2 z-50">
+                        <a href="#tiem-hiep" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-slate-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg">Tiên Hiệp</a>
+                        <a href="#huyen-huyen" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-slate-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg">Huyền Huyễn</a>
+                        <a href="#do-thi" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-slate-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg">Đô Thị</a>
+                        <a href="#khoa-hoc" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-slate-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg">Khoa Huyễn</a>
+                        <div className="border-t border-white/10 my-1"></div>
+                        <a href="#all" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-amber-400 hover:bg-amber-500/10 rounded-lg font-medium">Tất Cả Thể Loại</a>
+                      </div>
+                    )}
+                  </div>
                 )
               }
 
-              const navClass = item.isAccent
-                ? 'nav-link-accent d-flex align-items-center gap-2 text-nowrap mx-lg-1 my-1 my-lg-0'
-                : 'nav-link-custom d-flex align-items-center gap-2 text-nowrap'
+              const isAccent = item.isAccent
 
               return (
-                <Nav.Link
+                <NavLink
                   key={item.id}
-                  as={NavLink}
                   to={item.path}
                   end={item.path === '/'}
-                  className={navClass}
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all w-full lg:w-auto ${
+                      isAccent
+                        ? 'text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500 hover:text-black hover:border-amber-500'
+                        : isActive
+                        ? 'text-white bg-white/10 font-semibold'
+                        : 'text-slate-300 hover:text-white hover:bg-white/5'
+                    }`
+                  }
                 >
                   {renderIcon(item.icon)}
                   {item.label}
-                </Nav.Link>
+                </NavLink>
               )
             })}
 
-            {/* Auth Actions Group */}
-            <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0 pt-3 pt-lg-0 border-top border-secondary border-opacity-10 border-lg-0 w-100 w-lg-auto">
-              <Nav.Link as={NavLink} to="/login" className="btn btn-premium-outline px-3 py-1.5 text-nowrap w-50 w-lg-auto text-center">
+            {/* Auth Actions */}
+            <div className="flex items-center gap-2 w-full lg:w-auto pt-3 lg:pt-0 border-t lg:border-t-0 border-white/10">
+              <NavLink
+                to="/login"
+                className="flex-1 lg:flex-none text-center px-4 py-2 text-sm font-medium text-white bg-transparent border border-white/10 hover:bg-white/10 rounded-lg whitespace-nowrap transition-all"
+              >
                 Đăng Nhập
-              </Nav.Link>
-              <Nav.Link as={NavLink} to="/register" className="btn btn-premium-gold px-3 py-1.5 text-nowrap w-50 w-lg-auto text-center">
+              </NavLink>
+              <NavLink
+                to="/register"
+                className="flex-1 lg:flex-none text-center px-4 py-2 text-sm font-semibold text-black bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 rounded-lg whitespace-nowrap shadow-md shadow-amber-500/20 transition-all"
+              >
                 Đăng Ký
-              </Nav.Link>
+              </NavLink>
             </div>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          </nav>
+        </div>
+      </div>
+    </header>
   )
 }
 
