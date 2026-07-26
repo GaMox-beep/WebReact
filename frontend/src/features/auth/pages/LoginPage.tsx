@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Container, Card, Form, Button, InputGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-const Login = () => {
+export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
@@ -119,4 +119,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default LoginPage

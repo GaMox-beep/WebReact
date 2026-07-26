@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Container, Card, Form, Button, InputGroup } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-const Register = () => {
+export const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
@@ -175,4 +175,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default RegisterPage

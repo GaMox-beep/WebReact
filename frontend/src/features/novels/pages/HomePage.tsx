@@ -1,6 +1,6 @@
 import { Container, Button, Card, Row, Col, Form } from 'react-bootstrap'
 
-const Home = () => {
+export const HomePage = () => {
   return (
     <>
       <Container>
@@ -39,4 +39,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default HomePage

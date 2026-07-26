@@ -1,6 +1,6 @@
 import { Card, Row, Col } from 'react-bootstrap'
 
-const AdminDashboard = () => {
+export const AdminDashboardPage = () => {
   return (
     <div>
       <div className="mb-4">
@@ -42,4 +42,4 @@ const AdminDashboard = () => {
   )
 }
 
-export default AdminDashboard
+export default AdminDashboardPage
