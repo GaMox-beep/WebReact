@@ -1,0 +1,106 @@
+/* Form Control Dark Overrides */
+.form-control, .form-select {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  border-radius: 10px !important;
+  padding: 0.65rem 1rem !important;
+  font-size: 0.95rem !important;
+  transition: var(--transition-smooth) !important;
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: rgba(255, 255, 255, 0.07) !important;
+  border-color: var(--accent-gold) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 3px var(--accent-gold-light) !important;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Autofill Fix for Dark Theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #141724 inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: var(--text-primary) !important;
+  border-color: var(--accent-gold) !important;
+}
+
+/* Input Group Icon Wrapper */
+.input-group-text-custom {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid var(--border-color) !important;
+  border-right: none !important;
+  color: var(--text-muted) !important;
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  padding-left: 1rem !important;
+  padding-right: 0.5rem !important;
+}
+
+.input-group-text-custom + .form-control {
+  border-left: none !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.input-group:focus-within .input-group-text-custom {
+  border-color: var(--accent-gold) !important;
+  color: var(--accent-gold) !important;
+}
+
+.input-group-btn-custom {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid var(--border-color) !important;
+  border-left: none !important;
+  color: var(--text-muted) !important;
+  border-top-right-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  transition: var(--transition-smooth);
+}
+
+.input-group-btn-custom:hover {
+  color: var(--text-primary) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.input-group:focus-within .input-group-btn-custom {
+  border-color: var(--accent-gold) !important;
+}
+
+/* Custom Checkbox */
+.form-check-input {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border-color) !important;
+  cursor: pointer;
+}
+
+.form-check-input:checked {
+  background-color: var(--accent-gold) !important;
+  border-color: var(--accent-gold) !important;
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 3px var(--accent-gold-light) !important;
+}
+
+/* Auth Card Styling */
+.auth-card {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-color) !important;
+  border-top: 3px solid var(--accent-gold) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6), 0 0 20px -5px var(--accent-gold-glow) !important;
+}
+
+.auth-badge-icon {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.03) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
+}

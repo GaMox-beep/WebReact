@@ -5,8 +5,8 @@ import TopNovels from './pages/customer/TopNovels'
 import Recharge from './pages/customer/Recharge'
 import Login from './pages/customer/Login'
 import Register from './pages/customer/Register'
-import FooterComponent from './components/footer'
-import NavbarComponent from './components/navbar'
+import FooterComponent from './components/Footer'
+import NavbarComponent from './components/Navbar'
 
 function App() {
   return (

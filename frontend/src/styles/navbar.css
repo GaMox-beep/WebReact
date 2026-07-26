@@ -1,0 +1,95 @@
+/* Custom Glassmorphism Navbar */
+.navbar-glass {
+  background-color: rgba(10, 11, 16, 0.92) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-color) !important;
+  transition: var(--transition-smooth);
+}
+
+/* Modern Navigation Items */
+.nav-link-custom {
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: 8px;
+  transition: var(--transition-smooth);
+  white-space: nowrap !important;
+  flex-shrink: 0;
+}
+
+.nav-link-custom:hover {
+  color: var(--text-primary) !important;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link-custom.active {
+  color: var(--text-primary) !important;
+  background-color: rgba(255, 255, 255, 0.08);
+  font-weight: 600;
+}
+
+/* NavDropdown Dark Override */
+.nav-link-custom-dropdown .dropdown-toggle {
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: 8px;
+  transition: var(--transition-smooth);
+  white-space: nowrap !important;
+  flex-shrink: 0;
+}
+
+.nav-link-custom-dropdown .dropdown-toggle:hover {
+  color: var(--text-primary) !important;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link-custom-dropdown .dropdown-menu {
+  background-color: var(--bg-surface-elevated) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  padding: 0.5rem !important;
+  margin-top: 0.5rem !important;
+}
+
+.nav-link-custom-dropdown .dropdown-item {
+  color: var(--text-secondary) !important;
+  font-size: 0.9rem !important;
+  border-radius: 6px !important;
+  padding: 0.5rem 1rem !important;
+  transition: var(--transition-smooth) !important;
+  white-space: nowrap !important;
+}
+
+.nav-link-custom-dropdown .dropdown-item:hover {
+  color: var(--accent-gold) !important;
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+.nav-link-custom-dropdown .dropdown-divider {
+  border-top-color: var(--border-color) !important;
+  margin: 0.4rem 0 !important;
+}
+
+.nav-link-accent {
+  color: var(--accent-gold) !important;
+  font-weight: 600;
+  background: var(--accent-gold-light);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem 0.85rem !important;
+  transition: var(--transition-smooth);
+  white-space: nowrap !important;
+  flex-shrink: 0;
+}
+
+.nav-link-accent:hover {
+  color: #ffffff !important;
+  background: var(--accent-gold) !important;
+  border-color: var(--accent-gold) !important;
+  box-shadow: none;
+}
