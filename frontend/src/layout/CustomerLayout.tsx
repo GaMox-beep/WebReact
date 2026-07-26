@@ -4,13 +4,13 @@ import FooterComponent from '../components/Footer'
 
 const CustomerLayout = () => {
   return (
-    <main className="d-flex flex-column min-vh-100">
+    <div className="flex flex-col min-h-screen bg-[#0a0b10]">
       <NavbarComponent />
-      <div className="flex-grow-1">
+      <main className="flex-1 w-full">
         <Outlet />
-      </div>
+      </main>
       <FooterComponent />
-    </main>
+    </div>
   )
 }
 
