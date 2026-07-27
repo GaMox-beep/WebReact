@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { customerNavItems } from '../menu-items/customerMenu'
+import { useTheme } from '../context/ThemeContext'
 
 const renderIcon = (iconName?: string) => {
   switch (iconName) {
@@ -45,12 +46,13 @@ const renderIcon = (iconName?: string) => {
 const NavbarComponent = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const { theme, toggleTheme } = useTheme()
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0a0b10]/90 backdrop-blur-md border-b border-white/10 py-3 mb-6">
+    <header className="sticky top-0 z-50 bg-[var(--bg-nav)] backdrop-blur-md border-b border-[var(--border-color)] py-3 mb-6 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
         {/* Brand Logo */}
-        <NavLink to="/" className="flex items-center gap-2 text-white font-bold text-xl whitespace-nowrap">
+        <NavLink to="/" className="flex items-center gap-2 text-[var(--text-primary)] font-bold text-xl whitespace-nowrap">
           <div className="flex items-center justify-center p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +76,7 @@ const NavbarComponent = () => {
         {/* Mobile Toggle Button */}
         <button
           type="button"
-          className="lg:hidden p-2 text-slate-300 hover:text-white focus:outline-none"
+          className="lg:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus:outline-none"
           onClick={() => setIsMobileOpen(!isMobileOpen)}
           aria-label="Toggle navigation"
         >
@@ -93,10 +95,10 @@ const NavbarComponent = () => {
               <input
                 type="search"
                 placeholder="Tìm kiếm tên truyện, tác giả..."
-                className="w-full bg-white/5 border border-white/10 text-white placeholder-slate-500 rounded-full pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-full pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
               />
               <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none"
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -122,7 +124,7 @@ const NavbarComponent = () => {
                     <button
                       type="button"
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-lg whitespace-nowrap w-full lg:w-auto justify-between lg:justify-start"
+                      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] rounded-lg whitespace-nowrap w-full lg:w-auto justify-between lg:justify-start transition-colors"
                     >
                       <span className="flex items-center gap-2">
                         {renderIcon(item.icon)}
@@ -135,13 +137,13 @@ const NavbarComponent = () => {
 
                     {/* Dropdown Menu */}
                     {isDropdownOpen && (
-                      <div className="static lg:absolute left-0 mt-2 w-full lg:w-48 bg-[#161927] border border-white/10 rounded-xl shadow-2xl p-2 z-50">
-                        <a href="#tiem-hiep" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-slate-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg">Tiên Hiệp</a>
-                        <a href="#huyen-huyen" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-slate-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg">Huyền Huyễn</a>
-                        <a href="#do-thi" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-slate-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg">Đô Thị</a>
-                        <a href="#khoa-hoc" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-slate-300 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg">Khoa Huyễn</a>
-                        <div className="border-t border-white/10 my-1"></div>
-                        <a href="#all" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-amber-400 hover:bg-amber-500/10 rounded-lg font-medium">Tất Cả Thể Loại</a>
+                      <div className="static lg:absolute left-0 mt-2 w-full lg:w-48 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-xl shadow-2xl p-2 z-50">
+                        <a href="#tiem-hiep" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-amber-500 hover:bg-amber-500/10 rounded-lg">Tiên Hiệp</a>
+                        <a href="#huyen-huyen" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-amber-500 hover:bg-amber-500/10 rounded-lg">Huyền Huyễn</a>
+                        <a href="#do-thi" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-amber-500 hover:bg-amber-500/10 rounded-lg">Đô Thị</a>
+                        <a href="#khoa-hoc" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-[var(--text-secondary)] hover:text-amber-500 hover:bg-amber-500/10 rounded-lg">Khoa Huyễn</a>
+                        <div className="border-t border-[var(--border-color)] my-1"></div>
+                        <a href="#all" onClick={(e) => e.preventDefault()} className="block px-3 py-2 text-sm text-amber-500 hover:bg-amber-500/10 rounded-lg font-medium">Tất Cả Thể Loại</a>
                       </div>
                     )}
                   </div>
@@ -158,10 +160,10 @@ const NavbarComponent = () => {
                   className={({ isActive }) =>
                     `flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all w-full lg:w-auto ${
                       isAccent
-                        ? 'text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500 hover:text-black hover:border-amber-500'
+                        ? 'text-amber-500 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500 hover:text-black hover:border-amber-500'
                         : isActive
-                        ? 'text-white bg-white/10 font-semibold'
-                        : 'text-slate-300 hover:text-white hover:bg-white/5'
+                        ? 'text-[var(--text-primary)] bg-[var(--bg-surface-elevated)] font-semibold'
+                        : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                     }`
                   }
                 >
@@ -171,11 +173,40 @@ const NavbarComponent = () => {
               )
             })}
 
-            {/* Auth Actions */}
-            <div className="flex items-center gap-2 w-full lg:w-auto pt-3 lg:pt-0 border-t lg:border-t-0 border-white/10">
+            {/* Auth Actions + Theme Switcher */}
+            <div className="flex items-center gap-2 w-full lg:w-auto pt-3 lg:pt-0 border-t lg:border-t-0 border-[var(--border-color)]">
+              {/* Theme Switcher Button */}
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)] rounded-lg transition-all"
+                title={theme === 'dark' ? 'Chuyển sang Giao diện Sáng' : 'Chuyển sang Giao diện Tối'}
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  /* Sun Icon for Light Mode */
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2" />
+                    <path d="M12 20v2" />
+                    <path d="m4.93 4.93 1.41 1.41" />
+                    <path d="m17.66 17.66 1.41 1.41" />
+                    <path d="M2 12h2" />
+                    <path d="M20 12h2" />
+                    <path d="m6.34 17.66-1.41 1.41" />
+                    <path d="m19.07 4.93-1.41 1.41" />
+                  </svg>
+                ) : (
+                  /* Moon Icon for Dark Mode */
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                  </svg>
+                )}
+              </button>
+
               <NavLink
                 to="/login"
-                className="flex-1 lg:flex-none text-center px-4 py-2 text-sm font-medium text-white bg-transparent border border-white/10 hover:bg-white/10 rounded-lg whitespace-nowrap transition-all"
+                className="flex-1 lg:flex-none text-center px-4 py-2 text-sm font-medium text-[var(--text-primary)] bg-transparent border border-[var(--border-color)] hover:bg-[var(--bg-surface-hover)] rounded-lg whitespace-nowrap transition-all"
               >
                 Đăng Nhập
               </NavLink>

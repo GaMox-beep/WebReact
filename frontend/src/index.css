@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
-/* Custom Theme Tokens for Novelis Dark Theme */
+/* Custom Theme Tokens */
 @theme {
-  --color-bg-main: #0a0b10;
-  --color-bg-surface: #11131e;
-  --color-bg-surface-elevated: #161927;
-  --color-bg-surface-hover: #1c2032;
-  --color-border-color: rgba(255, 255, 255, 0.08);
-  --color-accent-gold: #f59e0b;
-  --color-accent-gold-hover: #d97706;
+  --color-bg-main: var(--bg-main);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-elevated: var(--bg-surface-elevated);
+  --color-bg-surface-hover: var(--bg-surface-hover);
+  --color-border-color: var(--border-color);
+  --color-accent-gold: var(--accent-gold);
+  --color-accent-gold-hover: var(--accent-gold-hover);
 }
 
 /* CSS Root Variables (Default Dark Theme) */
@@ -17,6 +17,7 @@
   --bg-surface: #11131e;
   --bg-surface-elevated: #161927;
   --bg-surface-hover: #1c2032;
+  --bg-nav: rgba(10, 11, 16, 0.9);
   --border-color: rgba(255, 255, 255, 0.08);
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
@@ -26,21 +27,35 @@
   --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Future Light Theme Switcher Placeholder (e.g. [data-theme="light"]) */
+/* Light Theme Overrides */
+[data-theme="light"] {
+  --bg-main: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f1f5f9;
+  --bg-surface-hover: #e2e8f0;
+  --bg-nav: rgba(255, 255, 255, 0.9);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --accent-gold: #d97706;
+  --accent-gold-hover: #b45309;
+}
 
 body {
   background-color: var(--bg-main);
   color: var(--text-primary);
   font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Autofill Fix for Dark Theme */
+/* Autofill Fix for Theme */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px #141724 inset !important;
-  -webkit-text-fill-color: #f8fafc !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-surface-elevated) inset !important;
+  -webkit-text-fill-color: var(--text-primary) !important;
   transition: background-color 5000s ease-in-out 0s;
 }
