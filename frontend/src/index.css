@@ -1,16 +1,5 @@
 @import "tailwindcss";
 
-/* Custom Theme Tokens */
-@theme {
-  --color-bg-main: var(--bg-main);
-  --color-bg-surface: var(--bg-surface);
-  --color-bg-surface-elevated: var(--bg-surface-elevated);
-  --color-bg-surface-hover: var(--bg-surface-hover);
-  --color-border-color: var(--border-color);
-  --color-accent-gold: var(--accent-gold);
-  --color-accent-gold-hover: var(--accent-gold-hover);
-}
-
 /* CSS Root Variables (Default Dark Theme) */
 :root {
   --bg-main: #0a0b10;
