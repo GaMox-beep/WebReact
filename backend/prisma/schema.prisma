@@ -1,7 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// Prisma 7 schema for WebNovel Platform
 
 generator client {
   provider = "prisma-client-js"
@@ -13,17 +10,29 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid()) // Unique identifier (UUID string)
-  email     String   @unique              // Email used for login (must be unique)
-  username  String   @unique              // Username displayed on the site
-  password  String                        // Hashed password
-  avatar    String?                       // Optional avatar URL
-  role      Role     @default(USER)       // User role (USER, AUTHOR, ADMIN)
-  coins     Int      @default(0)          // Coin balance to unlock paid chapters
-  createdAt DateTime @default(now())      // Time when user was created
-  updatedAt DateTime @updatedAt           // Time when user was last updated
+  id            String         @id @default(uuid())
+  email         String         @unique
+  username      String         @unique
+  password      String
+  avatar        String?
+  role          Role           @default(USER)
+  coins         Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  refreshTokens RefreshToken[]
 
-  @@map("users") // Maps the Prisma model to a PostgreSQL table named "users"
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("refresh_tokens")
 }
 
 enum Role {
@@ -31,4 +40,3 @@ enum Role {
   AUTHOR
   ADMIN
 }
-
