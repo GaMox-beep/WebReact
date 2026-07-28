@@ -82,6 +82,16 @@ export class AuthService {
     };
   }
 
+  async logout(userId: string) {
+    await this.prisma.refreshToken.deleteMany({
+      where: { userId },
+    });
+
+    return {
+      message: 'Đăng xuất thành công',
+    };
+  }
+
   private async generateTokens(userId: string, email: string, role: string) {
     const payload = { sub: userId, email, role };
 
