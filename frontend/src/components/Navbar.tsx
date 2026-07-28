@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { customerNavItems } from '../menu-items/customerMenu'
 import { useTheme } from '../context/ThemeContext'
+import { useAuth } from '../context/AuthContext'
 
 const renderIcon = (iconName?: string) => {
   switch (iconName) {
@@ -47,6 +48,7 @@ const NavbarComponent = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
+  const { user, isAuthenticated, logout } = useAuth()
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--bg-nav)] backdrop-blur-md border-b border-[var(--border-color)] py-3 mb-6 transition-colors">
@@ -184,7 +186,6 @@ const NavbarComponent = () => {
                 aria-label="Toggle theme"
               >
                 {theme === 'dark' ? (
-                  /* Sun Icon for Light Mode */
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="4" />
                     <path d="M12 2v2" />
@@ -197,25 +198,51 @@ const NavbarComponent = () => {
                     <path d="m19.07 4.93-1.41 1.41" />
                   </svg>
                 ) : (
-                  /* Moon Icon for Dark Mode */
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
                   </svg>
                 )}
               </button>
 
-              <NavLink
-                to="/login"
-                className="flex-1 lg:flex-none text-center px-4 py-2 text-sm font-medium text-[var(--text-primary)] bg-transparent border border-[var(--border-color)] hover:bg-[var(--bg-surface-hover)] rounded-lg whitespace-nowrap transition-all"
-              >
-                Đăng Nhập
-              </NavLink>
-              <NavLink
-                to="/register"
-                className="flex-1 lg:flex-none text-center px-4 py-2 text-sm font-semibold text-black bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 rounded-lg whitespace-nowrap shadow-md shadow-amber-500/20 transition-all"
-              >
-                Đăng Ký
-              </NavLink>
+              {/* Conditional Auth Rendering */}
+              {isAuthenticated && user ? (
+                <div className="flex items-center gap-2 w-full lg:w-auto">
+                  {/* User Profile Info Badge */}
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] rounded-xl text-xs text-[var(--text-primary)]">
+                    <div className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center font-bold text-xs">
+                      {user.username.charAt(0).toUpperCase()}
+                    </div>
+                    <span className="font-semibold max-w-[100px] truncate">{user.username}</span>
+                    <span className="text-amber-500 font-medium flex items-center gap-1 pl-1 border-l border-[var(--border-color)]">
+                      🪙 {user.coins}
+                    </span>
+                  </div>
+
+                  {/* Logout Button */}
+                  <button
+                    type="button"
+                    onClick={logout}
+                    className="px-3 py-2 text-xs font-semibold text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-lg whitespace-nowrap transition-all"
+                  >
+                    Đăng Xuất
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <NavLink
+                    to="/login"
+                    className="flex-1 lg:flex-none text-center px-4 py-2 text-sm font-medium text-[var(--text-primary)] bg-transparent border border-[var(--border-color)] hover:bg-[var(--bg-surface-hover)] rounded-lg whitespace-nowrap transition-all"
+                  >
+                    Đăng Nhập
+                  </NavLink>
+                  <NavLink
+                    to="/register"
+                    className="flex-1 lg:flex-none text-center px-4 py-2 text-sm font-semibold text-black bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 rounded-lg whitespace-nowrap shadow-md shadow-amber-500/20 transition-all"
+                  >
+                    Đăng Ký
+                  </NavLink>
+                </>
+              )}
             </div>
           </nav>
         </div>

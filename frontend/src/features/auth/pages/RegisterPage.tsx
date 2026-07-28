@@ -1,9 +1,40 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../../context/AuthContext'
 
 export const RegisterPage = () => {
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  const { register } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+
+    if (password !== confirmPassword) {
+      setError('Mật khẩu xác nhận không khớp')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      await register({ email, username, password })
+      navigate('/')
+    } catch (err: any) {
+      setError(err.message || 'Đăng ký thất bại')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="flex justify-center items-center py-12 px-4 min-h-[85vh]">
@@ -32,8 +63,15 @@ export const RegisterPage = () => {
           <p className="text-[var(--text-secondary)] text-sm">Đăng ký để lưu truyện yêu thích và tham gia bình luận</p>
         </div>
 
+        {/* Error Alert */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs font-medium text-center">
+            {error}
+          </div>
+        )}
+
         {/* Form */}
-        <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-[var(--text-secondary)] text-xs font-medium mb-1">Tên người dùng / Biệt danh</label>
             <div className="relative flex items-center">
@@ -45,6 +83,9 @@ export const RegisterPage = () => {
               </span>
               <input
                 type="text"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 placeholder="Nguyễn Văn A"
                 autoComplete="username"
                 className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
@@ -63,6 +104,9 @@ export const RegisterPage = () => {
               </span>
               <input
                 type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
                 autoComplete="email"
                 className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
@@ -81,6 +125,9 @@ export const RegisterPage = () => {
               </span>
               <input
                 type={showPassword ? 'text' : 'password'}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Tối thiểu 6 ký tự"
                 autoComplete="new-password"
                 className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
@@ -120,6 +167,9 @@ export const RegisterPage = () => {
               </span>
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Nhập lại mật khẩu"
                 autoComplete="new-password"
                 className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
@@ -147,22 +197,12 @@ export const RegisterPage = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 pt-1">
-            <input
-              type="checkbox"
-              id="termsAgreement"
-              className="rounded bg-[var(--bg-surface-elevated)] border-[var(--border-color)] text-amber-500 focus:ring-amber-500/20 cursor-pointer"
-            />
-            <label htmlFor="termsAgreement" className="text-[var(--text-secondary)] text-xs cursor-pointer select-none">
-              Tôi đồng ý với <a href="#terms" onClick={(e) => e.preventDefault()} className="text-amber-500 hover:underline">Điều khoản dịch vụ</a>
-            </label>
-          </div>
-
           <button
             type="submit"
-            className="w-full py-3 font-semibold text-black bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 rounded-xl shadow-lg shadow-amber-500/20 transition-all mt-2"
+            disabled={loading}
+            className="w-full py-3 font-semibold text-black bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 rounded-xl shadow-lg shadow-amber-500/20 transition-all mt-2 disabled:opacity-50"
           >
-            Tạo Tài Khoản
+            {loading ? 'Đang xử lý...' : 'Tạo Tài Khoản'}
           </button>
         </form>
 
