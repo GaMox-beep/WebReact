@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, BadRequestException, UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -93,15 +93,22 @@ export class AuthService {
   }
 
   private async generateTokens(userId: string, email: string, role: string) {
+    const jwtSecret = process.env.JWT_SECRET;
+    const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
+
+    if (process.env.NODE_ENV === 'production' && (!jwtSecret || !jwtRefreshSecret)) {
+      throw new InternalServerErrorException('JWT Secrets are not configured in production environment');
+    }
+
     const payload = { sub: userId, email, role };
 
     const accessToken = await this.jwtService.signAsync(payload, {
-      secret: process.env.JWT_SECRET || 'dev_secret_jwt_key_novel_2026',
+      secret: jwtSecret || 'dev_secret_jwt_key_novel_2026',
       expiresIn: (process.env.JWT_EXPIRATION || '1d') as any,
     });
 
     const refreshToken = await this.jwtService.signAsync(payload, {
-      secret: process.env.JWT_REFRESH_SECRET || 'dev_secret_refresh_jwt_key_novel_2026',
+      secret: jwtRefreshSecret || 'dev_secret_refresh_jwt_key_novel_2026',
       expiresIn: (process.env.JWT_REFRESH_EXPIRATION || '7d') as any,
     });
 

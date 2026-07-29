@@ -16,9 +16,15 @@ async function bootstrap() {
     }),
   );
 
-  // Allow the frontend dev server to make API requests during development
+  // CORS configuration
+  const frontendUrl = process.env.FRONTEND_URL;
+  if (!frontendUrl && process.env.NODE_ENV === 'production') {
+    Logger.warn('FRONTEND_URL environment variable is not defined in production!', 'Bootstrap');
+  }
+
   app.enableCors({
-    origin: process.env.FRONTEND_URL ?? 'http://localhost:5173',
+    origin: frontendUrl ?? 'http://localhost:5173',
+    credentials: true,
   });
 
   const port = process.env.PORT ?? 3000;

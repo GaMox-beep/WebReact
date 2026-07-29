@@ -9,13 +9,18 @@ services:
     container_name: webnovel-postgres-local
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-12345}
+      POSTGRES_DB: ${DB_NAME:-WebNovel}
     ports:
-      - '5433:5432' # Maps host port 5433 to container port 5432
+      - '5433:5432' # Maps host port 5433 to container port 5432 for local dev & Prisma Studio
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-WebNovel}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - webnovel-network
 
@@ -29,14 +34,18 @@ services:
     container_name: webnovel-backend-local
     restart: always
     ports:
-      - '${PORT}:${PORT}' # Maps host port to container port from .env
+      - '${PORT:-3000}:${PORT:-3000}'
     environment:
-      # Note: We use "postgres" as the host since it matches the service name of the database container
-      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@postgres:5432/${DB_NAME}?schema=public
-      - PORT=${PORT}
-      - FRONTEND_URL=${FRONTEND_URL}
+      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-12345}@postgres:5432/${DB_NAME:-WebNovel}?schema=public
+      - PORT=${PORT:-3000}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
+      - JWT_SECRET=${JWT_SECRET:-dev_secret_jwt_key_novel_2026}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-dev_secret_refresh_jwt_key_novel_2026}
+      - JWT_EXPIRATION=${JWT_EXPIRATION:-1d}
+      - JWT_REFRESH_EXPIRATION=${JWT_REFRESH_EXPIRATION:-7d}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - webnovel-network
 
