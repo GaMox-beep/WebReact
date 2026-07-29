@@ -11,3 +11,7 @@ dist/
 
 # Test coverage
 coverage/
+
+# Postman VSCode extension artifacts
+.postman/
+postman/
