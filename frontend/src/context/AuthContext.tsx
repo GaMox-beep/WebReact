@@ -9,12 +9,23 @@ export interface User {
   coins: number
 }
 
+export interface LoginCredentials {
+  email: string
+  password: string
+}
+
+export interface RegisterCredentials {
+  email: string
+  username: string
+  password: string
+}
+
 interface AuthContextType {
   user: User | null
   accessToken: string | null
   isAuthenticated: boolean
-  login: (data: any) => Promise<void>
-  register: (data: any) => Promise<void>
+  login: (credentials: LoginCredentials) => Promise<void>
+  register: (credentials: RegisterCredentials) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -48,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [accessToken])
 
-  const login = async (credentials: { email: string; password: string }) => {
+  const login = async (credentials: LoginCredentials) => {
     const res = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -64,7 +75,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAccessToken(data.accessToken)
   }
 
-  const register = async (credentials: { email: string; username: string; password: string }) => {
+  const register = async (credentials: RegisterCredentials) => {
     const res = await fetch(`${API_BASE_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

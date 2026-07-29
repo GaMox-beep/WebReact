@@ -97,12 +97,12 @@ export class AuthService {
 
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_SECRET || 'dev_secret_jwt_key_novel_2026',
-      expiresIn: '1d',
+      expiresIn: (process.env.JWT_EXPIRATION || '1d') as any,
     });
 
     const refreshToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_REFRESH_SECRET || 'dev_secret_refresh_jwt_key_novel_2026',
-      expiresIn: '7d',
+      expiresIn: (process.env.JWT_REFRESH_EXPIRATION || '7d') as any,
     });
 
     const expiresAt = new Date();
