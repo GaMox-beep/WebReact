@@ -43,14 +43,14 @@ export const RegisterPage = () => {
 
   return (
     <div className="flex justify-center items-center py-12 px-4 min-h-[85vh]">
-      <div className="max-w-md w-full bg-[var(--bg-surface)] border border-[var(--border-color)] border-t-2 border-t-amber-500 rounded-2xl shadow-2xl p-6 sm:p-8 transition-colors">
+      <div className="max-w-md w-full bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-xl shadow-lg p-6 sm:p-8 transition-colors">
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex p-3 rounded-full mb-3 bg-amber-500/10 border border-amber-500/20 shadow-lg shadow-amber-500/10">
+          <div className="inline-flex p-3 rounded-full mb-3 bg-amber-500/10 border border-amber-500/20">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="28"
-              height="28"
+              width="24"
+              height="24"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#f59e0b"
@@ -64,13 +64,13 @@ export const RegisterPage = () => {
               <line x1="22" x2="16" y1="11" y2="11" />
             </svg>
           </div>
-          <h3 className="font-bold text-2xl mb-1 text-[var(--text-primary)]">Tạo Tài Khoản</h3>
-          <p className="text-[var(--text-secondary)] text-sm">Đăng ký để lưu truyện yêu thích và tham gia bình luận</p>
+          <h3 className="font-bold text-xl mb-1 text-[var(--text-primary)]">Tạo Tài Khoản</h3>
+          <p className="text-[var(--text-secondary)] text-xs">Đăng ký để lưu truyện yêu thích và tham gia bình luận</p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs font-medium text-center">
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-xs font-medium text-center">
             {error}
           </div>
         )}
@@ -93,7 +93,7 @@ export const RegisterPage = () => {
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Nguyễn Văn A"
                 autoComplete="username"
-                className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
               />
             </div>
           </div>
@@ -114,7 +114,7 @@ export const RegisterPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
                 autoComplete="email"
-                className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
               />
             </div>
           </div>
@@ -135,7 +135,7 @@ export const RegisterPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Tối thiểu 6 ký tự"
                 autoComplete="new-password"
-                className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
               />
               <button
                 type="button"
@@ -177,7 +177,7 @@ export const RegisterPage = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Nhập lại mật khẩu"
                 autoComplete="new-password"
-                className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
               />
               <button
                 type="button"
@@ -205,7 +205,7 @@ export const RegisterPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 font-semibold text-black bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 rounded-xl shadow-lg shadow-amber-500/20 transition-all mt-2 disabled:opacity-50"
+            className="w-full py-2.5 font-semibold text-black bg-amber-500 hover:bg-amber-400 rounded-lg transition-colors mt-2 disabled:opacity-50 text-sm"
           >
             {loading ? 'Đang xử lý...' : 'Tạo Tài Khoản'}
           </button>
