@@ -7,6 +7,7 @@ export interface User {
   role: 'USER' | 'AUTHOR' | 'ADMIN'
   avatar?: string
   coins: number
+  createdAt?: string
 }
 
 export interface LoginCredentials {
@@ -27,6 +28,7 @@ interface AuthContextType {
   login: (credentials: LoginCredentials) => Promise<void>
   register: (credentials: RegisterCredentials) => Promise<void>
   logout: () => Promise<void>
+  refreshProfile: () => Promise<void>
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
@@ -56,6 +58,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('accessToken', accessToken)
     } else {
       localStorage.removeItem('accessToken')
+    }
+  }, [accessToken])
+
+  const refreshProfile = async () => {
+    if (!accessToken) return
+    try {
+      const res = await fetch(`${API_BASE_URL}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      if (res.ok) {
+        const profileData = await res.json()
+        setUser(profileData)
+      } else if (res.status === 401) {
+        logout()
+      }
+    } catch (err) {
+      console.error('Failed to sync profile:', err)
+    }
+  }
+
+  useEffect(() => {
+    if (accessToken) {
+      refreshProfile()
     }
   }, [accessToken])
 
@@ -121,6 +148,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         register,
         logout,
+        refreshProfile,
       }}
     >
       {children}

@@ -207,16 +207,19 @@ const NavbarComponent = () => {
               {/* Conditional Auth Rendering */}
               {isAuthenticated && user ? (
                 <div className="flex items-center gap-2 w-full lg:w-auto">
-                  {/* User Profile Info Badge */}
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] rounded-xl text-xs text-[var(--text-primary)]">
-                    <div className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center font-bold text-xs">
+                  {/* User Profile Info Badge Link */}
+                  <NavLink
+                    to="/profile"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-amber-500/50 rounded-xl text-xs text-[var(--text-primary)] transition-all group"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 group-hover:bg-amber-500 group-hover:text-black flex items-center justify-center font-bold text-xs transition-colors">
                       {user.username.charAt(0).toUpperCase()}
                     </div>
                     <span className="font-semibold max-w-[100px] truncate">{user.username}</span>
                     <span className="text-amber-500 font-medium flex items-center gap-1 pl-1 border-l border-[var(--border-color)]">
                       🪙 {user.coins}
                     </span>
-                  </div>
+                  </NavLink>
 
                   {/* Logout Button */}
                   <button
