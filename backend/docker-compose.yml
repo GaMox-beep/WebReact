@@ -1,31 +1,6 @@
-version: '3.8'
-
 services:
   # ----------------------------------------------------
-  # DATABASE SERVICE (PostgreSQL)
-  # ----------------------------------------------------
-  postgres:
-    image: postgres:16-alpine
-    container_name: webnovel-postgres-local
-    restart: always
-    environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-12345}
-      POSTGRES_DB: ${DB_NAME:-WebNovel}
-    ports:
-      - '5433:5432' # Maps host port 5433 to container port 5432 for local dev & Prisma Studio
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-WebNovel}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - webnovel-network
-
-  # ----------------------------------------------------
-  # BACKEND SERVICE (NestJS App)
+  # BACKEND SERVICE (NestJS App connected to Supabase Cloud)
   # ----------------------------------------------------
   backend:
     build:
@@ -35,25 +10,18 @@ services:
     restart: always
     ports:
       - '${PORT:-3000}:${PORT:-3000}'
+    env_file:
+      - .env
     environment:
-      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-12345}@postgres:5432/${DB_NAME:-WebNovel}?schema=public
       - PORT=${PORT:-3000}
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
       - JWT_SECRET=${JWT_SECRET:-dev_secret_jwt_key_novel_2026}
       - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-dev_secret_refresh_jwt_key_novel_2026}
       - JWT_EXPIRATION=${JWT_EXPIRATION:-1d}
       - JWT_REFRESH_EXPIRATION=${JWT_REFRESH_EXPIRATION:-7d}
-    depends_on:
-      postgres:
-        condition: service_healthy
     networks:
       - webnovel-network
 
-# Persistence for PostgreSQL data
-volumes:
-  postgres_data:
-
-# Internal network for container communication
 networks:
   webnovel-network:
     driver: bridge
