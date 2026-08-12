@@ -19,6 +19,9 @@ services:
       - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-dev_secret_refresh_jwt_key_novel_2026}
       - JWT_EXPIRATION=${JWT_EXPIRATION:-1d}
       - JWT_REFRESH_EXPIRATION=${JWT_REFRESH_EXPIRATION:-7d}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
     networks:
       - webnovel-network
 

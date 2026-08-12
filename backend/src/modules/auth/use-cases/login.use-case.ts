@@ -15,7 +15,7 @@ export class LoginUseCase {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
-    if (!user) {
+    if (!user || !user.password) {
       throw new UnauthorizedException('Email hoặc mật khẩu không chính xác');
     }
 

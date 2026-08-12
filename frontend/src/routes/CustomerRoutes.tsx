@@ -5,6 +5,7 @@ import { TopNovelsPage } from './landing/top-novels-page'
 import { RechargePage } from './user/recharge-page'
 import { LoginPage } from './auth/login-page'
 import { RegisterPage } from './auth/register-page'
+import { GoogleOAuthCallbackPage } from './auth/google-oauth-callback-page'
 import { ProfilePage } from './user/profile-page'
 import { NovelDetailPage } from './novels/novel-detail-page'
 import { paths } from '../config/paths'
@@ -17,6 +18,7 @@ export const CustomerRoutes = (
     <Route path={paths.payments.recharge.path} element={<RechargePage />} />
     <Route path={paths.auth.login.path} element={<LoginPage />} />
     <Route path={paths.auth.register.path} element={<RegisterPage />} />
+    <Route path={paths.auth.googleCallback.path} element={<GoogleOAuthCallbackPage />} />
     <Route path={paths.users.profile.path} element={<ProfilePage />} />
   </Route>
 )
