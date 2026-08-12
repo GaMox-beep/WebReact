@@ -58,7 +58,6 @@ export const ProfilePage = () => {
 
           {/* Coins Balance Card */}
           <div className="bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] rounded-lg px-4 py-3 flex items-center gap-3 shrink-0">
-            <span className="text-xl">🪙</span>
             <div>
               <span className="block text-[var(--text-muted)] text-[11px] font-medium">Linh Thạch</span>
               <span className="text-lg font-bold text-amber-500">{user.coins.toLocaleString('vi-VN')}</span>
@@ -77,7 +76,7 @@ export const ProfilePage = () => {
               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
           }`}
         >
-          👤 Hồ Sơ
+          Hồ Sơ
         </button>
         <button
           onClick={() => setActiveTab('bookmarks')}
@@ -87,7 +86,7 @@ export const ProfilePage = () => {
               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
           }`}
         >
-          🔖 Tủ Truyện
+          Tủ Truyện
         </button>
         <button
           onClick={() => setActiveTab('history')}
@@ -97,7 +96,7 @@ export const ProfilePage = () => {
               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
           }`}
         >
-          📖 Lịch Sử Đọc
+          Lịch Sử Đọc
         </button>
         <button
           onClick={() => setActiveTab('settings')}
@@ -107,7 +106,7 @@ export const ProfilePage = () => {
               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
           }`}
         >
-          ⚙️ Cài Đặt
+          Cài Đặt
         </button>
       </div>
 

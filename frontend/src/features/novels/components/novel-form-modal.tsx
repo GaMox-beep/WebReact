@@ -179,7 +179,7 @@ export const NovelFormModal = ({
             <button
               type="submit"
               disabled={submitting}
-              className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold text-xs rounded-xl transition-all shadow-lg shadow-amber-500/20"
+              className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold text-xs rounded-xl transition-all"
             >
               {submitting ? 'Đang Lưu...' : editingNovel ? 'Cập Nhật' : 'Tạo Mới'}
             </button>

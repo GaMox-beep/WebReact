@@ -24,7 +24,6 @@ export const NovelChapterList = ({ chapters }: NovelChapterListProps) => {
     <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 space-y-4 transition-colors">
       <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
         <h3 className="text-lg font-bold text-[var(--text-primary)] flex items-center gap-2">
-          <span className="w-2 h-5 bg-amber-500 rounded-full inline-block" />
           Danh Sách Chương
         </h3>
         <span className="text-xs text-[var(--text-muted)] font-medium">
