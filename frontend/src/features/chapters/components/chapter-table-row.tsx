@@ -22,7 +22,7 @@ export const ChapterTableRow = ({
       <td className="py-3 px-4">
         {chapter.isVip ? (
           <span className="px-2 py-0.5 text-xs font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-md">
-            VIP 🪙
+            VIP
           </span>
         ) : (
           <span className="px-2 py-0.5 text-xs font-semibold bg-slate-500/10 text-slate-400 border border-slate-500/20 rounded-md">

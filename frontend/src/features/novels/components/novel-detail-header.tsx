@@ -1,4 +1,5 @@
 import type { Novel } from '../types'
+import { StatusBadge } from './status-badge'
 
 interface NovelDetailHeaderProps {
   novel: Novel
@@ -73,15 +74,7 @@ export const NovelDetailHeader = ({ novel }: NovelDetailHeaderProps) => {
             {/* Badges: Status & Categories */}
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-1">
               {/* Status Badge */}
-              {novel.status === 'COMPLETED' ? (
-                <span className="px-2.5 py-1 text-xs font-semibold rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                  Hoàn thành
-                </span>
-              ) : (
-                <span className="px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                  Đang ra
-                </span>
-              )}
+              <StatusBadge status={novel.status} />
 
               {/* Categories */}
               {novel.categories?.map((c) => (
@@ -118,7 +111,7 @@ export const NovelDetailHeader = ({ novel }: NovelDetailHeaderProps) => {
             <button
               type="button"
               disabled={!firstChapter}
-              className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-bold text-sm rounded-xl shadow-md shadow-amber-500/20 transition-all disabled:opacity-50 flex items-center gap-2"
+              className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-all disabled:opacity-50 flex items-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="5 3 19 12 5 21 5 3" />
