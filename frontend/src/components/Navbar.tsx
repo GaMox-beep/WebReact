@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { customerNavItems } from '../menu-items/customerMenu'
+import { useAuth } from '../context/AuthContext'
+import { customerNavItems } from '../config/navigation'
+import { paths } from '../config/paths'
 import { renderNavIcon } from './navbar/NavIcons'
 import { NavSearchInput } from './navbar/NavSearchInput'
 import { NavCategoryDropdown } from './navbar/NavCategoryDropdown'
@@ -9,12 +11,13 @@ import { NavUserBadge } from './navbar/NavUserBadge'
 
 export const NavbarComponent = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const { user } = useAuth()
 
   return (
-    <header className="sticky top-0 z-50 bg-[var(--bg-nav)] backdrop-blur-md border-b border-[var(--border-color)] py-3 mb-6 transition-colors">
+    <header className="sticky top-0 z-50 bg-[var(--bg-nav)] backdrop-blur-md border-b border-[var(--border-nav)] py-3 mb-6 transition-colors shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
         {/* Brand Logo */}
-        <NavLink to="/" className="flex items-center gap-2 text-[var(--text-primary)] font-bold text-xl whitespace-nowrap">
+        <NavLink to={paths.home.getHref()} className="flex items-center gap-2 text-[var(--text-nav-primary)] font-bold text-xl whitespace-nowrap">
           <div className="flex items-center justify-center p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +41,7 @@ export const NavbarComponent = () => {
         {/* Mobile Toggle Button */}
         <button
           type="button"
-          className="lg:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] focus:outline-none"
+          className="lg:hidden p-2 text-[var(--text-nav-secondary)] hover:text-[var(--text-nav-primary)] focus:outline-none"
           onClick={() => setIsMobileOpen(!isMobileOpen)}
           aria-label="Toggle navigation"
         >
@@ -67,14 +70,13 @@ export const NavbarComponent = () => {
                 <NavLink
                   key={item.id}
                   to={item.path}
-                  end={item.path === '/'}
+                  end={item.path === paths.home.getHref()}
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all w-full lg:w-auto ${
-                      isAccent
-                        ? 'text-amber-500 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500 hover:text-black hover:border-amber-500'
-                        : isActive
-                        ? 'text-[var(--text-primary)] bg-[var(--bg-surface-elevated)] font-semibold'
-                        : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
+                    `flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all w-full lg:w-auto ${isAccent
+                      ? 'text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500 hover:text-black hover:border-amber-500 font-semibold'
+                      : isActive
+                        ? 'text-[var(--text-nav-primary)] bg-[var(--bg-nav-elevated)] font-semibold'
+                        : 'text-[var(--text-nav-secondary)] hover:text-[var(--text-nav-primary)] hover:bg-[var(--bg-nav-hover)]'
                     }`
                   }
                 >
@@ -84,8 +86,24 @@ export const NavbarComponent = () => {
               )
             })}
 
+            {/* Admin Shortcut Link if user.role === 'ADMIN' */}
+            {user?.role === 'ADMIN' && (
+              <NavLink
+                to={paths.admin.dashboard.getHref()}
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all w-full lg:w-auto ${
+                    isActive
+                      ? 'text-[var(--text-nav-primary)] bg-[var(--bg-nav-elevated)] font-semibold'
+                      : 'text-[var(--text-nav-secondary)] hover:text-[var(--text-nav-primary)] hover:bg-[var(--bg-nav-hover)]'
+                  }`
+                }
+              >
+                Quản Trị
+              </NavLink>
+            )}
+
             {/* Auth Actions + Theme Switcher */}
-            <div className="flex items-center gap-2 w-full lg:w-auto pt-3 lg:pt-0 border-t lg:border-t-0 border-[var(--border-color)]">
+            <div className="flex items-center gap-2 w-full lg:w-auto pt-3 lg:pt-0 border-t lg:border-t-0 border-[var(--border-nav)]">
               <NavThemeToggle />
               <NavUserBadge />
             </div>

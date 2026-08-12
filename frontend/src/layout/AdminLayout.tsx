@@ -1,5 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom'
-import { adminNavItems } from '../menu-items/adminMenu'
+import { adminNavItems } from '../config/navigation'
+import { paths } from '../config/paths'
 
 const renderAdminIcon = (iconName?: string) => {
   switch (iconName) {
@@ -66,7 +67,7 @@ const AdminLayout = () => {
             <NavLink
               key={item.id}
               to={item.path}
-              end={item.path === '/admin'}
+              end={item.path === paths.admin.dashboard.getHref()}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive
@@ -82,7 +83,7 @@ const AdminLayout = () => {
         </nav>
 
         <div className="mt-auto pt-4 border-t border-white/10">
-          <NavLink to="/" className="flex items-center justify-center gap-2 w-full py-2.5 text-xs font-medium text-white border border-white/10 hover:bg-white/10 rounded-xl transition-all">
+          <NavLink to={paths.home.getHref()} className="flex items-center justify-center gap-2 w-full py-2.5 text-xs font-medium text-white border border-white/10 hover:bg-white/10 rounded-xl transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" x2="5" y1="12" y2="12" />
               <polyline points="12 19 5 12 12 5" />

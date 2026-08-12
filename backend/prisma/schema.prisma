@@ -39,3 +39,64 @@ enum Role {
   AUTHOR
   ADMIN
 }
+
+enum NovelStatus {
+  ONGOING
+  COMPLETED
+  PAUSED
+}
+
+model Category {
+  id        String          @id @default(uuid())
+  name      String          @unique
+  slug      String          @unique
+  novels    NovelCategory[]
+  createdAt DateTime        @default(now())
+
+  @@map("categories")
+}
+
+model Novel {
+  id          String          @id @default(uuid())
+  title       String
+  slug        String          @unique
+  description String          @db.Text
+  coverUrl    String?
+  authorName  String
+  status      NovelStatus     @default(ONGOING)
+  views       Int             @default(0)
+  rating      Float           @default(5.0)
+  categories  NovelCategory[]
+  chapters    Chapter[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@map("novels")
+}
+
+model NovelCategory {
+  novelId    String
+  categoryId String
+  novel      Novel    @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([novelId, categoryId])
+  @@map("novel_categories")
+}
+
+model Chapter {
+  id            String   @id @default(uuid())
+  novelId       String
+  novel         Novel    @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  chapterNumber Float
+  title         String
+  content       String   @db.Text
+  views         Int      @default(0)
+  isVip         Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([novelId, chapterNumber])
+  @@map("chapters")
+}
+

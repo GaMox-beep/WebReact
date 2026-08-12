@@ -6,7 +6,7 @@
   --bg-surface: #11131e;
   --bg-surface-elevated: #161927;
   --bg-surface-hover: #1c2032;
-  --bg-nav: rgba(10, 11, 16, 0.9);
+  --bg-nav: rgba(10, 11, 16, 0.95);
   --border-color: rgba(255, 255, 255, 0.08);
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
@@ -14,21 +14,41 @@
   --accent-gold: #f59e0b;
   --accent-gold-hover: #d97706;
   --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Dedicated Nav & Footer Dark Palette (Consistent Across Themes) */
+  --bg-nav-fixed: #11131e;
+  --bg-nav-elevated: #161927;
+  --bg-nav-hover: #1f2337;
+  --text-nav-primary: #f8fafc;
+  --text-nav-secondary: #94a3b8;
+  --text-nav-muted: #64748b;
+  --border-nav: rgba(255, 255, 255, 0.1);
+  --bg-footer-fixed: #0c0e17;
 }
 
-/* Light Theme Overrides */
+/* Light Theme Overrides (Light Content Body + Dark Header & Footer) */
 [data-theme="light"] {
   --bg-main: #f8fafc;
   --bg-surface: #ffffff;
   --bg-surface-elevated: #f1f5f9;
   --bg-surface-hover: #e2e8f0;
-  --bg-nav: rgba(255, 255, 255, 0.9);
   --border-color: rgba(0, 0, 0, 0.1);
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #64748b;
   --accent-gold: #d97706;
   --accent-gold-hover: #b45309;
+
+  /* Dedicated Nav & Footer Stays Dark in Light Mode */
+  --bg-nav: rgba(17, 19, 30, 0.96);
+  --bg-nav-fixed: #11131e;
+  --bg-nav-elevated: #161927;
+  --bg-nav-hover: #1f2337;
+  --text-nav-primary: #f8fafc;
+  --text-nav-secondary: #94a3b8;
+  --text-nav-muted: #64748b;
+  --border-nav: rgba(255, 255, 255, 0.1);
+  --bg-footer-fixed: #0c0e17;
 }
 
 body {

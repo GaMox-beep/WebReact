@@ -2,10 +2,14 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { NovelsModule } from './modules/novels/novels.module';
+import { ChaptersModule } from './modules/chapters/chapters.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule],
+  imports: [PrismaModule, AuthModule, UsersModule, NovelsModule, ChaptersModule, UploadModule],
   controllers: [],
   providers: [],
 })
 export class AppModule {}
+

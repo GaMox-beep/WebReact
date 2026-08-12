@@ -1,12 +1,49 @@
-# Workspace level gitignore
-.agents/
-.vscode/
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build and Output
+dist/
+dist-ssr/
+build/
+coverage/
+*.tsbuildinfo
+
+# Environment Variables
+.env
+.env*.local
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editor & OS files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 .idea/
 *.suo
+*.ntvs*
+*.njsproj
 *.sln
 *.sw?
 .DS_Store
-node_modules/
-dist/
-dist-ssr/
-*.log
+Thumbs.db
+
+# AI Agent & Guardrails (Local only)
+.agents/
+.agent/
+SPEC.md
+ROADMAP.md
+AGENTS.md
+skills-lock.json
+
+# Temporary & Cache
+.cache/
+.tmp/
+*.tmp
+
+

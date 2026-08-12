@@ -1,18 +1,23 @@
 import { Route } from 'react-router-dom'
 import CustomerLayout from '../layout/CustomerLayout'
-import { HomePage, TopNovelsPage } from '../features/novels'
-import { RechargePage } from '../features/payments'
-import { LoginPage, RegisterPage } from '../features/auth'
-import ProfilePage from '../features/users/pages/ProfilePage'
+import { HomePage } from './landing/home-page'
+import { TopNovelsPage } from './landing/top-novels-page'
+import { RechargePage } from './user/recharge-page'
+import { LoginPage } from './auth/login-page'
+import { RegisterPage } from './auth/register-page'
+import { ProfilePage } from './user/profile-page'
+import { NovelDetailPage } from './novels/novel-detail-page'
+import { paths } from '../config/paths'
 
 export const CustomerRoutes = (
   <Route element={<CustomerLayout />}>
-    <Route path="/" element={<HomePage />} />
-    <Route path="/top-truyen" element={<TopNovelsPage />} />
-    <Route path="/nap" element={<RechargePage />} />
-    <Route path="/login" element={<LoginPage />} />
-    <Route path="/register" element={<RegisterPage />} />
-    <Route path="/profile" element={<ProfilePage />} />
+    <Route path={paths.home.path} element={<HomePage />} />
+    <Route path={paths.novels.top.path} element={<TopNovelsPage />} />
+    <Route path={paths.novels.detail.path} element={<NovelDetailPage />} />
+    <Route path={paths.payments.recharge.path} element={<RechargePage />} />
+    <Route path={paths.auth.login.path} element={<LoginPage />} />
+    <Route path={paths.auth.register.path} element={<RegisterPage />} />
+    <Route path={paths.users.profile.path} element={<ProfilePage />} />
   </Route>
 )
 

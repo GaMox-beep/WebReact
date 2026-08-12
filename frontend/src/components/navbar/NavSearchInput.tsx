@@ -5,10 +5,10 @@ export const NavSearchInput = () => {
         <input
           type="search"
           placeholder="Tìm kiếm tên truyện, tác giả..."
-          className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-full pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+          className="w-full bg-[var(--bg-nav-elevated)] border border-[var(--border-nav)] text-[var(--text-nav-primary)] placeholder-[var(--text-nav-muted)] rounded-full pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
         />
         <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-nav-muted)] pointer-events-none"
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
