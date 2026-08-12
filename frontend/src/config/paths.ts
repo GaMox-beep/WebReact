@@ -15,6 +15,10 @@ export const paths = {
       getHref: (redirectTo?: string | null) =>
         `/register${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
     },
+    googleCallback: {
+      path: '/auth/google/callback',
+      getHref: () => '/auth/google/callback',
+    },
   },
 
   novels: {

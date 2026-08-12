@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from '../../../context/AuthContext'
 import { useRegister } from '../api/register'
+import { GoogleLoginButton } from './google-login-button'
 import type { AuthResponse } from '../types'
 
 interface RegisterFormProps {
@@ -188,6 +189,8 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
           {registerMutation.isPending ? 'Đang xử lý...' : 'Tạo Tài Khoản'}
         </button>
       </form>
+
+      <GoogleLoginButton label="Đăng ký với Google" />
     </div>
   )
 }

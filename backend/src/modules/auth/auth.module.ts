@@ -6,7 +6,9 @@ import { TokenService } from './services/token.service';
 import { RegisterUseCase } from './use-cases/register.use-case';
 import { LoginUseCase } from './use-cases/login.use-case';
 import { LogoutUseCase } from './use-cases/logout.use-case';
+import { GoogleOAuthUseCase } from './use-cases/google-oauth.use-case';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     RegisterUseCase,
     LoginUseCase,
     LogoutUseCase,
+    GoogleOAuthUseCase,
     JwtStrategy,
+    GoogleStrategy,
   ],
   exports: [TokenService],
 })
