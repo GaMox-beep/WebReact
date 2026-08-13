@@ -36,7 +36,11 @@ export class RegisterUseCase {
       },
     });
 
-    const tokens = await this.tokenService.generateTokens(user.id, user.email, user.role);
+    const tokens = await this.tokenService.generateTokens(
+      user.id,
+      user.email,
+      user.role,
+    );
 
     return {
       message: 'Đăng ký tài khoản thành công',

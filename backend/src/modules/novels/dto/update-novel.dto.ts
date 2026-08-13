@@ -1,24 +1,24 @@
-import { IsString, IsOptional, IsEnum, IsArray } from 'class-validator'
-import { NovelStatus } from '@prisma/client'
+import { IsString, IsOptional, IsEnum, IsArray } from 'class-validator';
+import { NovelStatus } from '@prisma/client';
 
 export class UpdateNovelDto {
   @IsOptional()
   @IsString()
-  title?: string
+  title?: string;
 
   @IsOptional()
   @IsString()
-  description?: string
+  description?: string;
 
   @IsOptional()
   @IsString()
-  authorName?: string
+  authorName?: string;
 
   @IsOptional()
   @IsEnum(NovelStatus)
-  status?: NovelStatus
+  status?: NovelStatus;
 
   @IsOptional()
   @IsArray()
-  categoryIds?: string[]
+  categoryIds?: string[];
 }

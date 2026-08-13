@@ -16,7 +16,7 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterUseCase } from './use-cases/register.use-case';
 import { LoginUseCase } from './use-cases/login.use-case';
 import { LogoutUseCase } from './use-cases/logout.use-case';
-import type { GoogleAuthResult } from './use-cases/google-oauth.use-case';
+import type { GoogleAuthResult } from './dto/google-auth.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
@@ -50,7 +50,7 @@ export class AuthController {
   // Google OAuth — begin: redirects the browser to Google's consent screen.
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleRedirect() {
+  googleRedirect() {
     // Passport handles the redirect to Google; this never returns.
   }
 
@@ -58,9 +58,11 @@ export class AuthController {
   // back to the frontend with the session tokens as query parameters.
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleCallback(@Req() req: Request, @Res() res: Response) {
+  googleCallback(@Req() req: Request, @Res() res: Response) {
     const result = req.user as GoogleAuthResult;
-    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/$/, '');
+    const frontendUrl = (
+      process.env.FRONTEND_URL || 'http://localhost:5173'
+    ).replace(/\/$/, '');
 
     const params = new URLSearchParams({
       accessToken: result.accessToken,

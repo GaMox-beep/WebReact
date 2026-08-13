@@ -9,7 +9,7 @@ export class LoginUseCase {
   constructor(
     private readonly prisma: PrismaService,
     private readonly tokenService: TokenService,
-  ) {}
+  ) { }
 
   async execute(dto: LoginDto) {
     const user = await this.prisma.user.findUnique({
@@ -24,7 +24,11 @@ export class LoginUseCase {
       throw new UnauthorizedException('Email hoặc mật khẩu không chính xác');
     }
 
-    const tokens = await this.tokenService.generateTokens(user.id, user.email, user.role);
+    const tokens = await this.tokenService.generateTokens(
+      user.id,
+      user.email,
+      user.role,
+    );
 
     return {
       message: 'Đăng nhập thành công',

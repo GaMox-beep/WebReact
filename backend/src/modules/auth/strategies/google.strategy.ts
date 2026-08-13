@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, Profile, VerifyCallback, StrategyOptions } from 'passport-google-oauth20';
+import {
+  Strategy,
+  Profile,
+  VerifyCallback,
+  StrategyOptions,
+} from 'passport-google-oauth20';
 import { GoogleOAuthUseCase } from '../use-cases/google-oauth.use-case';
 
 @Injectable()
@@ -27,7 +32,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         return done(new Error('Google không cung cấp email'));
       }
 
-      const result = await this.googleOAuthUseCase.authenticate({
+      const result = await this.googleOAuthUseCase.execute({
         providerId: profile.id,
         email,
         emailVerified: Boolean(profile._json?.email_verified),
