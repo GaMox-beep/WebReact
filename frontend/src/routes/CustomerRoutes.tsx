@@ -9,11 +9,13 @@ import { GoogleOAuthCallbackPage } from './auth/google-oauth-callback-page'
 import { ProfilePage } from './user/profile-page'
 import { NovelDetailPage } from './novels/novel-detail-page'
 import { ChapterReaderPage } from './novels/chapter-reader-page'
+import { NovelsByCategoryPage } from './novels/novels-by-category-page'
 import { paths } from '../config/paths'
 
 export const CustomerRoutes = (
   <Route element={<CustomerLayout />}>
     <Route path={paths.home.path} element={<HomePage />} />
+    <Route path={paths.novels.categories.path} element={<NovelsByCategoryPage />} />
     <Route path={paths.novels.top.path} element={<TopNovelsPage />} />
     <Route path={paths.novels.detail.path} element={<NovelDetailPage />} />
     <Route path={paths.novels.chapter.path} element={<ChapterReaderPage />} />

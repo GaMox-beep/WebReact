@@ -12,6 +12,10 @@ export class QueryNovelDto {
   categoryId?: string;
 
   @IsOptional()
+  @IsString()
+  categorySlug?: string;
+
+  @IsOptional()
   @IsEnum(NovelStatus)
   status?: NovelStatus;
 

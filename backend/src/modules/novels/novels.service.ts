@@ -72,6 +72,7 @@ export class NovelsService {
     const {
       search,
       categoryId,
+      categorySlug,
       status,
       sortBy = 'createdAt',
       sortOrder = 'desc',
@@ -94,7 +95,15 @@ export class NovelsService {
       where.status = status;
     }
 
-    if (categoryId) {
+    if (categorySlug) {
+      where.categories = {
+        some: {
+          category: {
+            slug: categorySlug,
+          },
+        },
+      };
+    } else if (categoryId) {
       where.categories = {
         some: { categoryId },
       };

@@ -24,8 +24,8 @@ export const paths = {
   novels: {
     categories: {
       path: '/the-loai',
-      getHref: (categoryId?: string) =>
-        `/the-loai${categoryId ? `?categoryId=${categoryId}` : ''}`,
+      getHref: (slug?: string) =>
+        `/the-loai${slug ? `?slug=${encodeURIComponent(slug)}` : ''}`,
     },
     top: {
       path: '/top-truyen',
@@ -68,6 +68,10 @@ export const paths = {
     novels: {
       path: '/admin/novels',
       getHref: () => '/admin/novels',
+    },
+    categories: {
+      path: '/admin/categories',
+      getHref: () => '/admin/categories',
     },
     users: {
       path: '/admin/users',
