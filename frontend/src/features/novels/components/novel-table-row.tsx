@@ -21,7 +21,7 @@ export const NovelTableRow = ({
           <img
             src={novel.coverUrl}
             alt={novel.title}
-            className="w-12 h-16 object-cover rounded-lg border border-white/10 shadow-sm"
+            className="w-12 h-16 object-cover rounded-lg border border-white/10"
           />
         ) : (
           <div className="w-12 h-16 bg-[#0a0b10] border border-white/10 rounded-lg flex items-center justify-center text-xs text-slate-500">

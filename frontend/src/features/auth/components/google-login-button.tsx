@@ -18,7 +18,7 @@ export const GoogleLoginButton = ({ label = 'Tiếp tục với Google' }: Googl
 
       <a
         href={href}
-        className="w-full flex items-center justify-center gap-3 py-2.5 text-sm font-semibold text-[var(--text-primary)] bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-amber-500/60 hover:bg-[var(--bg-surface-elevated-2,#2a2f3a)] rounded-lg transition-colors"
+        className="w-full flex items-center justify-center gap-3 py-2.5 text-sm font-semibold text-[var(--text-primary)] bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] hover:border-[var(--accent-gold)] hover:bg-[var(--bg-surface-hover)] rounded-lg transition-colors"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48">
           <path

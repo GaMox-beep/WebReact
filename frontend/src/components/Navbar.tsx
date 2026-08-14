@@ -18,14 +18,14 @@ export const NavbarComponent = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
         {/* Brand Logo */}
         <NavLink to={paths.home.getHref()} className="flex items-center gap-2 text-[var(--text-nav-primary)] font-bold text-xl whitespace-nowrap">
-          <div className="flex items-center justify-center p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30">
+          <div className="flex items-center justify-center p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-[var(--accent-gold)]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="22"
               height="22"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#f59e0b"
+              stroke="currentColor"
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"

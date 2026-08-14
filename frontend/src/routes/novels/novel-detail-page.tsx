@@ -16,7 +16,7 @@ export const NovelDetailPage = () => {
   if (error || !novel) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-12 shadow-sm">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-12">
           <div className="w-16 h-16 bg-red-500/10 text-red-400 border border-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ export const NovelDetailPage = () => {
           </p>
           <Link
             to={paths.home.getHref()}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-semibold text-sm rounded-xl transition-all shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] text-slate-950 font-semibold text-sm rounded-xl transition-all"
           >
             ← Quay Lại Trang Chủ
           </Link>
@@ -64,7 +64,7 @@ export const NovelDetailPage = () => {
       <NovelDetailHeader novel={novel} />
 
       {/* Description Content Box */}
-      <section className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 space-y-3 transition-colors shadow-sm">
+      <section className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 space-y-3 transition-colors">
         <h3 className="text-lg font-bold text-[var(--text-primary)] flex items-center gap-2">
           Giới Thiệu Truyện
         </h3>

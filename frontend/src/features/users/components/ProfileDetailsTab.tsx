@@ -26,7 +26,7 @@ export const ProfileDetailsTab = ({ user, onLogout }: ProfileDetailsTabProps) =>
         </div>
         <div className="p-3.5 bg-[var(--bg-surface-elevated)] rounded-lg border border-[var(--border-color)]">
           <span className="block text-[var(--text-muted)] text-[11px] font-medium mb-0.5">Quyền Hạn</span>
-          <span className="text-xs font-bold text-amber-500">{user.role}</span>
+          <span className="text-xs font-bold text-[var(--accent-gold)]">{user.role}</span>
         </div>
       </div>
 

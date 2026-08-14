@@ -34,7 +34,7 @@ export const ProfilePage = () => {
       <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-xl p-6 mb-6 transition-colors">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
           {/* Avatar Initial Circle */}
-          <div className="w-16 h-16 rounded-full bg-amber-500 flex items-center justify-center text-black font-extrabold text-2xl shrink-0">
+          <div className="w-16 h-16 rounded-full bg-[var(--accent-gold)] flex items-center justify-center text-slate-950 font-extrabold text-2xl shrink-0">
             {userInitial}
           </div>
 
@@ -60,7 +60,7 @@ export const ProfilePage = () => {
           <div className="bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] rounded-lg px-4 py-3 flex items-center gap-3 shrink-0">
             <div>
               <span className="block text-[var(--text-muted)] text-[11px] font-medium">Linh Thạch</span>
-              <span className="text-lg font-bold text-amber-500">{user.coins.toLocaleString('vi-VN')}</span>
+              <span className="text-lg font-bold text-[var(--accent-gold)]">{user.coins.toLocaleString('vi-VN')}</span>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@ export const ProfilePage = () => {
           onClick={() => setActiveTab('profile')}
           className={`px-3.5 py-2 rounded-lg font-medium text-xs transition-colors flex items-center gap-1.5 ${
             activeTab === 'profile'
-              ? 'bg-amber-500 text-black font-semibold'
+              ? 'bg-[var(--accent-gold)] text-slate-950 font-semibold'
               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
           }`}
         >
@@ -82,7 +82,7 @@ export const ProfilePage = () => {
           onClick={() => setActiveTab('bookmarks')}
           className={`px-3.5 py-2 rounded-lg font-medium text-xs transition-colors flex items-center gap-1.5 ${
             activeTab === 'bookmarks'
-              ? 'bg-amber-500 text-black font-semibold'
+              ? 'bg-[var(--accent-gold)] text-slate-950 font-semibold'
               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
           }`}
         >
@@ -92,7 +92,7 @@ export const ProfilePage = () => {
           onClick={() => setActiveTab('history')}
           className={`px-3.5 py-2 rounded-lg font-medium text-xs transition-colors flex items-center gap-1.5 ${
             activeTab === 'history'
-              ? 'bg-amber-500 text-black font-semibold'
+              ? 'bg-[var(--accent-gold)] text-slate-950 font-semibold'
               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
           }`}
         >
@@ -102,7 +102,7 @@ export const ProfilePage = () => {
           onClick={() => setActiveTab('settings')}
           className={`px-3.5 py-2 rounded-lg font-medium text-xs transition-colors flex items-center gap-1.5 ${
             activeTab === 'settings'
-              ? 'bg-amber-500 text-black font-semibold'
+              ? 'bg-[var(--accent-gold)] text-slate-950 font-semibold'
               : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
           }`}
         >

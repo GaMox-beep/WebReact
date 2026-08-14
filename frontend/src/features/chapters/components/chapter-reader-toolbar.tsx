@@ -83,7 +83,7 @@ export const ChapterReaderToolbar = ({
   return (
     <>
       {/* Main Navigation & Settings Bar */}
-      <nav aria-label="Chapter Controls" className="flex items-center justify-between gap-2 p-3 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl shadow-sm transition-colors">
+      <nav aria-label="Chapter Controls" className="flex items-center justify-between gap-2 p-3 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl transition-colors">
         {/* Previous Chapter Button */}
         {prevChapter ? (
           <Link
@@ -200,7 +200,7 @@ export const ChapterReaderToolbar = ({
                         onClick={() => onChangeLineHeight(item.value)}
                         className={`py-1.5 text-[11px] font-medium rounded-lg transition-all ${
                           lineHeight === item.value
-                            ? 'bg-amber-500 text-black font-semibold shadow-xs'
+                            ? 'bg-[var(--accent-gold)] text-slate-950 font-semibold'
                             : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                         }`}
                       >
@@ -218,7 +218,7 @@ export const ChapterReaderToolbar = ({
         {nextChapter ? (
           <Link
             to={paths.novels.chapter.getHref(novelSlug, nextChapter.chapterNumber)}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-semibold transition-all shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium rounded-xl bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] text-slate-950 font-semibold transition-all"
             title={`Chương ${nextChapter.chapterNumber}: ${nextChapter.title}`}
           >
             <span className="hidden sm:inline">Chương sau</span>

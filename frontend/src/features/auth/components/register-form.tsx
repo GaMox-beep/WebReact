@@ -72,7 +72,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Nguyễn Văn A"
               autoComplete="username"
-              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-[var(--accent-gold)] focus:ring-1 focus:ring-[var(--accent-gold)] transition-all"
             />
           </div>
         </div>
@@ -93,7 +93,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@example.com"
               autoComplete="email"
-              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-[var(--accent-gold)] focus:ring-1 focus:ring-[var(--accent-gold)] transition-all"
             />
           </div>
         </div>
@@ -114,7 +114,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Tối thiểu 6 ký tự"
               autoComplete="new-password"
-              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:border-[var(--accent-gold)] focus:ring-1 focus:ring-[var(--accent-gold)] transition-all"
             />
             <button
               type="button"
@@ -156,7 +156,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Nhập lại mật khẩu"
               autoComplete="new-password"
-              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:border-[var(--accent-gold)] focus:ring-1 focus:ring-[var(--accent-gold)] transition-all"
             />
             <button
               type="button"
@@ -184,7 +184,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
         <button
           type="submit"
           disabled={registerMutation.isPending}
-          className="w-full py-2.5 font-semibold text-black bg-amber-500 hover:bg-amber-400 rounded-lg transition-colors mt-2 disabled:opacity-50 text-sm"
+          className="w-full py-2.5 font-semibold text-slate-950 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] rounded-lg transition-colors mt-2 disabled:opacity-50 text-sm"
         >
           {registerMutation.isPending ? 'Đang xử lý...' : 'Tạo Tài Khoản'}
         </button>

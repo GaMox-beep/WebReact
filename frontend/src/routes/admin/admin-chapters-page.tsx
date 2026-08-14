@@ -71,7 +71,7 @@ export const AdminChaptersPage = () => {
       )}
 
       {/* Select Novel Selector */}
-      <div className="bg-[#11131e] p-4 rounded-2xl border border-white/10 shadow-lg">
+      <div className="bg-[#11131e] p-4 rounded-2xl border border-white/10">
         <label className="block text-xs font-semibold text-slate-400 mb-1.5">Chọn Bộ Truyện Cần Quản Lý:</label>
         <select
           value={selectedNovelId}
@@ -119,7 +119,7 @@ export const AdminChaptersPage = () => {
           </button>
         </div>
       ) : (
-        <div className="bg-[#11131e] border border-white/10 rounded-2xl overflow-hidden shadow-xl">
+        <div className="bg-[#11131e] border border-white/10 rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-slate-300">
               <thead className="bg-[#0a0b10] border-b border-white/10 text-xs font-semibold text-slate-400 uppercase tracking-wider">

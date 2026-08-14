@@ -58,14 +58,14 @@ export const NovelsByCategoryPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Page Title & Category Info Header */}
-      <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 shadow-sm">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-1">
               <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
                 {currentCategory ? currentCategory.name : 'Tất Cả Thể Loại'}
               </h1>
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] border border-[var(--border-color)]">
                 {totalNovels} truyện
               </span>
             </div>
@@ -84,8 +84,8 @@ export const NovelsByCategoryPage = () => {
               onClick={() => handleSelectCategory('')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
                 !currentSlug
-                  ? 'bg-amber-500 text-slate-950 font-bold'
-                  : 'bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-amber-500/30'
+                  ? 'bg-[var(--accent-gold)] text-slate-950 font-bold'
+                  : 'bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-gold)]'
               }`}
             >
               Tất Cả
@@ -99,8 +99,8 @@ export const NovelsByCategoryPage = () => {
                   onClick={() => handleSelectCategory(cat.slug)}
                   className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
                     isSelected
-                      ? 'bg-amber-500 text-slate-950 font-bold'
-                      : 'bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-amber-500/30'
+                      ? 'bg-[var(--accent-gold)] text-slate-950 font-bold'
+                      : 'bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-gold)]'
                   }`}
                 >
                   {cat.name}
@@ -129,7 +129,7 @@ export const NovelsByCategoryPage = () => {
               onClick={() => handleStatusChange(item.id)}
               className={`px-3 py-1 text-xs rounded-lg font-medium transition-colors whitespace-nowrap ${
                 status === item.id
-                  ? 'bg-amber-500/10 text-amber-500 border border-amber-500/30 font-semibold'
+                  ? 'bg-[var(--bg-surface-elevated)] text-[var(--accent-gold)] border border-[var(--border-color)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)]'
               }`}
             >
@@ -154,7 +154,7 @@ export const NovelsByCategoryPage = () => {
               onClick={() => handleSortChange(item.id as 'createdAt' | 'views' | 'rating')}
               className={`px-3 py-1 text-xs rounded-lg font-medium transition-colors whitespace-nowrap ${
                 sortBy === item.id
-                  ? 'bg-amber-500/10 text-amber-500 border border-amber-500/30 font-semibold'
+                  ? 'bg-[var(--bg-surface-elevated)] text-[var(--accent-gold)] border border-[var(--border-color)] font-semibold'
                   : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)]'
               }`}
             >
@@ -189,7 +189,7 @@ export const NovelsByCategoryPage = () => {
         </div>
       ) : novels.length === 0 ? (
         <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-12 text-center">
-          <div className="w-14 h-14 bg-amber-500/10 border border-amber-500/20 text-amber-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+          <div className="w-14 h-14 bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--accent-gold)] rounded-2xl flex items-center justify-center mx-auto mb-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="28"
@@ -219,7 +219,7 @@ export const NovelsByCategoryPage = () => {
                 setStatus('ALL')
                 handleSelectCategory('')
               }}
-              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl transition-all"
+              className="px-4 py-2 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] text-slate-950 font-bold text-xs rounded-xl transition-all"
             >
               Xóa Bộ Lọc
             </button>
@@ -240,7 +240,7 @@ export const NovelsByCategoryPage = () => {
             type="button"
             disabled={page <= 1}
             onClick={() => setPage((p) => Math.max(1, p - 1))}
-            className="px-3.5 py-2 rounded-xl text-xs font-medium bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-amber-500/30 disabled:opacity-40 transition-colors"
+            className="px-3.5 py-2 rounded-xl text-xs font-medium bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-gold)] disabled:opacity-40 transition-colors"
           >
             Trang Trước
           </button>
@@ -251,7 +251,7 @@ export const NovelsByCategoryPage = () => {
             type="button"
             disabled={page >= totalPages}
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            className="px-3.5 py-2 rounded-xl text-xs font-medium bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-amber-500/30 disabled:opacity-40 transition-colors"
+            className="px-3.5 py-2 rounded-xl text-xs font-medium bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-gold)] disabled:opacity-40 transition-colors"
           >
             Trang Sau
           </button>
