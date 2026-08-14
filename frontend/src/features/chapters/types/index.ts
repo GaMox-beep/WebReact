@@ -24,3 +24,26 @@ export interface UpdateChapterPayload {
   content?: string
   isVip?: boolean
 }
+
+export interface ChapterNavigationItem {
+  id: string
+  chapterNumber: number
+  title: string
+}
+
+export interface ChapterDetailNovel {
+  id: string
+  title: string
+  slug: string
+  authorName: string
+  coverUrl: string | null
+}
+
+export interface ChapterDetailResponse extends Chapter {
+  novel: ChapterDetailNovel
+  navigation: {
+    prevChapter: ChapterNavigationItem | null
+    nextChapter: ChapterNavigationItem | null
+  }
+}
+

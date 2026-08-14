@@ -1,27 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { TokenService } from '../services/token.service';
+import { GoogleProfileDto, GoogleAuthResult } from '../dto/google-auth.dto';
 
-interface GoogleProfileUser {
-  providerId: string;
-  email: string;
-  emailVerified: boolean;
-  displayName?: string | null;
-  avatar?: string | null;
-}
-
-export interface GoogleAuthResult {
-  user: {
-    id: string;
-    email: string;
-    username: string;
-    role: string;
-    avatar: string | null;
-    coins: number;
-  };
-  accessToken: string;
-  refreshToken: string;
-}
+export type { GoogleAuthResult, GoogleProfileDto };
 
 @Injectable()
 export class GoogleOAuthUseCase {
@@ -30,7 +12,7 @@ export class GoogleOAuthUseCase {
     private readonly tokenService: TokenService,
   ) {}
 
-  async authenticate(profile: GoogleProfileUser): Promise<GoogleAuthResult> {
+  async execute(profile: GoogleProfileDto): Promise<GoogleAuthResult> {
     const existing = await this.prisma.oAuthAccount.findUnique({
       where: {
         provider_providerId: {
@@ -44,7 +26,14 @@ export class GoogleOAuthUseCase {
     // Known OAuth identity -> reissue tokens for the linked user.
     if (existing) {
       const user = existing.user;
-      return this.buildResult(user.id, user.email, user.username, user.role, user.avatar, user.coins);
+      return this.buildResult(
+        user.id,
+        user.email,
+        user.username,
+        user.role,
+        user.avatar,
+        user.coins,
+      );
     }
 
     // Unknown identity. Check whether the email already belongs to a User.
@@ -59,11 +48,21 @@ export class GoogleOAuthUseCase {
         throw new UnauthorizedException('Email chưa được xác thực bởi Google');
       }
       await this.linkIdentity(userByEmail.id, profile);
-      return this.buildResult(userByEmail.id, userByEmail.email, userByEmail.username, userByEmail.role, userByEmail.avatar, userByEmail.coins);
+      return this.buildResult(
+        userByEmail.id,
+        userByEmail.email,
+        userByEmail.username,
+        userByEmail.role,
+        userByEmail.avatar,
+        userByEmail.coins,
+      );
     }
 
     // Fresh Google-only account. Derive a unique username, leave password NULL.
-    const username = await this.generateUniqueUsername(profile.email, profile.displayName);
+    const username = await this.generateUniqueUsername(
+      profile.email,
+      profile.displayName,
+    );
     const newUser = await this.prisma.user.create({
       data: {
         email: profile.email,
@@ -74,10 +73,17 @@ export class GoogleOAuthUseCase {
     });
 
     await this.linkIdentity(newUser.id, profile);
-    return this.buildResult(newUser.id, newUser.email, newUser.username, newUser.role, newUser.avatar, newUser.coins);
+    return this.buildResult(
+      newUser.id,
+      newUser.email,
+      newUser.username,
+      newUser.role,
+      newUser.avatar,
+      newUser.coins,
+    );
   }
 
-  private async linkIdentity(userId: string, profile: GoogleProfileUser) {
+  private async linkIdentity(userId: string, profile: GoogleProfileDto) {
     await this.prisma.oAuthAccount.create({
       data: {
         provider: 'google',
@@ -88,17 +94,26 @@ export class GoogleOAuthUseCase {
     });
   }
 
-  private async generateUniqueUsername(email: string, displayName?: string | null): Promise<string> {
-    const localPart = email.split('@')[0].replace(/[^a-zA-Z0-9_.-]/g, '').slice(0, 20) || 'user';
+  private async generateUniqueUsername(
+    email: string,
+    displayName?: string | null,
+  ): Promise<string> {
+    const localPart =
+      email
+        .split('@')[0]
+        .replace(/[^a-zA-Z0-9_.-]/g, '')
+        .slice(0, 20) || 'user';
     const base = displayName
       ? displayName.trim().replace(/\s+/g, '').slice(0, 20) || localPart
       : localPart;
 
     let candidate = base;
     let suffix = 1;
-    // eslint-disable-next-line no-constant-condition
+
     while (true) {
-      const exists = await this.prisma.user.findUnique({ where: { username: candidate } });
+      const exists = await this.prisma.user.findUnique({
+        where: { username: candidate },
+      });
       if (!exists) return candidate;
       suffix += 1;
       candidate = `${base}${suffix}`;

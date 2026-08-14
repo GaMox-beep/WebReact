@@ -20,7 +20,10 @@ async function bootstrap() {
   // CORS configuration
   const frontendUrl = process.env.FRONTEND_URL;
   if (!frontendUrl && process.env.NODE_ENV === 'production') {
-    Logger.warn('FRONTEND_URL environment variable is not defined in production!', 'Bootstrap');
+    Logger.warn(
+      'FRONTEND_URL environment variable is not defined in production!',
+      'Bootstrap',
+    );
   }
 
   app.enableCors({

@@ -1,9 +1,13 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common'
-import { PrismaService } from '../../prisma/prisma.service'
-import { StorageService } from '../../upload/storage.service'
-import { CreateNovelDto } from './dto/create-novel.dto'
-import { UpdateNovelDto } from './dto/update-novel.dto'
-import { QueryNovelDto } from './dto/query-novel.dto'
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
+import { PrismaService } from '../../prisma/prisma.service';
+import { StorageService } from '../../upload/storage.service';
+import { CreateNovelDto } from './dto/create-novel.dto';
+import { UpdateNovelDto } from './dto/update-novel.dto';
+import { QueryNovelDto } from './dto/query-novel.dto';
 
 export function generateSlug(text: string): string {
   return text
@@ -14,7 +18,7 @@ export function generateSlug(text: string): string {
     .replace(/([^0-9a-z-\s])/g, '')
     .replace(/(\s+)/g, '-')
     .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
+    .replace(/^-|-$/g, '');
 }
 
 @Injectable()
@@ -25,66 +29,75 @@ export class NovelsService {
   ) {}
 
   async create(createNovelDto: CreateNovelDto, file?: Express.Multer.File) {
-    let slug = generateSlug(createNovelDto.title)
-    
+    let slug = generateSlug(createNovelDto.title);
+
     // Check trùng slug
-    const existing = await this.prisma.novel.findUnique({ where: { slug } })
+    const existing = await this.prisma.novel.findUnique({ where: { slug } });
     if (existing) {
-      slug = `${slug}-${Date.now().toString().slice(-4)}`
+      slug = `${slug}-${Date.now().toString().slice(-4)}`;
     }
 
-    let coverUrl: string | undefined = undefined
+    let coverUrl: string | undefined = undefined;
     if (file) {
-      coverUrl = await this.storageService.uploadFile(file, 'covers')
+      coverUrl = await this.storageService.uploadFile(file, 'covers');
     }
 
-    const { categoryIds, ...novelData } = createNovelDto
+    const { categoryIds, ...novelData } = createNovelDto;
 
     const novel = await this.prisma.novel.create({
       data: {
         ...novelData,
         slug,
         coverUrl,
-        categories: categoryIds && categoryIds.length > 0
-          ? {
-              create: categoryIds.map((categoryId) => ({
-                category: { connect: { id: categoryId } },
-              })),
-            }
-          : undefined,
+        categories:
+          categoryIds && categoryIds.length > 0
+            ? {
+                create: categoryIds.map((categoryId) => ({
+                  category: { connect: { id: categoryId } },
+                })),
+              }
+            : undefined,
       },
       include: {
         categories: {
           include: { category: true },
         },
       },
-    })
+    });
 
-    return novel
+    return novel;
   }
 
   async findAll(query: QueryNovelDto) {
-    const { search, categoryId, status, sortBy = 'createdAt', sortOrder = 'desc', page = 1, limit = 10 } = query
+    const {
+      search,
+      categoryId,
+      status,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      page = 1,
+      limit = 10,
+    } = query;
 
-    const skip = (page - 1) * limit
+    const skip = (page - 1) * limit;
 
-    const where: any = {}
+    const where: any = {};
 
     if (search) {
       where.OR = [
         { title: { contains: search, mode: 'insensitive' } },
         { authorName: { contains: search, mode: 'insensitive' } },
-      ]
+      ];
     }
 
     if (status) {
-      where.status = status
+      where.status = status;
     }
 
     if (categoryId) {
       where.categories = {
         some: { categoryId },
-      }
+      };
     }
 
     const [items, total] = await Promise.all([
@@ -103,7 +116,7 @@ export class NovelsService {
         },
       }),
       this.prisma.novel.count({ where }),
-    ])
+    ]);
 
     return {
       items,
@@ -113,7 +126,7 @@ export class NovelsService {
         limit,
         totalPages: Math.ceil(total / limit),
       },
-    }
+    };
   }
 
   async findOneBySlug(slug: string) {
@@ -135,36 +148,40 @@ export class NovelsService {
           orderBy: { chapterNumber: 'asc' },
         },
       },
-    })
+    });
 
     if (!novel) {
-      throw new NotFoundException(`Không tìm thấy truyện với slug: ${slug}`)
+      throw new NotFoundException(`Không tìm thấy truyện với slug: ${slug}`);
     }
 
-    return novel
+    return novel;
   }
 
-  async update(id: string, updateNovelDto: UpdateNovelDto, file?: Express.Multer.File) {
-    const novel = await this.prisma.novel.findUnique({ where: { id } })
+  async update(
+    id: string,
+    updateNovelDto: UpdateNovelDto,
+    file?: Express.Multer.File,
+  ) {
+    const novel = await this.prisma.novel.findUnique({ where: { id } });
     if (!novel) {
-      throw new NotFoundException(`Không tìm thấy truyện với ID: ${id}`)
+      throw new NotFoundException(`Không tìm thấy truyện với ID: ${id}`);
     }
 
-    let coverUrl = novel.coverUrl
+    let coverUrl = novel.coverUrl;
     if (file) {
-      coverUrl = await this.storageService.uploadFile(file, 'covers')
+      coverUrl = await this.storageService.uploadFile(file, 'covers');
     }
 
-    const { categoryIds, title, ...updateData } = updateNovelDto
+    const { categoryIds, title, ...updateData } = updateNovelDto;
 
-    let newSlug = novel.slug
+    let newSlug = novel.slug;
     if (title && title !== novel.title) {
-      newSlug = generateSlug(title)
+      newSlug = generateSlug(title);
       const existing = await this.prisma.novel.findFirst({
         where: { slug: newSlug, NOT: { id } },
-      })
+      });
       if (existing) {
-        newSlug = `${newSlug}-${Date.now().toString().slice(-4)}`
+        newSlug = `${newSlug}-${Date.now().toString().slice(-4)}`;
       }
     }
 
@@ -172,7 +189,7 @@ export class NovelsService {
     if (categoryIds) {
       await this.prisma.novelCategory.deleteMany({
         where: { novelId: id },
-      })
+      });
     }
 
     const updated = await this.prisma.novel.update({
@@ -195,24 +212,24 @@ export class NovelsService {
           include: { category: true },
         },
       },
-    })
+    });
 
-    return updated
+    return updated;
   }
 
   async remove(id: string) {
-    const novel = await this.prisma.novel.findUnique({ where: { id } })
+    const novel = await this.prisma.novel.findUnique({ where: { id } });
     if (!novel) {
-      throw new NotFoundException(`Không tìm thấy truyện với ID: ${id}`)
+      throw new NotFoundException(`Không tìm thấy truyện với ID: ${id}`);
     }
 
-    await this.prisma.novel.delete({ where: { id } })
-    return { message: 'Xóa truyện thành công', id }
+    await this.prisma.novel.delete({ where: { id } });
+    return { message: 'Xóa truyện thành công', id };
   }
 
   async findAllCategories() {
     return this.prisma.category.findMany({
       orderBy: { name: 'asc' },
-    })
+    });
   }
 }

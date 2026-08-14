@@ -7,9 +7,15 @@ import { ChaptersModule } from './modules/chapters/chapters.module';
 import { UploadModule } from './upload/upload.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UsersModule, NovelsModule, ChaptersModule, UploadModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    UsersModule,
+    NovelsModule,
+    ChaptersModule,
+    UploadModule,
+  ],
   controllers: [],
   providers: [],
 })
 export class AppModule {}
-

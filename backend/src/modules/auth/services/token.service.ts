@@ -13,8 +13,13 @@ export class TokenService {
     const jwtSecret = process.env.JWT_SECRET;
     const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET;
 
-    if (process.env.NODE_ENV === 'production' && (!jwtSecret || !jwtRefreshSecret)) {
-      throw new InternalServerErrorException('JWT Secrets are not configured in production environment');
+    if (
+      process.env.NODE_ENV === 'production' &&
+      (!jwtSecret || !jwtRefreshSecret)
+    ) {
+      throw new InternalServerErrorException(
+        'JWT Secrets are not configured in production environment',
+      );
     }
 
     const payload = { sub: userId, email, role };

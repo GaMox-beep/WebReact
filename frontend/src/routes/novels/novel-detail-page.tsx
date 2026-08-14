@@ -74,7 +74,7 @@ export const NovelDetailPage = () => {
       </section>
 
       {/* Chapter List Component */}
-      <NovelChapterList chapters={novel.chapters || []} />
+      <NovelChapterList chapters={novel.chapters || []} novelSlug={novel.slug} />
     </div>
   )
 }

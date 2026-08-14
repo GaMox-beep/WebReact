@@ -1,24 +1,30 @@
-import { IsString, IsNotEmpty, IsOptional, IsEnum, IsArray } from 'class-validator'
-import { NovelStatus } from '@prisma/client'
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsEnum,
+  IsArray,
+} from 'class-validator';
+import { NovelStatus } from '@prisma/client';
 
 export class CreateNovelDto {
   @IsString()
   @IsNotEmpty({ message: 'Tên truyện không được để trống' })
-  title: string
+  title: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Mô tả không được để trống' })
-  description: string
+  description: string;
 
   @IsString()
   @IsNotEmpty({ message: 'Tên tác giả gốc không được để trống' })
-  authorName: string
+  authorName: string;
 
   @IsOptional()
   @IsEnum(NovelStatus)
-  status?: NovelStatus
+  status?: NovelStatus;
 
   @IsOptional()
   @IsArray()
-  categoryIds?: string[]
+  categoryIds?: string[];
 }

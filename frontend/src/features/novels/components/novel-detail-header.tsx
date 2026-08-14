@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+import { paths } from '../../../config/paths'
 import type { Novel } from '../types'
 import { StatusBadge } from './status-badge'
 
@@ -108,16 +110,28 @@ export const NovelDetailHeader = ({ novel }: NovelDetailHeaderProps) => {
 
           {/* Action CTA Buttons */}
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-4">
-            <button
-              type="button"
-              disabled={!firstChapter}
-              className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-all disabled:opacity-50 flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
-              <span>{firstChapter ? 'Đọc Từ Đầu' : 'Chưa có chương'}</span>
-            </button>
+            {firstChapter ? (
+              <Link
+                to={paths.novels.chapter.getHref(novel.slug, firstChapter.chapterNumber)}
+                className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-all flex items-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+                <span>Đọc Từ Đầu</span>
+              </Link>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="px-6 py-2.5 bg-amber-500 text-black font-bold text-sm rounded-xl opacity-50 cursor-not-allowed flex items-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+                <span>Chưa có chương</span>
+              </button>
+            )}
 
             <button
               type="button"

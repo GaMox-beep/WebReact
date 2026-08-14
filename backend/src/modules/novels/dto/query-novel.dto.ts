@@ -1,35 +1,35 @@
-import { IsOptional, IsString, IsInt, IsEnum } from 'class-validator'
-import { Type } from 'class-transformer'
-import { NovelStatus } from '@prisma/client'
+import { IsOptional, IsString, IsInt, IsEnum } from 'class-validator';
+import { Type } from 'class-transformer';
+import { NovelStatus } from '@prisma/client';
 
 export class QueryNovelDto {
   @IsOptional()
   @IsString()
-  search?: string
+  search?: string;
 
   @IsOptional()
   @IsString()
-  categoryId?: string
+  categoryId?: string;
 
   @IsOptional()
   @IsEnum(NovelStatus)
-  status?: NovelStatus
+  status?: NovelStatus;
 
   @IsOptional()
   @IsString()
-  sortBy?: 'createdAt' | 'views' | 'rating' = 'createdAt'
+  sortBy?: 'createdAt' | 'views' | 'rating' = 'createdAt';
 
   @IsOptional()
   @IsString()
-  sortOrder?: 'asc' | 'desc' = 'desc'
+  sortOrder?: 'asc' | 'desc' = 'desc';
 
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  page?: number = 1
+  page?: number = 1;
 
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  limit?: number = 10
+  limit?: number = 10;
 }

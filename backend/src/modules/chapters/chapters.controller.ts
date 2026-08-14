@@ -7,25 +7,36 @@ import {
   Body,
   Param,
   UseGuards,
-} from '@nestjs/common'
-import { ChaptersService } from './chapters.service'
-import { CreateChapterDto } from './dto/create-chapter.dto'
-import { UpdateChapterDto } from './dto/update-chapter.dto'
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
+} from '@nestjs/common';
+import { ChaptersService } from './chapters.service';
+import { CreateChapterDto } from './dto/create-chapter.dto';
+import { UpdateChapterDto } from './dto/update-chapter.dto';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('chapters')
 export class ChaptersController {
   constructor(private readonly chaptersService: ChaptersService) {}
 
+  @Get('novel/:slug/:chapterNumber')
+  async findByNovelSlugAndNumber(
+    @Param('slug') slug: string,
+    @Param('chapterNumber') chapterNumber: string,
+  ) {
+    return this.chaptersService.findByNovelSlugAndNumber(
+      slug,
+      parseFloat(chapterNumber),
+    );
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.chaptersService.findOne(id)
+    return this.chaptersService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createChapterDto: CreateChapterDto) {
-    return this.chaptersService.create(createChapterDto)
+    return this.chaptersService.create(createChapterDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -34,12 +45,12 @@ export class ChaptersController {
     @Param('id') id: string,
     @Body() updateChapterDto: UpdateChapterDto,
   ) {
-    return this.chaptersService.update(id, updateChapterDto)
+    return this.chaptersService.update(id, updateChapterDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.chaptersService.remove(id)
+    return this.chaptersService.remove(id);
   }
 }

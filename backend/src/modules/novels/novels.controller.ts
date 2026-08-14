@@ -10,13 +10,13 @@ import {
   UseInterceptors,
   UploadedFile,
   UseGuards,
-} from '@nestjs/common'
-import { FileInterceptor } from '@nestjs/platform-express'
-import { NovelsService } from './novels.service'
-import { CreateNovelDto } from './dto/create-novel.dto'
-import { UpdateNovelDto } from './dto/update-novel.dto'
-import { QueryNovelDto } from './dto/query-novel.dto'
-import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard'
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { NovelsService } from './novels.service';
+import { CreateNovelDto } from './dto/create-novel.dto';
+import { UpdateNovelDto } from './dto/update-novel.dto';
+import { QueryNovelDto } from './dto/query-novel.dto';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
 @Controller('novels')
 export class NovelsController {
@@ -24,17 +24,17 @@ export class NovelsController {
 
   @Get()
   async findAll(@Query() query: QueryNovelDto) {
-    return this.novelsService.findAll(query)
+    return this.novelsService.findAll(query);
   }
 
   @Get('categories/all')
   async getCategories() {
-    return this.novelsService.findAllCategories()
+    return this.novelsService.findAllCategories();
   }
 
   @Get(':slug')
   async findOneBySlug(@Param('slug') slug: string) {
-    return this.novelsService.findOneBySlug(slug)
+    return this.novelsService.findOneBySlug(slug);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -44,7 +44,7 @@ export class NovelsController {
     @Body() createNovelDto: CreateNovelDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    return this.novelsService.create(createNovelDto, file)
+    return this.novelsService.create(createNovelDto, file);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -55,12 +55,12 @@ export class NovelsController {
     @Body() updateNovelDto: UpdateNovelDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    return this.novelsService.update(id, updateNovelDto, file)
+    return this.novelsService.update(id, updateNovelDto, file);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.novelsService.remove(id)
+    return this.novelsService.remove(id);
   }
 }
