@@ -17,6 +17,17 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 export class ChaptersController {
   constructor(private readonly chaptersService: ChaptersService) {}
 
+  @Get('novel/:slug/:chapterNumber')
+  async findByNovelSlugAndNumber(
+    @Param('slug') slug: string,
+    @Param('chapterNumber') chapterNumber: string,
+  ) {
+    return this.chaptersService.findByNovelSlugAndNumber(
+      slug,
+      parseFloat(chapterNumber),
+    );
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.chaptersService.findOne(id);

@@ -1,0 +1,183 @@
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useChapterByNumber } from '../../features/chapters/api/get-chapter-by-number'
+import { useNovel } from '../../features/novels/api/get-novel'
+import { ChapterReaderSkeleton } from '../../features/chapters/components/chapter-reader-skeleton'
+import { ChapterReaderHeader } from '../../features/chapters/components/chapter-reader-header'
+import {
+  ChapterReaderContent,
+  type FontSizeOption,
+  type LineHeightOption,
+} from '../../features/chapters/components/chapter-reader-content'
+import { ChapterReaderToolbar } from '../../features/chapters/components/chapter-reader-toolbar'
+import { paths } from '../../config/paths'
+
+const STORAGE_KEY_FONT_SIZE = 'webnovel_reader_font_size'
+const STORAGE_KEY_LINE_HEIGHT = 'webnovel_reader_line_height'
+
+export const ChapterReaderPage = () => {
+  const { slug, chapterNumber } = useParams<{ slug: string; chapterNumber: string }>()
+  const navigate = useNavigate()
+
+  // Reading preference states with localStorage persistence
+  const [fontSize, setFontSize] = useState<FontSizeOption>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_FONT_SIZE)
+    return (saved as FontSizeOption) || 'base'
+  })
+
+  const [lineHeight, setLineHeight] = useState<LineHeightOption>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY_LINE_HEIGHT)
+    return (saved as LineHeightOption) || 'relaxed'
+  })
+
+  const handleFontSizeChange = (newSize: FontSizeOption) => {
+    setFontSize(newSize)
+    localStorage.setItem(STORAGE_KEY_FONT_SIZE, newSize)
+  }
+
+  const handleLineHeightChange = (newLineHeight: LineHeightOption) => {
+    setLineHeight(newLineHeight)
+    localStorage.setItem(STORAGE_KEY_LINE_HEIGHT, newLineHeight)
+  }
+
+  // Fetch current chapter content and navigation
+  const {
+    data: chapter,
+    isLoading: isChapterLoading,
+    error: chapterError,
+  } = useChapterByNumber(slug || '', chapterNumber || '1')
+
+  // Fetch novel details to get full chapter list for fast jumping
+  const { data: novel } = useNovel(slug || '')
+
+  // Scroll to top when chapter changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [slug, chapterNumber])
+
+  // Keyboard navigation (ArrowLeft: Previous chapter, ArrowRight: Next chapter)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input/textarea
+      const tag = (e.target as HTMLElement)?.tagName?.toLowerCase()
+      if (tag === 'input' || tag === 'textarea') return
+
+      if (e.key === 'ArrowLeft' && chapter?.navigation.prevChapter && slug) {
+        navigate(
+          paths.novels.chapter.getHref(
+            slug,
+            chapter.navigation.prevChapter.chapterNumber,
+          ),
+        )
+      } else if (e.key === 'ArrowRight' && chapter?.navigation.nextChapter && slug) {
+        navigate(
+          paths.novels.chapter.getHref(
+            slug,
+            chapter.navigation.nextChapter.chapterNumber,
+          ),
+        )
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [chapter, slug, navigate])
+
+  if (isChapterLoading) {
+    return <ChapterReaderSkeleton />
+  }
+
+  if (chapterError || !chapter) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-16 text-center">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-12 shadow-sm space-y-4">
+          <div className="w-14 h-14 bg-red-500/10 text-red-400 border border-red-500/20 rounded-2xl flex items-center justify-center mx-auto">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-bold text-[var(--text-primary)]">
+            Không Tìm Thấy Chương Truyện
+          </h2>
+          <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto">
+            Chương bạn đang tìm kiếm có thể chưa được phát hành hoặc đường dẫn không chính xác.
+          </p>
+          <div className="flex items-center justify-center gap-3 pt-2">
+            {slug && (
+              <Link
+                to={paths.novels.detail.getHref(slug)}
+                className="px-4 py-2 bg-[var(--bg-surface-elevated)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-primary)] text-sm font-medium rounded-xl border border-[var(--border-color)] transition-all"
+              >
+                Về Trang Truyện
+              </Link>
+            )}
+            <Link
+              to={paths.home.getHref()}
+              className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold text-sm rounded-xl transition-all"
+            >
+              Trang Chủ
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const currentNum = typeof chapter.chapterNumber === 'number' ? chapter.chapterNumber : parseFloat(chapter.chapterNumber)
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+      {/* Header with Title & Metadata */}
+      <ChapterReaderHeader chapter={chapter} />
+
+      {/* Top Navigation & Settings Bar */}
+      <ChapterReaderToolbar
+        novelSlug={chapter.novel.slug}
+        currentChapterNumber={currentNum}
+        prevChapter={chapter.navigation.prevChapter}
+        nextChapter={chapter.navigation.nextChapter}
+        allChapters={novel?.chapters}
+        fontSize={fontSize}
+        onChangeFontSize={handleFontSizeChange}
+        lineHeight={lineHeight}
+        onChangeLineHeight={handleLineHeightChange}
+      />
+
+      {/* Chapter Text Content Box */}
+      <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-10 shadow-xs transition-colors">
+        <ChapterReaderContent
+          content={chapter.content}
+          fontSize={fontSize}
+          lineHeight={lineHeight}
+        />
+      </div>
+
+      {/* Bottom Navigation Toolbar */}
+      <ChapterReaderToolbar
+        novelSlug={chapter.novel.slug}
+        currentChapterNumber={currentNum}
+        prevChapter={chapter.navigation.prevChapter}
+        nextChapter={chapter.navigation.nextChapter}
+        allChapters={novel?.chapters}
+        fontSize={fontSize}
+        onChangeFontSize={handleFontSizeChange}
+        lineHeight={lineHeight}
+        onChangeLineHeight={handleLineHeightChange}
+      />
+    </div>
+  )
+}
+
+export default ChapterReaderPage

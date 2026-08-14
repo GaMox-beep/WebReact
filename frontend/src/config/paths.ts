@@ -35,6 +35,11 @@ export const paths = {
       path: '/novels/:slug',
       getHref: (slug: string) => `/novels/${slug}`,
     },
+    chapter: {
+      path: '/novels/:slug/chapters/:chapterNumber',
+      getHref: (slug: string, chapterNumber: number | string) =>
+        `/novels/${slug}/chapters/${chapterNumber}`,
+    },
   },
 
   payments: {

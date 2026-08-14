@@ -117,6 +117,80 @@ export class ChaptersService {
     };
   }
 
+  async findByNovelSlugAndNumber(slug: string, chapterNumber: number) {
+    const novel = await this.prisma.novel.findUnique({
+      where: { slug },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        authorName: true,
+        coverUrl: true,
+      },
+    });
+
+    if (!novel) {
+      throw new NotFoundException(`Không tìm thấy truyện với slug: ${slug}`);
+    }
+
+    const chapter = await this.prisma.chapter.findUnique({
+      where: {
+        novelId_chapterNumber: {
+          novelId: novel.id,
+          chapterNumber,
+        },
+      },
+    });
+
+    if (!chapter) {
+      throw new NotFoundException(
+        `Không tìm thấy Chương ${chapterNumber} của truyện ${novel.title}`,
+      );
+    }
+
+    // Tăng view cho Chapter và Novel
+    await Promise.all([
+      this.prisma.chapter.update({
+        where: { id: chapter.id },
+        data: { views: { increment: 1 } },
+      }),
+      this.prisma.novel.update({
+        where: { id: novel.id },
+        data: { views: { increment: 1 } },
+      }),
+    ]);
+
+    // Tìm chương trước và chương sau
+    const [prevChapter, nextChapter] = await Promise.all([
+      this.prisma.chapter.findFirst({
+        where: {
+          novelId: novel.id,
+          chapterNumber: { lt: chapter.chapterNumber },
+        },
+        orderBy: { chapterNumber: 'desc' },
+        select: { id: true, chapterNumber: true, title: true },
+      }),
+      this.prisma.chapter.findFirst({
+        where: {
+          novelId: novel.id,
+          chapterNumber: { gt: chapter.chapterNumber },
+        },
+        orderBy: { chapterNumber: 'asc' },
+        select: { id: true, chapterNumber: true, title: true },
+      }),
+    ]);
+
+    return {
+      ...chapter,
+      views: chapter.views + 1,
+      novel,
+      navigation: {
+        prevChapter,
+        nextChapter,
+      },
+    };
+  }
+
   async update(id: string, updateChapterDto: UpdateChapterDto) {
     const chapter = await this.prisma.chapter.findUnique({ where: { id } });
     if (!chapter) {

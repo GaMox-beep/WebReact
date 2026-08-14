@@ -8,6 +8,7 @@ import { RegisterPage } from './auth/register-page'
 import { GoogleOAuthCallbackPage } from './auth/google-oauth-callback-page'
 import { ProfilePage } from './user/profile-page'
 import { NovelDetailPage } from './novels/novel-detail-page'
+import { ChapterReaderPage } from './novels/chapter-reader-page'
 import { paths } from '../config/paths'
 
 export const CustomerRoutes = (
@@ -15,6 +16,7 @@ export const CustomerRoutes = (
     <Route path={paths.home.path} element={<HomePage />} />
     <Route path={paths.novels.top.path} element={<TopNovelsPage />} />
     <Route path={paths.novels.detail.path} element={<NovelDetailPage />} />
+    <Route path={paths.novels.chapter.path} element={<ChapterReaderPage />} />
     <Route path={paths.payments.recharge.path} element={<RechargePage />} />
     <Route path={paths.auth.login.path} element={<LoginPage />} />
     <Route path={paths.auth.register.path} element={<RegisterPage />} />
