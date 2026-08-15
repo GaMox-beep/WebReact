@@ -13,7 +13,7 @@ export const NovelCard = ({ novel }: NovelCardProps) => {
   return (
     <Link
       to={paths.novels.detail.getHref(novel.slug)}
-      className="group flex flex-col bg-[var(--bg-surface)] border border-[var(--border-color)] hover:border-amber-500/40 rounded-xl overflow-hidden shadow-sm transition-colors duration-150"
+      className="group flex flex-col bg-[var(--bg-surface)] border border-[var(--border-color)] hover:border-[var(--accent-gold)] rounded-xl overflow-hidden transition-colors duration-150"
     >
       {/* Cover Image Container (2:3 Aspect Ratio) */}
       <div className="relative w-full aspect-[2/3] bg-[var(--bg-surface-elevated)] overflow-hidden">
@@ -49,11 +49,11 @@ export const NovelCard = ({ novel }: NovelCardProps) => {
         {/* Status Badge Overlay */}
         <div className="absolute top-2 left-2 flex items-center gap-1">
           {novel.status === 'COMPLETED' ? (
-            <span className="px-2 py-0.5 text-[10px] font-semibold rounded bg-blue-600/90 text-white shadow-sm backdrop-blur-xs">
+            <span className="px-2 py-0.5 text-[10px] font-semibold rounded bg-blue-600/90 text-white backdrop-blur-xs">
               Hoàn thành
             </span>
           ) : (
-            <span className="px-2 py-0.5 text-[10px] font-semibold rounded bg-emerald-600/90 text-white shadow-sm backdrop-blur-xs">
+            <span className="px-2 py-0.5 text-[10px] font-semibold rounded bg-emerald-600/90 text-white backdrop-blur-xs">
               Đang ra
             </span>
           )}
@@ -71,7 +71,7 @@ export const NovelCard = ({ novel }: NovelCardProps) => {
       <div className="p-3 flex flex-col flex-1 justify-between gap-1.5">
         <div>
           {/* Title (2 lines max) */}
-          <h4 className="font-semibold text-sm text-[var(--text-primary)] group-hover:text-amber-500 transition-colors line-clamp-2 leading-snug">
+          <h4 className="font-semibold text-sm text-[var(--text-primary)] group-hover:text-[var(--accent-gold)] transition-colors line-clamp-2 leading-snug">
             {novel.title}
           </h4>
 

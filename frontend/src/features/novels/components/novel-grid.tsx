@@ -28,7 +28,7 @@ export const NovelGrid = ({
   if (!novels || novels.length === 0) {
     return (
       <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-12 text-center my-4">
-        <div className="w-14 h-14 bg-amber-500/10 border border-amber-500/20 text-amber-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+        <div className="w-14 h-14 bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--accent-gold)] rounded-2xl flex items-center justify-center mx-auto mb-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"

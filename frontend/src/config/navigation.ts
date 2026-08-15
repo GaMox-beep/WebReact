@@ -57,6 +57,12 @@ export const adminNavItems: AdminMenuItem[] = [
     icon: 'book',
   },
   {
+    id: 'categories',
+    label: 'Quản lý thể loại',
+    path: paths.admin.categories.getHref(),
+    icon: 'grid',
+  },
+  {
     id: 'users',
     label: 'Quản lý người dùng',
     path: paths.admin.users.getHref(),

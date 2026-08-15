@@ -20,7 +20,7 @@ export const NovelFilterBar = ({
   categories,
 }: NovelFilterBarProps) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[#11131e] p-4 rounded-2xl border border-white/10 shadow-lg">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[#11131e] p-4 rounded-2xl border border-white/10">
       <div>
         <input
           type="text"

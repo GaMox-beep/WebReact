@@ -59,7 +59,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@example.com"
               autoComplete="email"
-              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-[var(--accent-gold)] focus:ring-1 focus:ring-[var(--accent-gold)] transition-all"
             />
           </div>
         </div>
@@ -67,7 +67,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <div>
           <div className="flex justify-between items-center mb-1">
             <label className="text-[var(--text-secondary)] text-xs font-medium">Mật khẩu</label>
-            <a href="#forgot" onClick={(e) => e.preventDefault()} className="text-xs text-[var(--text-secondary)] hover:text-amber-500 transition-colors">
+            <a href="#forgot" onClick={(e) => e.preventDefault()} className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent-gold)] transition-colors">
               Quên mật khẩu?
             </a>
           </div>
@@ -85,7 +85,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               autoComplete="current-password"
-              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+              className="w-full bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:border-[var(--accent-gold)] focus:ring-1 focus:ring-[var(--accent-gold)] transition-all"
             />
             <button
               type="button"
@@ -113,7 +113,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         <button
           type="submit"
           disabled={loginMutation.isPending}
-          className="w-full py-2.5 font-semibold text-black bg-amber-500 hover:bg-amber-400 rounded-lg transition-colors mt-2 disabled:opacity-50 text-sm"
+          className="w-full py-2.5 font-semibold text-slate-950 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] rounded-lg transition-colors mt-2 disabled:opacity-50 text-sm"
         >
           {loginMutation.isPending ? 'Đang xử lý...' : 'Đăng Nhập'}
         </button>

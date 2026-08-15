@@ -8,13 +8,13 @@ export const HomePage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-8">
       {/* Subtle Welcome Hero Banner */}
-      <section className="relative overflow-hidden bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 shadow-sm">
+      <section className="relative overflow-hidden bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8">
         <div className="max-w-2xl space-y-3">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20">
+          <p className="text-xs font-semibold text-[var(--accent-gold)]">
             Nền tảng đọc truyện chữ trực tuyến
-          </span>
+          </p>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
-            Khám phá thế giới truyện chữ đỉnh cao cùng <span className="text-amber-500">Novelis</span>
+            Khám phá thế giới truyện chữ đỉnh cao cùng <span className="text-[var(--accent-gold)]">Novelis</span>
           </h1>
           <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
             Hàng ngàn bộ truyện tiên hiệp, kiếm hiệp, đô thị, huyền huyễn được cập nhật liên tục mỗi ngày với giao diện tối ưu tốc độ cao.

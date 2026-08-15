@@ -4,6 +4,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { NovelsModule } from './modules/novels/novels.module';
 import { ChaptersModule } from './modules/chapters/chapters.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 import { UploadModule } from './upload/upload.module';
 
 @Module({
@@ -13,6 +14,7 @@ import { UploadModule } from './upload/upload.module';
     UsersModule,
     NovelsModule,
     ChaptersModule,
+    CategoriesModule,
     UploadModule,
   ],
   controllers: [],

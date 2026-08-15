@@ -12,10 +12,10 @@ export const NovelDetailHeader = ({ novel }: NovelDetailHeaderProps) => {
   const firstChapter = novel.chapters?.[0]
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 shadow-sm transition-colors">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 transition-colors">
       <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
         {/* Cover Image (2:3 Aspect Ratio) */}
-        <div className="w-48 sm:w-56 aspect-[2/3] bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] rounded-xl overflow-hidden shadow-md shrink-0">
+        <div className="w-48 sm:w-56 aspect-[2/3] bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] rounded-xl overflow-hidden shrink-0">
           {novel.coverUrl ? (
             <img
               src={novel.coverUrl}
@@ -92,7 +92,7 @@ export const NovelDetailHeader = ({ novel }: NovelDetailHeaderProps) => {
             {/* Stats Row */}
             <div className="flex items-center justify-center md:justify-start gap-6 pt-3 text-sm text-[var(--text-secondary)] border-t border-[var(--border-color)]">
               <div className="flex items-center gap-1.5">
-                <span className="text-amber-500 font-bold">★ {novel.rating?.toFixed(1) || '5.0'}</span>
+                <span className="text-[var(--accent-gold)] font-bold">★ {novel.rating?.toFixed(1) || '5.0'}</span>
                 <span className="text-xs text-[var(--text-muted)]">Đánh giá</span>
               </div>
 
@@ -113,7 +113,7 @@ export const NovelDetailHeader = ({ novel }: NovelDetailHeaderProps) => {
             {firstChapter ? (
               <Link
                 to={paths.novels.chapter.getHref(novel.slug, firstChapter.chapterNumber)}
-                className="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-black font-bold text-sm rounded-xl transition-all flex items-center gap-2"
+                className="px-6 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] text-slate-950 font-bold text-sm rounded-xl transition-all flex items-center gap-2"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <polygon points="5 3 19 12 5 21 5 3" />
@@ -124,7 +124,7 @@ export const NovelDetailHeader = ({ novel }: NovelDetailHeaderProps) => {
               <button
                 type="button"
                 disabled
-                className="px-6 py-2.5 bg-amber-500 text-black font-bold text-sm rounded-xl opacity-50 cursor-not-allowed flex items-center gap-2"
+                className="px-6 py-2.5 bg-[var(--accent-gold)] text-slate-950 font-bold text-sm rounded-xl opacity-50 cursor-not-allowed flex items-center gap-2"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <polygon points="5 3 19 12 5 21 5 3" />

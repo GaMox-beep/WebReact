@@ -20,11 +20,18 @@ export default defineConfig([
       'import': importX,
     },
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 'latest',
       globals: globals.browser,
+    },
+    settings: {
+      'import-x/resolver': {
+        typescript: true,
+        node: true,
+      },
     },
     rules: {
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'import/no-cycle': ['error', { maxDepth: 4 }],
       'import/no-restricted-paths': [
         'error',
         {
@@ -32,6 +39,7 @@ export default defineConfig([
             { target: './src/features/novels', from: './src/features', except: ['./novels'] },
             { target: './src/features/chapters', from: './src/features', except: ['./chapters'] },
             { target: './src/features/auth', from: './src/features', except: ['./auth'] },
+            { target: './src/features/categories', from: './src/features', except: ['./categories'] },
             { target: './src/features/payments', from: './src/features', except: ['./payments'] },
             { target: './src/features/users', from: './src/features', except: ['./users'] },
             { target: './src/features', from: './src/routes' },
