@@ -6,11 +6,13 @@ export const getProfile = async (): Promise<User> => {
   return apiClient.get<User>('/users/me')
 }
 
-export const useProfile = (enabled = true) => {
+export const useCurrentUser = (enabled = true) => {
   return useQuery({
-    queryKey: ['profile'],
+    queryKey: ['auth-user'],
     queryFn: getProfile,
     enabled,
     staleTime: 1000 * 60 * 5,
   })
 }
+
+export const useProfile = useCurrentUser

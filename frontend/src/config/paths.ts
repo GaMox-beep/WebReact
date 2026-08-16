@@ -47,6 +47,11 @@ export const paths = {
       path: '/nap',
       getHref: () => '/nap',
     },
+    result: {
+      path: '/nap/ket-qua',
+      getHref: (orderId?: string) =>
+        `/nap/ket-qua${orderId ? `?orderId=${encodeURIComponent(orderId)}` : ''}`,
+    },
   },
 
   users: {

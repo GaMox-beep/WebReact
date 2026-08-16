@@ -383,6 +383,67 @@ async function main() {
   }
 
   console.log(`✅ Successfully seeded ${sampleNovels.length} novels with multi-category relationships and sample chapters!`);
+
+  // 4. Seed Recharge Packages
+  const rechargePackages = [
+    {
+      name: 'Gói Nhập Môn',
+      amount: 20000,
+      coins: 20000,
+      bonusCoins: 0,
+      isActive: true,
+      sortOrder: 1,
+    },
+    {
+      name: 'Gói Trúc Cơ',
+      amount: 50000,
+      coins: 50000,
+      bonusCoins: 5000, // +10%
+      isActive: true,
+      sortOrder: 2,
+    },
+    {
+      name: 'Gói Kim Đan',
+      amount: 100000,
+      coins: 100000,
+      bonusCoins: 15000, // +15%
+      isActive: true,
+      sortOrder: 3,
+    },
+    {
+      name: 'Gói Nguyên Anh',
+      amount: 200000,
+      coins: 200000,
+      bonusCoins: 40000, // +20%
+      isActive: true,
+      sortOrder: 4,
+    },
+    {
+      name: 'Gói Hóa Thần',
+      amount: 500000,
+      coins: 500000,
+      bonusCoins: 125000, // +25%
+      isActive: true,
+      sortOrder: 5,
+    },
+  ];
+
+  for (const pkg of rechargePackages) {
+    const existing = await prisma.rechargePackage.findFirst({
+      where: { amount: pkg.amount },
+    });
+    if (existing) {
+      await prisma.rechargePackage.update({
+        where: { id: existing.id },
+        data: pkg,
+      });
+    } else {
+      await prisma.rechargePackage.create({
+        data: pkg,
+      });
+    }
+  }
+  console.log(`✅ Seeded ${rechargePackages.length} recharge packages.`);
 }
 
 main()

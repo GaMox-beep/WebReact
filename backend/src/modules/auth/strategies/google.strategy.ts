@@ -6,11 +6,11 @@ import {
   VerifyCallback,
   StrategyOptions,
 } from 'passport-google-oauth20';
-import { GoogleOAuthUseCase } from '../use-cases/google-oauth.use-case';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(private readonly googleOAuthUseCase: GoogleOAuthUseCase) {
+  constructor(private readonly authService: AuthService) {
     const options: StrategyOptions = {
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
@@ -32,7 +32,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         return done(new Error('Google không cung cấp email'));
       }
 
-      const result = await this.googleOAuthUseCase.execute({
+      const result = await this.authService.googleOAuth({
         providerId: profile.id,
         email,
         emailVerified: Boolean(profile._json?.email_verified),

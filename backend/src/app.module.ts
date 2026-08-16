@@ -5,6 +5,7 @@ import { UsersModule } from './modules/users/users.module';
 import { NovelsModule } from './modules/novels/novels.module';
 import { ChaptersModule } from './modules/chapters/chapters.module';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 import { UploadModule } from './upload/upload.module';
 
 @Module({
@@ -15,6 +16,7 @@ import { UploadModule } from './upload/upload.module';
     NovelsModule,
     ChaptersModule,
     CategoriesModule,
+    PaymentsModule,
     UploadModule,
   ],
   controllers: [],

@@ -17,7 +17,7 @@ export const NavUserBadge = () => {
           </div>
           <span className="font-semibold max-w-[100px] truncate">{user.username}</span>
           <span className="text-amber-400 font-medium pl-1 border-l border-[var(--border-nav)]">
-            {user.coins}
+            {(user.coins ?? 0).toLocaleString('vi-VN')}
           </span>
         </NavLink>
 

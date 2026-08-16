@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { apiClient } from '../lib/api-client'
 import type { User } from '../types'
 
 export type { User }
@@ -7,7 +9,7 @@ export interface AuthContextType {
   user: User | null
   accessToken: string | null
   isAuthenticated: boolean
-  setUser: (user: User | null) => void
+  isLoadingUser: boolean
   setAccessToken: (token: string | null) => void
   logout: () => void
 }
@@ -15,49 +17,45 @@ export interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const savedUser = localStorage.getItem('user')
-    try {
-      return savedUser ? JSON.parse(savedUser) : null
-    } catch {
-      return null
-    }
-  })
+  const queryClient = useQueryClient()
 
   const [accessToken, setAccessToken] = useState<string | null>(() => {
     return localStorage.getItem('accessToken')
   })
 
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user))
-    } else {
-      localStorage.removeItem('user')
-    }
-  }, [user])
-
+  // Synchronize token state with localStorage
   useEffect(() => {
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken)
     } else {
       localStorage.removeItem('accessToken')
+      localStorage.removeItem('user') // Clear any legacy user key
     }
   }, [accessToken])
 
+  // Single Source of Truth for User Profile & Coins via TanStack Query
+  const { data: user, isLoading: isLoadingUser } = useQuery({
+    queryKey: ['auth-user'],
+    queryFn: () => apiClient.get<User>('/users/me'),
+    enabled: Boolean(accessToken),
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  })
+
   const logout = () => {
-    setUser(null)
     setAccessToken(null)
-    localStorage.removeItem('user')
     localStorage.removeItem('accessToken')
+    localStorage.removeItem('user')
+    queryClient.removeQueries({ queryKey: ['auth-user'] })
   }
 
   return (
     <AuthContext.Provider
       value={{
-        user,
+        user: accessToken ? (user ?? null) : null,
         accessToken,
-        isAuthenticated: !!user && !!accessToken,
-        setUser,
+        isAuthenticated: Boolean(accessToken && user),
+        isLoadingUser,
         setAccessToken,
         logout,
       }}

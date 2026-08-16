@@ -20,6 +20,7 @@ model User {
   updatedAt     DateTime       @updatedAt
   refreshTokens RefreshToken[]
   oauthAccounts OAuthAccount[]
+  transactions  Transaction[]
 
   @@map("users")
 }
@@ -113,5 +114,50 @@ model Chapter {
 
   @@unique([novelId, chapterNumber])
   @@map("chapters")
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  MOMO
+  VNPAY
+}
+
+model RechargePackage {
+  id         String   @id @default(uuid())
+  name       String
+  amount     Int
+  coins      Int
+  bonusCoins Int      @default(0)
+  isActive   Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("recharge_packages")
+}
+
+model Transaction {
+  id            String            @id @default(uuid())
+  userId        String
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId       String            @unique
+  requestId     String
+  amount        Int
+  coins         Int
+  status        TransactionStatus @default(PENDING)
+  paymentMethod PaymentMethod     @default(MOMO)
+  transId       String?
+  payUrl        String?           @db.Text
+  packageId     String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@map("transactions")
 }
 

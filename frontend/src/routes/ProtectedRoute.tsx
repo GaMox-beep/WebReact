@@ -27,7 +27,15 @@ const isTokenValidAdmin = (token: string | null): boolean => {
 }
 
 const ProtectedRoute = ({ redirectPath = '/' }: ProtectedRouteProps) => {
-  const { user, isAuthenticated, accessToken } = useAuth()
+  const { user, isAuthenticated, accessToken, isLoadingUser } = useAuth()
+
+  if (accessToken && isLoadingUser) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[var(--border-color)] border-t-[var(--accent-gold)]" />
+      </div>
+    )
+  }
 
   const isAdmin = isAuthenticated && user?.role === 'ADMIN' && isTokenValidAdmin(accessToken)
 

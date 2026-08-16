@@ -6,10 +6,19 @@ import { ProfileDetailsTab } from '../../features/users/components/ProfileDetail
 import { BookmarksTab } from '../../features/users/components/BookmarksTab'
 import { ReadingHistoryTab } from '../../features/users/components/ReadingHistoryTab'
 import { AccountSettingsTab } from '../../features/users/components/AccountSettingsTab'
+import { ProfileTransactionsTab } from '../../features/payments/components/profile-transactions-tab'
 
 export const ProfilePage = () => {
-  const { user, isAuthenticated, logout } = useAuth()
-  const [activeTab, setActiveTab] = useState<'profile' | 'bookmarks' | 'history' | 'settings'>('profile')
+  const { user, isAuthenticated, accessToken, isLoadingUser, logout } = useAuth()
+  const [activeTab, setActiveTab] = useState<'profile' | 'bookmarks' | 'history' | 'transactions' | 'settings'>('profile')
+
+  if (accessToken && isLoadingUser) {
+    return (
+      <div className="flex justify-center items-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[var(--border-color)] border-t-[var(--accent-gold)]" />
+      </div>
+    )
+  }
 
   if (!isAuthenticated || !user) {
     return <Navigate to={paths.auth.login.getHref()} replace />
@@ -99,6 +108,16 @@ export const ProfilePage = () => {
           Lịch Sử Đọc
         </button>
         <button
+          onClick={() => setActiveTab('transactions')}
+          className={`px-3.5 py-2 rounded-lg font-medium text-xs transition-colors flex items-center gap-1.5 ${
+            activeTab === 'transactions'
+              ? 'bg-[var(--accent-gold)] text-slate-950 font-semibold'
+              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
+          }`}
+        >
+          Lịch Sử Nạp
+        </button>
+        <button
           onClick={() => setActiveTab('settings')}
           className={`px-3.5 py-2 rounded-lg font-medium text-xs transition-colors flex items-center gap-1.5 ${
             activeTab === 'settings'
@@ -115,6 +134,7 @@ export const ProfilePage = () => {
         {activeTab === 'profile' && <ProfileDetailsTab user={user} onLogout={logout} />}
         {activeTab === 'bookmarks' && <BookmarksTab />}
         {activeTab === 'history' && <ReadingHistoryTab />}
+        {activeTab === 'transactions' && <ProfileTransactionsTab />}
         {activeTab === 'settings' && <AccountSettingsTab />}
       </div>
     </div>
