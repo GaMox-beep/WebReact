@@ -17,6 +17,15 @@ export interface PaymentUrlResult {
   rawResponse?: unknown;
 }
 
+export interface CallbackVerificationResult {
+  isValid: boolean;
+  isPaid: boolean;
+  orderId: string;
+  transId: string;
+  amount: number;
+  message?: string;
+}
+
 export interface QueryTransactionResult {
   isPaid: boolean;
   orderId: string;
@@ -28,7 +37,7 @@ export interface QueryTransactionResult {
 
 export interface IPaymentProvider {
   createPaymentUrl(params: CreatePaymentUrlParams): Promise<PaymentUrlResult>;
-  verifySignature(payload: Record<string, any>): boolean;
+  verifyCallback(payload: Record<string, any>): CallbackVerificationResult;
   queryTransactionStatus(
     orderId: string,
     requestId: string,

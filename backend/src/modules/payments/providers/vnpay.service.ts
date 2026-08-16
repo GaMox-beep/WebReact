@@ -8,8 +8,9 @@ import type {
   IPaymentProvider,
   CreatePaymentUrlParams,
   PaymentUrlResult,
+  CallbackVerificationResult,
   QueryTransactionResult,
-} from './interfaces/payment-provider.interface';
+} from '../interfaces/payment-provider.interface';
 
 @Injectable()
 export class VnpayService implements IPaymentProvider {
@@ -144,14 +145,26 @@ export class VnpayService implements IPaymentProvider {
   }
 
   /**
-   * Xác thực chữ ký số HMAC-SHA512 từ IPN hoặc Return Callback của VNPay
+   * Xác thực chữ ký số HMAC-SHA512 và parse kết quả giao dịch từ VNPay Callback/IPN
    */
-  verifySignature(payload: Record<string, any>): boolean {
+  verifyCallback(payload: Record<string, any>): CallbackVerificationResult {
     try {
       const secureHash = payload['vnp_SecureHash'] as string;
+      const orderId = String(payload['vnp_TxnRef'] || '');
+      const transId = String(payload['vnp_TransactionNo'] || '');
+      const vnpAmount = payload['vnp_Amount']
+        ? Number(payload['vnp_Amount']) / 100
+        : 0;
+
       if (!secureHash) {
-        this.logger.warn('VNPay verification failed: vnp_SecureHash is missing');
-        return false;
+        return {
+          isValid: false,
+          isPaid: false,
+          orderId,
+          transId,
+          amount: vnpAmount,
+          message: 'Missing VNPay signature',
+        };
       }
 
       const vnpParams: Record<string, string> = {};
@@ -181,14 +194,33 @@ export class VnpayService implements IPaymentProvider {
       const expectedBuf = Buffer.from(expectedHash.toLowerCase(), 'utf8');
       const actualBuf = Buffer.from(secureHash.toLowerCase(), 'utf8');
 
-      if (expectedBuf.length !== actualBuf.length) {
-        return false;
-      }
+      const isValid =
+        expectedBuf.length === actualBuf.length &&
+        crypto.timingSafeEqual(expectedBuf, actualBuf);
 
-      return crypto.timingSafeEqual(expectedBuf, actualBuf);
+      const isSuccess =
+        payload['vnp_ResponseCode'] === '00' &&
+        (payload['vnp_TransactionStatus'] === undefined ||
+          payload['vnp_TransactionStatus'] === '00');
+
+      return {
+        isValid,
+        isPaid: isValid && isSuccess,
+        orderId,
+        transId,
+        amount: vnpAmount,
+        message: isSuccess ? 'Thành công' : `Lỗi mã ${payload['vnp_ResponseCode']}`,
+      };
     } catch (err) {
       this.logger.error('Error verifying VNPay signature', err);
-      return false;
+      return {
+        isValid: false,
+        isPaid: false,
+        orderId: String(payload['vnp_TxnRef'] || ''),
+        transId: String(payload['vnp_TransactionNo'] || ''),
+        amount: Number(payload['vnp_Amount'] || 0) / 100,
+        message: 'Verification exception',
+      };
     }
   }
 

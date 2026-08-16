@@ -8,8 +8,9 @@ import type {
   IPaymentProvider,
   CreatePaymentUrlParams,
   PaymentUrlResult,
+  CallbackVerificationResult,
   QueryTransactionResult,
-} from './interfaces/payment-provider.interface';
+} from '../interfaces/payment-provider.interface';
 
 export interface MomoCreatePaymentResponse {
   partnerCode: string;
@@ -75,7 +76,6 @@ export class MomoService implements IPaymentProvider {
       requestType = this.defaultRequestType,
     } = params;
 
-    // 1. Tạo raw signature theo thứ tự bảng chữ cái key của MoMo v2
     const rawSignature = `accessKey=${this.accessKey}&amount=${amount}&extraData=${extraData}&ipnUrl=${notifyUrl}&orderId=${orderId}&orderInfo=${orderInfo}&partnerCode=${this.partnerCode}&redirectUrl=${returnUrl}&requestId=${requestId}&requestType=${requestType}`;
 
     const signature = crypto
@@ -146,39 +146,36 @@ export class MomoService implements IPaymentProvider {
   }
 
   /**
-   * Xác thực chữ ký số HMAC-SHA256 từ IPN Webhook hoặc Callback
+   * Xác thực chữ ký số HMAC-SHA256 và parse kết quả giao dịch từ MoMo Callback/IPN
    */
-  verifySignature(payload: Record<string, any>): boolean {
+  verifyCallback(payload: Record<string, any>): CallbackVerificationResult {
     try {
       const {
-        amount,
+        amount = 0,
         extraData = '',
-        message,
-        orderId,
+        message = '',
+        orderId = '',
         orderInfo = '',
         orderType = '',
-        partnerCode,
+        partnerCode = '',
         payType = '',
-        requestId,
-        responseTime,
+        requestId = '',
+        responseTime = 0,
         resultCode,
-        transId,
-        signature,
-      } = payload as {
-        amount: number;
-        extraData?: string;
-        message: string;
-        orderId: string;
-        orderInfo?: string;
-        orderType?: string;
-        partnerCode: string;
-        payType?: string;
-        requestId: string;
-        responseTime: number;
-        resultCode: number;
-        transId: number | string;
-        signature: string;
-      };
+        transId = '',
+        signature = '',
+      } = payload;
+
+      if (!signature) {
+        return {
+          isValid: false,
+          isPaid: false,
+          orderId: String(orderId),
+          transId: String(transId),
+          amount: Number(amount),
+          message: 'Missing MoMo signature',
+        };
+      }
 
       const rawSignature = `accessKey=${this.accessKey}&amount=${amount}&extraData=${extraData}&message=${message}&orderId=${orderId}&orderInfo=${orderInfo}&orderType=${orderType}&partnerCode=${partnerCode}&payType=${payType}&requestId=${requestId}&responseTime=${responseTime}&resultCode=${resultCode}&transId=${transId}`;
 
@@ -188,16 +185,32 @@ export class MomoService implements IPaymentProvider {
         .digest('hex');
 
       const expectedBuf = Buffer.from(expectedSignature, 'utf8');
-      const actualBuf = Buffer.from(signature, 'utf8');
+      const actualBuf = Buffer.from(String(signature), 'utf8');
 
-      if (expectedBuf.length !== actualBuf.length) {
-        return false;
-      }
+      const isValid =
+        expectedBuf.length === actualBuf.length &&
+        crypto.timingSafeEqual(expectedBuf, actualBuf);
 
-      return crypto.timingSafeEqual(expectedBuf, actualBuf);
+      const isPaid = isValid && (resultCode === 0 || resultCode === '0');
+
+      return {
+        isValid,
+        isPaid,
+        orderId: String(orderId),
+        transId: String(transId),
+        amount: Number(amount),
+        message: String(message || (isPaid ? 'Thành công' : 'Thất bại')),
+      };
     } catch (err) {
-      this.logger.error('Error verifying signature', err);
-      return false;
+      this.logger.error('Error verifying MoMo callback signature', err);
+      return {
+        isValid: false,
+        isPaid: false,
+        orderId: String(payload.orderId || ''),
+        transId: String(payload.transId || ''),
+        amount: Number(payload.amount || 0),
+        message: 'Verification exception',
+      };
     }
   }
 

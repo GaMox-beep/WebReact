@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { paths } from '../../config/paths';
@@ -8,47 +8,36 @@ export const PaymentResultPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const verifyPaymentMutation = useVerifyPayment();
-  const { mutate } = verifyPaymentMutation;
 
-  const hasVerified = useRef(false);
   const orderId = searchParams.get('orderId') || searchParams.get('vnp_TxnRef');
+  const queryParams = useMemo(
+    () => Object.fromEntries(searchParams.entries()),
+    [searchParams],
+  );
 
+  const { data, isLoading, isError, error } = useVerifyPayment(
+    orderId,
+    queryParams,
+  );
+
+  // Invalidate and immediately refetch user profile & coins when payment verifies
   useEffect(() => {
-    if (!orderId || hasVerified.current) return;
-    hasVerified.current = true;
+    if (data?.success) {
+      queryClient.invalidateQueries({ queryKey: ['auth-user'] });
+      queryClient.refetchQueries({ queryKey: ['auth-user'] });
+    }
+  }, [data?.success, queryClient]);
 
-    mutate(
-      {
-        orderId,
-        queryParams: Object.fromEntries(searchParams.entries()),
-      },
-      {
-        onSuccess: (data) => {
-          if (data.success) {
-            queryClient.invalidateQueries({ queryKey: ['auth-user'] });
-          }
-        },
-      },
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orderId]);
-
-  const isPending =
-    verifyPaymentMutation.status === 'pending' ||
-    (verifyPaymentMutation.status === 'idle' && Boolean(orderId));
-  const isSuccess = verifyPaymentMutation.data?.success;
-  const transaction = verifyPaymentMutation.data?.transaction;
+  const isSuccess = Boolean(data?.success);
+  const transaction = data?.transaction;
   const statusMessage =
-    verifyPaymentMutation.data?.message ||
-    (verifyPaymentMutation.error instanceof Error
-      ? verifyPaymentMutation.error.message
-      : 'Không thể xác thực giao dịch.');
+    data?.message ||
+    (error instanceof Error ? error.message : 'Không thể xác thực giao dịch.');
 
   return (
     <div className="max-w-xl mx-auto px-4 py-16">
       <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-8 shadow-sm text-center">
-        {isPending && (
+        {isLoading && (
           <div className="py-12 space-y-4">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-3 border-[var(--border-color)] border-t-[var(--accent-gold)]" />
             <h2 className="text-lg font-semibold text-[var(--text-primary)]">
@@ -60,7 +49,7 @@ export const PaymentResultPage = () => {
           </div>
         )}
 
-        {!isPending && isSuccess && (
+        {!isLoading && isSuccess && (
           <div className="py-4 space-y-6">
             <div className="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center justify-center mx-auto">
               <svg
@@ -145,7 +134,7 @@ export const PaymentResultPage = () => {
           </div>
         )}
 
-        {!isPending && !isSuccess && (
+        {!isLoading && (!isSuccess || isError) && (
           <div className="py-4 space-y-6">
             <div className="w-16 h-16 rounded-full bg-rose-500/10 text-rose-500 border border-rose-500/20 flex items-center justify-center mx-auto">
               <svg

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { PaymentsController } from './payments.controller';
 import { PaymentsService } from './payments.service';
-import { MomoService } from './momo.service';
-import { VnpayService } from './vnpay.service';
+import { MomoService } from './providers/momo.service';
+import { VnpayService } from './providers/vnpay.service';
 
 @Module({
   controllers: [PaymentsController],

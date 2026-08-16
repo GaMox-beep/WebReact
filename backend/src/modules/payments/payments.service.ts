@@ -6,8 +6,8 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { MomoService } from './momo.service';
-import { VnpayService } from './vnpay.service';
+import { MomoService } from './providers/momo.service';
+import { VnpayService } from './providers/vnpay.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { MomoIpnDto } from './dto/momo-ipn.dto';
 import { Transaction, TransactionStatus, PaymentMethod } from '@prisma/client';
@@ -17,24 +17,21 @@ import type { IPaymentProvider } from './interfaces/payment-provider.interface';
 @Injectable()
 export class PaymentsService {
   private readonly logger = new Logger(PaymentsService.name);
+  private readonly providers: Map<PaymentMethod, IPaymentProvider>;
 
   constructor(
     private readonly prisma: PrismaService,
     private readonly momoService: MomoService,
     private readonly vnpayService: VnpayService,
-  ) {}
+  ) {
+    this.providers = new Map<PaymentMethod, IPaymentProvider>([
+      [PaymentMethod.MOMO, this.momoService],
+      [PaymentMethod.VNPAY, this.vnpayService],
+    ]);
+  }
 
-  /**
-   * Helper: Lấy provider tương ứng với phương thức thanh toán
-   */
   private getProvider(method: PaymentMethod): IPaymentProvider {
-    switch (method) {
-      case PaymentMethod.VNPAY:
-        return this.vnpayService;
-      case PaymentMethod.MOMO:
-      default:
-        return this.momoService;
-    }
+    return this.providers.get(method) ?? this.momoService;
   }
 
   /**
@@ -55,7 +52,6 @@ export class PaymentsService {
     dto: CreatePaymentDto,
     ipAddress = '127.0.0.1',
   ) {
-    // 1. Server-side package lookup & active check
     const pkg = await this.prisma.rechargePackage.findUnique({
       where: { id: dto.packageId },
     });
@@ -66,13 +62,11 @@ export class PaymentsService {
       );
     }
 
-    // 2. Server-side generated IDs
     const prefix = dto.paymentMethod === PaymentMethod.VNPAY ? 'VNP' : 'MOMO';
     const orderId = `${prefix}_${Date.now()}_${randomUUID().substring(0, 8)}`;
     const requestId = randomUUID();
     const totalCoins = pkg.coins + pkg.bonusCoins;
 
-    // 3. Tạo bản ghi Transaction ở trạng thái PENDING
     const transaction = await this.prisma.transaction.create({
       data: {
         userId,
@@ -86,7 +80,6 @@ export class PaymentsService {
       },
     });
 
-    // 4. Chọn Provider và tạo Payment URL
     const provider = this.getProvider(dto.paymentMethod);
     const orderInfo = `Nạp ${totalCoins.toLocaleString('vi-VN')} Linh Thạch (${pkg.name})`;
 
@@ -98,7 +91,6 @@ export class PaymentsService {
       ipAddress,
     });
 
-    // 5. Lưu payUrl vào transaction
     await this.prisma.transaction.update({
       where: { id: transaction.id },
       data: { payUrl: paymentResponse.payUrl },
@@ -125,7 +117,6 @@ export class PaymentsService {
     isSuccess: boolean,
   ): Promise<Transaction> {
     return await this.prisma.$transaction(async (tx) => {
-      // 1. Khóa dòng Transaction bằng SELECT ... FOR UPDATE (PostgreSQL row-level lock)
       const rows = await tx.$queryRaw<Transaction[]>`
         SELECT * FROM "transactions" WHERE "orderId" = ${orderId} FOR UPDATE
       `;
@@ -137,7 +128,7 @@ export class PaymentsService {
         );
       }
 
-      // 2. Kiểm tra Idempotent: Nếu đã thành công thì trả về luôn không cộng trùng
+      // Idempotency: Không cộng trùng nếu đã thành công
       if (transaction.status === TransactionStatus.SUCCESS) {
         this.logger.log(
           `Transaction ${orderId} already completed successfully. Idempotent return.`,
@@ -146,7 +137,7 @@ export class PaymentsService {
       }
 
       if (isSuccess) {
-        // 3. Defense-in-depth: Kiểm tra số tiền cổng thanh toán báo về có khớp với DB không
+        // Defense-in-depth: Kiểm tra số tiền khớp với đơn hàng trong DB
         if (Number(paidAmount) !== transaction.amount) {
           this.logger.error(
             `CRITICAL: Amount mismatch on orderId ${orderId}: expected ${transaction.amount}, got ${paidAmount}`,
@@ -157,7 +148,6 @@ export class PaymentsService {
           });
         }
 
-        // 4. Cập nhật trạng thái đơn thành SUCCESS và lưu mã giao dịch của Gateway
         const updatedTx = await tx.transaction.update({
           where: { orderId },
           data: {
@@ -166,7 +156,7 @@ export class PaymentsService {
           },
         });
 
-        // 5. Cộng Linh Thạch cho User atomically
+        // Cộng Linh Thạch cho User atomically
         await tx.user.update({
           where: { id: transaction.userId },
           data: { coins: { increment: transaction.coins } },
@@ -194,27 +184,20 @@ export class PaymentsService {
       `Received MoMo IPN for orderId: ${ipnDto.orderId}, resultCode: ${ipnDto.resultCode}`,
     );
 
-    // 1. BẮT BUỘC: Xác thực chữ ký HMAC-SHA256
-    const isValid = this.momoService.verifySignature(ipnDto);
-    if (!isValid) {
+    const result = this.momoService.verifyCallback(ipnDto);
+    if (!result.isValid) {
       this.logger.warn(`Invalid IPN signature for orderId: ${ipnDto.orderId}`);
       throw new BadRequestException('Invalid MoMo signature');
     }
 
-    // 2. Chữ ký hợp lệ -> Gọi luồng xử lý idempotent
-    const isSuccess = ipnDto.resultCode === 0;
     await this.completePayment(
-      ipnDto.orderId,
-      ipnDto.transId,
-      Number(ipnDto.amount),
-      isSuccess,
+      result.orderId,
+      result.transId,
+      result.amount,
+      result.isPaid,
     );
 
-    // 3. Trả về phản hồi tiêu chuẩn cho MoMo Webhook
-    return {
-      message: 'Received',
-      resultCode: 0,
-    };
+    return { message: 'Received', resultCode: 0 };
   }
 
   /**
@@ -225,51 +208,32 @@ export class PaymentsService {
       `Received VNPay IPN for orderId: ${query['vnp_TxnRef']}, ResponseCode: ${query['vnp_ResponseCode']}`,
     );
 
-    // 1. BẮT BUỘC: Xác thực chữ ký HMAC-SHA512
-    const isValid = this.vnpayService.verifySignature(query);
-    if (!isValid) {
+    const result = this.vnpayService.verifyCallback(query);
+    if (!result.isValid) {
       this.logger.warn(
         `Invalid VNPay IPN signature for orderId: ${query['vnp_TxnRef']}`,
       );
-      return {
-        RspCode: '97',
-        Message: 'Checksum failed',
-      };
+      return { RspCode: '97', Message: 'Checksum failed' };
     }
 
-    const orderId = String(query['vnp_TxnRef']);
-    const vnpAmount = Number(query['vnp_Amount']) / 100;
-    const transId = String(query['vnp_TransactionNo'] || '');
-    const isSuccess =
-      query['vnp_ResponseCode'] === '00' &&
-      (query['vnp_TransactionStatus'] === undefined ||
-        query['vnp_TransactionStatus'] === '00');
-
     try {
-      await this.completePayment(orderId, transId, vnpAmount, isSuccess);
-      return {
-        RspCode: '00',
-        Message: 'Confirm Success',
-      };
+      await this.completePayment(
+        result.orderId,
+        result.transId,
+        result.amount,
+        result.isPaid,
+      );
+      return { RspCode: '00', Message: 'Confirm Success' };
     } catch (err: unknown) {
       if (err instanceof NotFoundException) {
-        return {
-          RspCode: '01',
-          Message: 'Order not found',
-        };
+        return { RspCode: '01', Message: 'Order not found' };
       }
-      return {
-        RspCode: '99',
-        Message: 'Unknown error',
-      };
+      return { RspCode: '99', Message: 'Unknown error' };
     }
   }
 
   /**
    * Xác thực và hoàn tất đơn nạp khi người dùng chuyển hướng về trang kết quả (/nap/ket-qua)
-   * 1. Nếu IPN đã xử lý thành công trước đó -> trả về kết quả ngay (< 1ms).
-   * 2. Nếu có queryParams đi kèm chứa chữ ký hợp lệ -> xác thực chữ ký mật mã và hoàn tất ngay (< 5ms).
-   * 3. Fallback: Nếu không có queryParams -> gọi queryTransactionStatus Server-to-Server.
    */
   async verifyPayment(
     userId: string,
@@ -284,12 +248,10 @@ export class PaymentsService {
       throw new NotFoundException('Giao dịch không tồn tại');
     }
 
-    // Anti-IDOR Check: Ngăn chặn người dùng kiểm tra đơn của người khác
     if (transaction.userId !== userId) {
       throw new ForbiddenException('Bạn không có quyền kiểm tra đơn hàng này');
     }
 
-    // Nếu đã thành công trước đó (do IPN về trước) -> trả về kết quả ngay
     if (transaction.status === TransactionStatus.SUCCESS) {
       return {
         success: true,
@@ -306,45 +268,26 @@ export class PaymentsService {
       };
     }
 
-    // Fast-path: Kiểm tra chữ ký mật mã trực tiếp từ callback queryParams
+    const provider = this.getProvider(transaction.paymentMethod);
+
+    // 1. Fast-path: Đối soát chữ ký & parse callback payload từ client
     if (queryParams && Object.keys(queryParams).length > 0) {
-      const provider = this.getProvider(transaction.paymentMethod);
-      const isSignatureValid = provider.verifySignature(queryParams);
-
-      if (isSignatureValid) {
+      const result = provider.verifyCallback(queryParams);
+      if (result.isValid) {
         this.logger.log(
-          `Fast-path: Valid cryptographic callback signature for order ${orderId}`,
+          `Fast-path verification for order ${orderId}: isPaid=${result.isPaid}`,
         );
-
-        let isSuccess = false;
-        let transId = '';
-        let amount = transaction.amount;
-
-        if (transaction.paymentMethod === PaymentMethod.VNPAY) {
-          isSuccess =
-            queryParams['vnp_ResponseCode'] === '00' &&
-            (queryParams['vnp_TransactionStatus'] === undefined ||
-              queryParams['vnp_TransactionStatus'] === '00');
-          transId = String(queryParams['vnp_TransactionNo'] || '');
-          amount = Number(queryParams['vnp_Amount']) / 100;
-        } else {
-          isSuccess =
-            queryParams['resultCode'] === 0 ||
-            queryParams['resultCode'] === '0';
-          transId = String(queryParams['transId'] || '');
-          amount = Number(queryParams['amount']);
-        }
 
         const updatedTx = await this.completePayment(
           orderId,
-          transId,
-          amount,
-          isSuccess,
+          result.transId,
+          result.amount,
+          result.isPaid,
         );
 
         return {
-          success: isSuccess,
-          message: isSuccess
+          success: result.isPaid,
+          message: result.isPaid
             ? 'Thanh toán thành công'
             : 'Thanh toán không thành công',
           transaction: updatedTx,
@@ -352,8 +295,7 @@ export class PaymentsService {
       }
     }
 
-    // Fallback: Gọi Query API của Provider tương ứng (Server-to-Server)
-    const provider = this.getProvider(transaction.paymentMethod);
+    // 2. Fallback: Query Server-to-Server
     const queryRes = await provider.queryTransactionStatus(
       orderId,
       transaction.requestId,
