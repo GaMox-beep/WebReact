@@ -6,18 +6,7 @@ import {
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-
-export function generateSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[đĐ]/g, 'd')
-    .replace(/([^0-9a-z-\s])/g, '')
-    .replace(/(\s+)/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
+import { generateSlug } from '../../common/utils/slug.util';
 
 @Injectable()
 export class CategoriesService {

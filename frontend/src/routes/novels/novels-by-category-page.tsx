@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useNovels } from '../../features/novels/api/get-novels'
-import { useCategories } from '../../features/novels/api/get-categories'
+import { useCategories } from '../../features/categories/api/get-categories'
 import { NovelCard } from '../../features/novels/components/novel-card'
+import { CategoryFilterPills } from '../../features/categories/components/category-filter-pills'
+import { NovelFilterToolbar } from '../../features/novels/components/novel-filter-toolbar'
 
 export const NovelsByCategoryPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -78,91 +80,21 @@ export const NovelsByCategoryPage = () => {
 
         {/* Category Horizontal Filter Pills */}
         <div className="mt-6 pt-4 border-t border-[var(--border-color)]">
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-            <button
-              type="button"
-              onClick={() => handleSelectCategory('')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
-                !currentSlug
-                  ? 'bg-[var(--accent-gold)] text-slate-950 font-bold'
-                  : 'bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-gold)]'
-              }`}
-            >
-              Tất Cả
-            </button>
-            {categories.map((cat) => {
-              const isSelected = cat.slug === currentSlug
-              return (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => handleSelectCategory(cat.slug)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-colors ${
-                    isSelected
-                      ? 'bg-[var(--accent-gold)] text-slate-950 font-bold'
-                      : 'bg-[var(--bg-surface-elevated)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-gold)]'
-                  }`}
-                >
-                  {cat.name}
-                </button>
-              )
-            })}
-          </div>
+          <CategoryFilterPills
+            categories={categories}
+            currentSlug={currentSlug}
+            onSelectCategory={handleSelectCategory}
+          />
         </div>
       </div>
 
       {/* Filter & Sort Controls Toolbar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-xl p-3">
-        {/* Status Filters */}
-        <div className="flex items-center gap-1.5 overflow-x-auto">
-          <span className="text-xs text-[var(--text-muted)] font-medium mr-1 shrink-0">
-            Trạng thái:
-          </span>
-          {[
-            { id: 'ALL', label: 'Tất cả' },
-            { id: 'ONGOING', label: 'Đang ra' },
-            { id: 'COMPLETED', label: 'Hoàn thành' },
-          ].map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => handleStatusChange(item.id)}
-              className={`px-3 py-1 text-xs rounded-lg font-medium transition-colors whitespace-nowrap ${
-                status === item.id
-                  ? 'bg-[var(--bg-surface-elevated)] text-[var(--accent-gold)] border border-[var(--border-color)] font-semibold'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)]'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Sort Selector */}
-        <div className="flex items-center gap-1.5 shrink-0">
-          <span className="text-xs text-[var(--text-muted)] font-medium mr-1">
-            Sắp xếp:
-          </span>
-          {[
-            { id: 'createdAt', label: 'Mới nhất' },
-            { id: 'views', label: 'Lượt xem' },
-            { id: 'rating', label: 'Đánh giá' },
-          ].map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => handleSortChange(item.id as 'createdAt' | 'views' | 'rating')}
-              className={`px-3 py-1 text-xs rounded-lg font-medium transition-colors whitespace-nowrap ${
-                sortBy === item.id
-                  ? 'bg-[var(--bg-surface-elevated)] text-[var(--accent-gold)] border border-[var(--border-color)] font-semibold'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)]'
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <NovelFilterToolbar
+        status={status}
+        onStatusChange={handleStatusChange}
+        sortBy={sortBy}
+        onSortChange={handleSortChange}
+      />
 
       {/* Error Message */}
       {error && (

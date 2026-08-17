@@ -27,11 +27,6 @@ export class NovelsController {
     return this.novelsService.findAll(query);
   }
 
-  @Get('categories/all')
-  async getCategories() {
-    return this.novelsService.findAllCategories();
-  }
-
   @Get(':slug')
   async findOneBySlug(@Param('slug') slug: string) {
     return this.novelsService.findOneBySlug(slug);

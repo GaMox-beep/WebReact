@@ -39,15 +39,15 @@ export const NovelFormModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="bg-[#11131e] border border-white/10 rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
-        <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
-          <h4 className="text-lg font-bold text-white">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
+        <div className="flex items-center justify-between pb-4 border-b border-[var(--border-color)] mb-6">
+          <h4 className="text-lg font-bold text-[var(--text-primary)]">
             {editingNovel ? 'Chỉnh Sửa Bộ Truyện' : 'Thêm Bộ Truyện Mới'}
           </h4>
           <button
             type="button"
             onClick={actions.close}
-            className="text-slate-400 hover:text-white transition-colors"
+            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             ✕
           </button>
@@ -61,7 +61,7 @@ export const NovelFormModal = ({
 
         <form onSubmit={actions.submit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
               Tên Truyện *
             </label>
             <input
@@ -70,12 +70,12 @@ export const NovelFormModal = ({
               value={form.title}
               onChange={(e) => form.setTitle(e.target.value)}
               placeholder="VD: Phàm Nhân Tu Tiên"
-              className="w-full bg-[#0a0b10] border border-white/10 text-white placeholder-slate-500 text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-500"
+              className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[var(--accent-gold)]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
               Tác Giả *
             </label>
             <input
@@ -84,12 +84,12 @@ export const NovelFormModal = ({
               value={form.authorName}
               onChange={(e) => form.setAuthorName(e.target.value)}
               placeholder="VD: Vong Ngữ"
-              className="w-full bg-[#0a0b10] border border-white/10 text-white placeholder-slate-500 text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-500"
+              className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[var(--accent-gold)]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
               Mô Tả / Giới Thiệu
             </label>
             <textarea
@@ -97,13 +97,13 @@ export const NovelFormModal = ({
               value={form.description}
               onChange={(e) => form.setDescription(e.target.value)}
               placeholder="Nội dung tóm tắt của bộ truyện..."
-              className="w-full bg-[#0a0b10] border border-white/10 text-white placeholder-slate-500 text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-500"
+              className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[var(--accent-gold)]"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
                 Trạng Thái
               </label>
               <select
@@ -111,7 +111,7 @@ export const NovelFormModal = ({
                 onChange={(e) =>
                   form.setStatus(e.target.value as 'ONGOING' | 'COMPLETED' | 'PAUSED')
                 }
-                className="w-full bg-[#0a0b10] border border-white/10 text-white text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-500"
+                className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[var(--accent-gold)]"
               >
                 <option value="ONGOING">Đang ra</option>
                 <option value="COMPLETED">Hoàn thành</option>
@@ -120,30 +120,30 @@ export const NovelFormModal = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
                 Ảnh Bìa (Tùy chọn)
               </label>
               <input
                 type="file"
                 accept="image/*"
                 onChange={actions.handleCoverChange}
-                className="w-full text-xs text-slate-400 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500/10 file:text-amber-400 hover:file:bg-amber-500/20"
+                className="w-full text-xs text-[var(--text-secondary)] file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[var(--accent-gold)]/10 file:text-[var(--accent-gold)] hover:file:bg-amber-500/20"
               />
               {form.coverPreview && (
                 <img
                   src={form.coverPreview}
                   alt="Preview"
-                  className="mt-2 w-16 h-20 object-cover rounded-lg border border-white/10"
+                  className="mt-2 w-16 h-20 object-cover rounded-lg border border-[var(--border-color)]"
                 />
               )}
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-2">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-2">
               Thể Loại
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-[#0a0b10] p-3 rounded-xl border border-white/10 max-h-36 overflow-y-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 bg-[var(--bg-main)] p-3 rounded-xl border border-[var(--border-color)] max-h-36 overflow-y-auto">
               {categories.map((cat) => {
                 const checked = form.categoryIds.includes(cat.id)
                 return (
@@ -151,15 +151,15 @@ export const NovelFormModal = ({
                     key={cat.id}
                     className={`flex items-center gap-2 p-1.5 rounded-lg text-xs cursor-pointer select-none transition-colors ${
                       checked
-                        ? 'bg-amber-500/10 text-amber-300 font-semibold'
-                        : 'text-slate-400 hover:text-white'
+                        ? 'bg-[var(--accent-gold)]/10 text-[var(--accent-gold)] font-semibold'
+                        : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={checked}
                       onChange={() => actions.toggleCategory(cat.id)}
-                      className="accent-amber-500 rounded"
+                      className="accent-[var(--accent-gold)] rounded"
                     />
                     <span>{cat.name}</span>
                   </label>
@@ -168,18 +168,18 @@ export const NovelFormModal = ({
             </div>
           </div>
 
-          <div className="flex justify-end gap-2 pt-4 border-t border-white/10 mt-6">
+          <div className="flex justify-end gap-2 pt-4 border-t border-[var(--border-color)] mt-6">
             <button
               type="button"
               onClick={actions.close}
-              className="px-4 py-2.5 rounded-xl text-slate-400 hover:text-white text-xs font-semibold hover:bg-white/5 transition-all"
+              className="px-4 py-2.5 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-semibold hover:bg-[var(--bg-surface-hover)] transition-all"
             >
               Hủy
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold text-xs rounded-xl transition-all"
+              className="px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:opacity-50 text-slate-950 font-bold text-xs rounded-xl transition-all"
             >
               {submitting ? 'Đang Lưu...' : editingNovel ? 'Cập Nhật' : 'Tạo Mới'}
             </button>

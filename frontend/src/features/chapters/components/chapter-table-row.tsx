@@ -13,27 +13,27 @@ export const ChapterTableRow = ({
 }: ChapterTableRowProps) => {
   return (
     <tr className="hover:bg-white/[0.02] transition-colors">
-      <td className="py-3 px-4 font-semibold text-amber-400">
+      <td className="py-3 px-4 font-semibold text-[var(--accent-gold)]">
         Chương {chapter.chapterNumber}
       </td>
-      <td className="py-3 px-4 font-medium text-white max-w-sm truncate">
+      <td className="py-3 px-4 font-medium text-[var(--text-primary)] max-w-sm truncate">
         {chapter.title}
       </td>
       <td className="py-3 px-4">
         {chapter.isVip ? (
-          <span className="px-2 py-0.5 text-xs font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-md">
+          <span className="px-2 py-0.5 text-xs font-semibold bg-amber-500/20 text-[var(--accent-gold)] border border-[var(--accent-gold)]/30 rounded-md">
             VIP
           </span>
         ) : (
-          <span className="px-2 py-0.5 text-xs font-semibold bg-slate-500/10 text-slate-400 border border-slate-500/20 rounded-md">
+          <span className="px-2 py-0.5 text-xs font-semibold bg-slate-500/10 text-[var(--text-secondary)] border border-slate-500/20 rounded-md">
             Miễn phí
           </span>
         )}
       </td>
-      <td className="py-3 px-4 text-slate-400 text-xs">
+      <td className="py-3 px-4 text-[var(--text-secondary)] text-xs">
         {chapter.views.toLocaleString()} lượt
       </td>
-      <td className="py-3 px-4 text-slate-400 text-xs">
+      <td className="py-3 px-4 text-[var(--text-secondary)] text-xs">
         {new Date(chapter.createdAt).toLocaleDateString('vi-VN')}
       </td>
       <td className="py-3 px-4 text-right">

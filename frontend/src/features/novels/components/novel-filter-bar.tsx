@@ -20,21 +20,21 @@ export const NovelFilterBar = ({
   categories,
 }: NovelFilterBarProps) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[#11131e] p-4 rounded-2xl border border-white/10">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[var(--bg-surface)] p-4 rounded-2xl border border-[var(--border-color)]">
       <div>
         <input
           type="text"
           placeholder="Tìm theo tên truyện hoặc tác giả..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full bg-[#0a0b10] border border-white/10 text-white placeholder-slate-500 text-sm rounded-xl px-3.5 py-2 focus:outline-none focus:border-amber-500/50"
+          className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl px-3.5 py-2 focus:outline-none focus:border-[var(--accent-gold)]/50"
         />
       </div>
       <div>
         <select
           value={selectedCategory}
           onChange={(e) => onCategoryChange(e.target.value)}
-          className="w-full bg-[#0a0b10] border border-white/10 text-white text-sm rounded-xl px-3.5 py-2 focus:outline-none focus:border-amber-500/50"
+          className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] text-sm rounded-xl px-3.5 py-2 focus:outline-none focus:border-[var(--accent-gold)]/50"
         >
           <option value="">Tất cả thể loại</option>
           {categories.map((cat) => (
@@ -48,7 +48,7 @@ export const NovelFilterBar = ({
         <select
           value={selectedStatus}
           onChange={(e) => onStatusChange(e.target.value)}
-          className="w-full bg-[#0a0b10] border border-white/10 text-white text-sm rounded-xl px-3.5 py-2 focus:outline-none focus:border-amber-500/50"
+          className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] text-sm rounded-xl px-3.5 py-2 focus:outline-none focus:border-[var(--accent-gold)]/50"
         >
           <option value="">Tất cả trạng thái</option>
           <option value="ONGOING">Đang ra</option>

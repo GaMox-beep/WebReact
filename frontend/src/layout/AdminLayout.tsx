@@ -56,18 +56,18 @@ const renderAdminIcon = (iconName?: string) => {
 
 const AdminLayout = () => {
   return (
-    <div className="flex min-h-screen bg-[#0a0b10]">
+    <div className="flex min-h-screen bg-[var(--bg-main)]">
       {/* Admin Sidebar */}
-      <aside className="w-64 min-w-[16rem] bg-[#11131e] border-r border-white/10 flex flex-col p-4">
-        <div className="flex items-center gap-3 pb-4 mb-4 border-b border-white/10">
-          <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500">
+      <aside className="w-64 min-w-[16rem] bg-[var(--bg-surface)] border-r border-[var(--border-color)] flex flex-col p-4">
+        <div className="flex items-center gap-3 pb-4 mb-4 border-b border-[var(--border-color)]">
+          <div className="p-2 rounded-xl bg-[var(--accent-gold)]/10 border border-[var(--accent-gold)]/30 text-[var(--accent-gold)]">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
           </div>
           <div>
-            <h6 className="font-bold text-white text-base leading-tight">Novelis Admin</h6>
-            <span className="text-slate-400 text-xs">Quản trị hệ thống</span>
+            <h6 className="font-bold text-[var(--text-primary)] text-base leading-tight">Novelis Admin</h6>
+            <span className="text-[var(--text-secondary)] text-xs">Quản trị hệ thống</span>
           </div>
         </div>
 
@@ -80,8 +80,8 @@ const AdminLayout = () => {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive
-                    ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 font-semibold'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-[var(--accent-gold)]/10 text-[var(--accent-gold)] border border-[var(--accent-gold)]/30 font-semibold'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
                 }`
               }
             >
@@ -91,8 +91,8 @@ const AdminLayout = () => {
           ))}
         </nav>
 
-        <div className="mt-auto pt-4 border-t border-white/10">
-          <NavLink to={paths.home.getHref()} className="flex items-center justify-center gap-2 w-full py-2.5 text-xs font-medium text-white border border-white/10 hover:bg-white/10 rounded-xl transition-all">
+        <div className="mt-auto pt-4 border-t border-[var(--border-color)]">
+          <NavLink to={paths.home.getHref()} className="flex items-center justify-center gap-2 w-full py-2.5 text-xs font-medium text-[var(--text-primary)] border border-[var(--border-color)] hover:bg-[var(--bg-surface-hover)] rounded-xl transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" x2="5" y1="12" y2="12" />
               <polyline points="12 19 5 12 12 5" />

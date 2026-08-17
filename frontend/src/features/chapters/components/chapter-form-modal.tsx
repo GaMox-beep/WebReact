@@ -33,15 +33,15 @@ export const ChapterFormModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="bg-[#11131e] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
-        <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
-          <h4 className="text-lg font-bold text-white">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
+        <div className="flex items-center justify-between pb-4 border-b border-[var(--border-color)] mb-6">
+          <h4 className="text-lg font-bold text-[var(--text-primary)]">
             {editingChapter ? 'Chỉnh Sửa Chương' : 'Đăng Chương Mới'}
           </h4>
           <button
             type="button"
             onClick={actions.close}
-            className="text-slate-400 hover:text-white transition-colors"
+            className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
           >
             ✕
           </button>
@@ -56,7 +56,7 @@ export const ChapterFormModal = ({
         <form onSubmit={actions.submit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
                 Số Chương *
               </label>
               <input
@@ -69,12 +69,12 @@ export const ChapterFormModal = ({
                   form.setChapterNumber(e.target.value === '' ? '' : Number(e.target.value))
                 }
                 placeholder="VD: 1"
-                className="w-full bg-[#0a0b10] border border-white/10 text-white placeholder-slate-500 text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-500"
+                className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[var(--accent-gold)]"
               />
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-xs font-semibold text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
                 Tiêu Đề Chương *
               </label>
               <input
@@ -83,13 +83,13 @@ export const ChapterFormModal = ({
                 value={form.title}
                 onChange={(e) => form.setTitle(e.target.value)}
                 placeholder="VD: Tiết tử / Chương 1: Bắt đầu"
-                className="w-full bg-[#0a0b10] border border-white/10 text-white placeholder-slate-500 text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-amber-500"
+                className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:border-[var(--accent-gold)]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">
+            <label className="block text-xs font-semibold text-[var(--text-secondary)] mb-1">
               Nội Dung Chương *
             </label>
             <textarea
@@ -98,35 +98,35 @@ export const ChapterFormModal = ({
               value={form.content}
               onChange={(e) => form.setContent(e.target.value)}
               placeholder="Dán toàn bộ nội dung chương truyện vào đây..."
-              className="w-full bg-[#0a0b10] border border-white/10 text-white placeholder-slate-500 text-sm rounded-xl p-3.5 focus:outline-none focus:border-amber-500 font-serif leading-relaxed"
+              className="w-full bg-[var(--bg-main)] border border-[var(--border-color)] text-[var(--text-primary)] placeholder-[var(--text-muted)] text-sm rounded-xl p-3.5 focus:outline-none focus:border-[var(--accent-gold)] font-serif leading-relaxed"
             />
           </div>
 
-          <div className="flex items-center gap-2 p-3 bg-[#0a0b10] border border-white/10 rounded-xl">
+          <div className="flex items-center gap-2 p-3 bg-[var(--bg-main)] border border-[var(--border-color)] rounded-xl">
             <input
               type="checkbox"
               id="isVipCheck"
               checked={form.isVip}
               onChange={(e) => form.setIsVip(e.target.checked)}
-              className="w-4 h-4 accent-amber-500 rounded cursor-pointer"
+              className="w-4 h-4 accent-[var(--accent-gold)] rounded cursor-pointer"
             />
-            <label htmlFor="isVipCheck" className="text-xs font-medium text-slate-300 cursor-pointer">
-              Đánh dấu là <span className="text-amber-400 font-bold">Chương VIP</span> (Yêu cầu trả xu để đọc)
+            <label htmlFor="isVipCheck" className="text-xs font-medium text-[var(--text-secondary)] cursor-pointer">
+              Đánh dấu là <span className="text-[var(--accent-gold)] font-bold">Chương VIP</span> (Yêu cầu trả xu để đọc)
             </label>
           </div>
 
-          <div className="flex justify-end gap-2 pt-4 border-t border-white/10 mt-6">
+          <div className="flex justify-end gap-2 pt-4 border-t border-[var(--border-color)] mt-6">
             <button
               type="button"
               onClick={actions.close}
-              className="px-4 py-2.5 rounded-xl text-slate-400 hover:text-white text-xs font-semibold hover:bg-white/5 transition-all"
+              className="px-4 py-2.5 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] text-xs font-semibold hover:bg-[var(--bg-surface-hover)] transition-all"
             >
               Hủy
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold text-xs rounded-xl transition-all"
+              className="px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] disabled:opacity-50 text-slate-950 font-bold text-xs rounded-xl transition-all"
             >
               {submitting ? 'Đang Lưu...' : editingChapter ? 'Cập Nhật' : 'Đăng Chương'}
             </button>

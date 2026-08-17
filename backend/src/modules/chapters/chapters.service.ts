@@ -55,6 +55,41 @@ export class ChaptersService {
     return chapter;
   }
 
+  private async incrementViews(chapterId: string, novelId: string) {
+    await Promise.all([
+      this.prisma.chapter.update({
+        where: { id: chapterId },
+        data: { views: { increment: 1 } },
+      }),
+      this.prisma.novel.update({
+        where: { id: novelId },
+        data: { views: { increment: 1 } },
+      }),
+    ]);
+  }
+
+  private async getChapterNavigation(novelId: string, chapterNumber: number) {
+    const [prevChapter, nextChapter] = await Promise.all([
+      this.prisma.chapter.findFirst({
+        where: {
+          novelId,
+          chapterNumber: { lt: chapterNumber },
+        },
+        orderBy: { chapterNumber: 'desc' },
+        select: { id: true, chapterNumber: true, title: true },
+      }),
+      this.prisma.chapter.findFirst({
+        where: {
+          novelId,
+          chapterNumber: { gt: chapterNumber },
+        },
+        orderBy: { chapterNumber: 'asc' },
+        select: { id: true, chapterNumber: true, title: true },
+      }),
+    ]);
+    return { prevChapter, nextChapter };
+  }
+
   async findOne(id: string) {
     const chapter = await this.prisma.chapter.findUnique({
       where: { id },
@@ -75,45 +110,13 @@ export class ChaptersService {
       throw new NotFoundException(`Không tìm thấy chương với ID: ${id}`);
     }
 
-    // Tăng view cho Chapter và Novel
-    await Promise.all([
-      this.prisma.chapter.update({
-        where: { id },
-        data: { views: { increment: 1 } },
-      }),
-      this.prisma.novel.update({
-        where: { id: chapter.novelId },
-        data: { views: { increment: 1 } },
-      }),
-    ]);
-
-    // Tìm chương trước và chương sau
-    const [prevChapter, nextChapter] = await Promise.all([
-      this.prisma.chapter.findFirst({
-        where: {
-          novelId: chapter.novelId,
-          chapterNumber: { lt: chapter.chapterNumber },
-        },
-        orderBy: { chapterNumber: 'desc' },
-        select: { id: true, chapterNumber: true, title: true },
-      }),
-      this.prisma.chapter.findFirst({
-        where: {
-          novelId: chapter.novelId,
-          chapterNumber: { gt: chapter.chapterNumber },
-        },
-        orderBy: { chapterNumber: 'asc' },
-        select: { id: true, chapterNumber: true, title: true },
-      }),
-    ]);
+    await this.incrementViews(id, chapter.novelId);
+    const navigation = await this.getChapterNavigation(chapter.novelId, chapter.chapterNumber);
 
     return {
       ...chapter,
       views: chapter.views + 1,
-      navigation: {
-        prevChapter,
-        nextChapter,
-      },
+      navigation,
     };
   }
 
@@ -148,46 +151,14 @@ export class ChaptersService {
       );
     }
 
-    // Tăng view cho Chapter và Novel
-    await Promise.all([
-      this.prisma.chapter.update({
-        where: { id: chapter.id },
-        data: { views: { increment: 1 } },
-      }),
-      this.prisma.novel.update({
-        where: { id: novel.id },
-        data: { views: { increment: 1 } },
-      }),
-    ]);
-
-    // Tìm chương trước và chương sau
-    const [prevChapter, nextChapter] = await Promise.all([
-      this.prisma.chapter.findFirst({
-        where: {
-          novelId: novel.id,
-          chapterNumber: { lt: chapter.chapterNumber },
-        },
-        orderBy: { chapterNumber: 'desc' },
-        select: { id: true, chapterNumber: true, title: true },
-      }),
-      this.prisma.chapter.findFirst({
-        where: {
-          novelId: novel.id,
-          chapterNumber: { gt: chapter.chapterNumber },
-        },
-        orderBy: { chapterNumber: 'asc' },
-        select: { id: true, chapterNumber: true, title: true },
-      }),
-    ]);
+    await this.incrementViews(chapter.id, novel.id);
+    const navigation = await this.getChapterNavigation(novel.id, chapter.chapterNumber);
 
     return {
       ...chapter,
       views: chapter.views + 1,
       novel,
-      navigation: {
-        prevChapter,
-        nextChapter,
-      },
+      navigation,
     };
   }
 

@@ -21,36 +21,36 @@ export const NovelTableRow = ({
           <img
             src={novel.coverUrl}
             alt={novel.title}
-            className="w-12 h-16 object-cover rounded-lg border border-white/10"
+            className="w-12 h-16 object-cover rounded-lg border border-[var(--border-color)]"
           />
         ) : (
-          <div className="w-12 h-16 bg-[#0a0b10] border border-white/10 rounded-lg flex items-center justify-center text-xs text-slate-500">
+          <div className="w-12 h-16 bg-[var(--bg-main)] border border-[var(--border-color)] rounded-lg flex items-center justify-center text-xs text-[var(--text-muted)]">
             No cover
           </div>
         )}
       </td>
       <td className="py-3 px-4">
-        <div className="font-bold text-white max-w-xs truncate">{novel.title}</div>
-        <div className="text-xs text-slate-500 mt-0.5 max-w-xs truncate">{novel.slug}</div>
+        <div className="font-bold text-[var(--text-primary)] max-w-xs truncate">{novel.title}</div>
+        <div className="text-xs text-[var(--text-muted)] mt-0.5 max-w-xs truncate">{novel.slug}</div>
       </td>
-      <td className="py-3 px-4 text-slate-300 font-medium">{novel.authorName}</td>
+      <td className="py-3 px-4 text-[var(--text-secondary)] font-medium">{novel.authorName}</td>
       <td className="py-3 px-4">
         <div className="flex flex-wrap gap-1 max-w-xs">
           {novel.categories && novel.categories.length > 0 ? (
             novel.categories.map((c) => (
               <span
                 key={c.category.id}
-                className="px-2 py-0.5 text-[11px] bg-white/5 border border-white/10 text-slate-300 rounded-md"
+                className="px-2 py-0.5 text-[11px] bg-white/5 border border-[var(--border-color)] text-[var(--text-secondary)] rounded-md"
               >
                 {c.category.name}
               </span>
             ))
           ) : (
-            <span className="text-slate-500 text-xs">-</span>
+            <span className="text-[var(--text-muted)] text-xs">-</span>
           )}
         </div>
       </td>
-      <td className="py-3 px-4 text-slate-300 font-semibold">{novel._count?.chapters ?? 0}</td>
+      <td className="py-3 px-4 text-[var(--text-secondary)] font-semibold">{novel._count?.chapters ?? 0}</td>
       <td className="py-3 px-4">
         <StatusBadge status={novel.status} />
       </td>
@@ -59,7 +59,7 @@ export const NovelTableRow = ({
           <button
             onClick={() => onManageChapters(novel.id)}
             title="Quản lý các chương"
-            className="p-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1"
+            className="p-1.5 bg-[var(--accent-gold)]/10 hover:bg-amber-500/20 text-[var(--accent-gold)] border border-[var(--accent-gold)]/20 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -12,7 +12,10 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { MomoIpnDto } from './dto/momo-ipn.dto';
 import { Transaction, TransactionStatus, PaymentMethod } from '@prisma/client';
 import { randomUUID } from 'crypto';
-import type { IPaymentProvider } from './interfaces/payment-provider.interface';
+import type {
+  IPaymentProvider,
+  CallbackVerificationResult,
+} from './interfaces/payment-provider.interface';
 
 @Injectable()
 export class PaymentsService {
@@ -31,7 +34,13 @@ export class PaymentsService {
   }
 
   private getProvider(method: PaymentMethod): IPaymentProvider {
-    return this.providers.get(method) ?? this.momoService;
+    const provider = this.providers.get(method);
+    if (!provider) {
+      throw new BadRequestException(
+        `Phương thức thanh toán không được hỗ trợ: ${method}`,
+      );
+    }
+    return provider;
   }
 
   /**
@@ -177,6 +186,25 @@ export class PaymentsService {
   }
 
   /**
+   * Helper xác thực chữ ký callback và hoàn tất đơn hàng
+   */
+  private async verifyAndCompletePayment(
+    provider: IPaymentProvider,
+    payload: Record<string, any>,
+  ): Promise<CallbackVerificationResult> {
+    const result = provider.verifyCallback(payload);
+    if (result.isValid) {
+      await this.completePayment(
+        result.orderId,
+        result.transId,
+        result.amount,
+        result.isPaid,
+      );
+    }
+    return result;
+  }
+
+  /**
    * Xử lý IPN Webhook từ MoMo
    */
   async handleMomoIpn(ipnDto: MomoIpnDto) {
@@ -184,18 +212,15 @@ export class PaymentsService {
       `Received MoMo IPN for orderId: ${ipnDto.orderId}, resultCode: ${ipnDto.resultCode}`,
     );
 
-    const result = this.momoService.verifyCallback(ipnDto);
+    const result = await this.verifyAndCompletePayment(
+      this.momoService,
+      ipnDto,
+    );
+
     if (!result.isValid) {
       this.logger.warn(`Invalid IPN signature for orderId: ${ipnDto.orderId}`);
       throw new BadRequestException('Invalid MoMo signature');
     }
-
-    await this.completePayment(
-      result.orderId,
-      result.transId,
-      result.amount,
-      result.isPaid,
-    );
 
     return { message: 'Received', resultCode: 0 };
   }
@@ -208,21 +233,19 @@ export class PaymentsService {
       `Received VNPay IPN for orderId: ${query['vnp_TxnRef']}, ResponseCode: ${query['vnp_ResponseCode']}`,
     );
 
-    const result = this.vnpayService.verifyCallback(query);
-    if (!result.isValid) {
-      this.logger.warn(
-        `Invalid VNPay IPN signature for orderId: ${query['vnp_TxnRef']}`,
-      );
-      return { RspCode: '97', Message: 'Checksum failed' };
-    }
-
     try {
-      await this.completePayment(
-        result.orderId,
-        result.transId,
-        result.amount,
-        result.isPaid,
+      const result = await this.verifyAndCompletePayment(
+        this.vnpayService,
+        query,
       );
+
+      if (!result.isValid) {
+        this.logger.warn(
+          `Invalid VNPay IPN signature for orderId: ${query['vnp_TxnRef']}`,
+        );
+        return { RspCode: '97', Message: 'Checksum failed' };
+      }
+
       return { RspCode: '00', Message: 'Confirm Success' };
     } catch (err: unknown) {
       if (err instanceof NotFoundException) {

@@ -1,13 +1,17 @@
 import { useState } from 'react'
 import { useNovels } from '../api/get-novels'
-import { useCategories } from '../api/get-categories'
 import { useCreateNovel } from '../api/create-novel'
 import { useUpdateNovel } from '../api/update-novel'
 import { useDeleteNovel } from '../api/delete-novel'
 import { useNovelFilters } from './use-novel-filters'
-import type { Novel } from '../types'
+import type { Novel, Category } from '../types'
 
-export const useNovelAdmin = () => {
+interface UseNovelAdminOptions {
+  categories: Category[]
+  isCategoriesLoading: boolean
+}
+
+export const useNovelAdmin = ({ categories, isCategoriesLoading }: UseNovelAdminOptions) => {
   const filters = useNovelFilters()
 
   const {
@@ -20,8 +24,6 @@ export const useNovelAdmin = () => {
     categoryId: filters.selectedCategory || undefined,
     status: filters.selectedStatus || undefined,
   })
-
-  const { data: categoriesData, isLoading: isCategoriesLoading } = useCategories()
 
   const createNovelMutation = useCreateNovel()
   const updateNovelMutation = useUpdateNovel()
@@ -131,7 +133,7 @@ export const useNovelAdmin = () => {
 
   return {
     novels: novelsData?.items || [],
-    categories: categoriesData || [],
+    categories,
     loading: isNovelsLoading || isCategoriesLoading,
     submitting: createNovelMutation.isPending || updateNovelMutation.isPending,
     error:
