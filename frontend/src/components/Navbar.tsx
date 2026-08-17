@@ -15,9 +15,9 @@ export const NavbarComponent = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-[var(--bg-nav)] backdrop-blur-md border-b border-[var(--border-nav)] py-3 mb-6 transition-colors shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap lg:flex-nowrap items-center justify-between gap-3 xl:gap-6">
         {/* Brand Logo */}
-        <NavLink to={paths.home.getHref()} className="flex items-center gap-2 text-[var(--text-nav-primary)] font-bold text-xl whitespace-nowrap">
+        <NavLink to={paths.home.getHref()} className="flex items-center gap-2 text-[var(--text-nav-primary)] font-bold text-xl whitespace-nowrap shrink-0">
           <div className="flex items-center justify-center p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-[var(--accent-gold)]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -53,12 +53,12 @@ export const NavbarComponent = () => {
         </button>
 
         {/* Navbar Content */}
-        <div className={`${isMobileOpen ? 'flex' : 'hidden'} lg:flex flex-col lg:flex-row items-center justify-between w-full lg:w-auto flex-1 gap-4`}>
+        <div className={`${isMobileOpen ? 'flex' : 'hidden'} lg:flex flex-col lg:flex-row items-center justify-between w-full lg:w-auto flex-1 gap-3 xl:gap-4`}>
           {/* Central Search Bar */}
           <NavSearchInput />
 
           {/* Main Navigation Links */}
-          <nav className="flex flex-col lg:flex-row items-center gap-2 w-full lg:w-auto">
+          <nav className="flex flex-col lg:flex-row items-center gap-1.5 xl:gap-2 w-full lg:w-auto shrink-0">
             {customerNavItems.map((item) => {
               if (item.id === 'categories') {
                 return <NavCategoryDropdown key={item.id} label={item.label} icon={item.icon} />
@@ -72,7 +72,7 @@ export const NavbarComponent = () => {
                   to={item.path}
                   end={item.path === paths.home.getHref()}
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all w-full lg:w-auto ${isAccent
+                    `flex items-center gap-1.5 px-2.5 py-1.5 xl:px-3 xl:py-2 text-xs xl:text-sm font-medium rounded-lg whitespace-nowrap transition-all w-full lg:w-auto ${isAccent
                       ? 'text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500 hover:text-black hover:border-amber-500 font-semibold'
                       : isActive
                         ? 'text-[var(--text-nav-primary)] bg-[var(--bg-nav-elevated)] font-semibold'
@@ -91,7 +91,7 @@ export const NavbarComponent = () => {
               <NavLink
                 to={paths.admin.dashboard.getHref()}
                 className={({ isActive }) =>
-                  `flex items-center px-3 py-2 text-sm font-medium rounded-lg whitespace-nowrap transition-all w-full lg:w-auto ${
+                  `flex items-center px-2.5 py-1.5 xl:px-3 xl:py-2 text-xs xl:text-sm font-medium rounded-lg whitespace-nowrap transition-all w-full lg:w-auto ${
                     isActive
                       ? 'text-[var(--text-nav-primary)] bg-[var(--bg-nav-elevated)] font-semibold'
                       : 'text-[var(--text-nav-secondary)] hover:text-[var(--text-nav-primary)] hover:bg-[var(--bg-nav-hover)]'

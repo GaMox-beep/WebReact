@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../../context/AuthContext'
 import { useLogin } from '../api/login'
 import { GoogleLoginButton } from './google-login-button'
@@ -14,7 +15,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const { setUser, setAccessToken } = useAuth()
+  const queryClient = useQueryClient()
+  const { setAccessToken } = useAuth()
   const loginMutation = useLogin()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +25,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
 
     try {
       const data = await loginMutation.mutateAsync({ email, password })
-      setUser(data.user)
+      queryClient.setQueryData(['auth-user'], data.user)
       setAccessToken(data.accessToken)
       onSuccess?.(data)
     } catch (err: unknown) {

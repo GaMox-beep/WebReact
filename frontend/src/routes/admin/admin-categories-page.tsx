@@ -20,15 +20,15 @@ export const AdminCategoriesPage = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="text-2xl font-bold text-white mb-1">Quản Lý Thể Loại</h3>
-          <p className="text-slate-400 text-sm">
+          <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-1">Quản Lý Thể Loại</h3>
+          <p className="text-[var(--text-secondary)] text-sm">
             Thêm mới, chỉnh sửa thông tin và quản lý các danh mục truyện ({totalCount} thể loại)
           </p>
         </div>
         <button
           type="button"
           onClick={modal.actions.openCreate}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm rounded-xl transition-all"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] text-slate-950 font-bold text-sm rounded-xl transition-all"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,10 +55,10 @@ export const AdminCategoriesPage = () => {
       )}
 
       {/* Search Bar */}
-      <div className="flex items-center gap-3 bg-[#11131e] border border-white/10 rounded-2xl p-4">
+      <div className="flex items-center gap-3 bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-4">
         <div className="relative flex-1">
           <svg
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]"
             xmlns="http://www.w3.org/2000/svg"
             width="18"
             height="18"
@@ -77,19 +77,19 @@ export const AdminCategoriesPage = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Tìm kiếm theo tên thể loại, slug, hoặc mô tả..."
-            className="w-full pl-10 pr-4 py-2 bg-[#0a0b10] border border-white/10 rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:border-amber-500/50 text-sm"
+            className="w-full pl-10 pr-4 py-2 bg-[var(--bg-main)] border border-[var(--border-color)] rounded-xl text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent-gold)]/50 text-sm"
           />
         </div>
       </div>
 
       {/* Main Table / Empty State */}
       {loading ? (
-        <div className="bg-[#11131e] border border-white/10 rounded-2xl p-12 text-center text-slate-400">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-12 text-center text-[var(--text-secondary)]">
           Đang tải danh sách thể loại...
         </div>
       ) : categories.length === 0 ? (
-        <div className="bg-[#11131e] border border-white/10 rounded-2xl p-12 text-center">
-          <div className="w-16 h-16 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-12 text-center">
+          <div className="w-16 h-16 bg-[var(--accent-gold)]/10 border border-[var(--accent-gold)]/20 text-[var(--accent-gold)] rounded-2xl flex items-center justify-center mx-auto mb-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
@@ -107,10 +107,10 @@ export const AdminCategoriesPage = () => {
               <rect width="7" height="7" x="3" y="14" rx="1" />
             </svg>
           </div>
-          <h4 className="text-xl font-bold text-white mb-2">
+          <h4 className="text-xl font-bold text-[var(--text-primary)] mb-2">
             {search ? 'Không Tìm Thấy Thể Loại Nào' : 'Chưa Có Thể Loại Nào'}
           </h4>
-          <p className="text-slate-400 text-sm max-w-md mx-auto mb-6">
+          <p className="text-[var(--text-secondary)] text-sm max-w-md mx-auto mb-6">
             {search
               ? `Không có thể loại nào khớp với từ khóa "${search}". Vui lòng thử tìm kiếm khác.`
               : 'Hệ thống chưa có thể loại nào. Hãy nhấn vào nút bên dưới để tạo thể loại đầu tiên!'}
@@ -119,17 +119,17 @@ export const AdminCategoriesPage = () => {
             <button
               type="button"
               onClick={modal.actions.openCreate}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm rounded-xl transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--accent-gold)] hover:bg-[var(--accent-gold-hover)] text-slate-950 font-bold text-sm rounded-xl transition-all"
             >
               + Tạo Thể Loại Đầu Tiên
             </button>
           )}
         </div>
       ) : (
-        <div className="bg-[#11131e] border border-white/10 rounded-2xl overflow-hidden">
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="bg-[#0a0b10] border-b border-white/10 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <table className="w-full text-left text-sm text-[var(--text-secondary)]">
+              <thead className="bg-[var(--bg-main)] border-b border-[var(--border-color)] text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
                 <tr>
                   <th className="py-3.5 px-4">Tên Thể Loại</th>
                   <th className="py-3.5 px-4">Slug</th>

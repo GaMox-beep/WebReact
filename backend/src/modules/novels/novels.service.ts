@@ -8,18 +8,7 @@ import { StorageService } from '../../upload/storage.service';
 import { CreateNovelDto } from './dto/create-novel.dto';
 import { UpdateNovelDto } from './dto/update-novel.dto';
 import { QueryNovelDto } from './dto/query-novel.dto';
-
-export function generateSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[đĐ]/g, 'd')
-    .replace(/([^0-9a-z-\s])/g, '')
-    .replace(/(\s+)/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
+import { generateSlug } from '../../common/utils/slug.util';
 
 @Injectable()
 export class NovelsService {
@@ -234,11 +223,5 @@ export class NovelsService {
 
     await this.prisma.novel.delete({ where: { id } });
     return { message: 'Xóa truyện thành công', id };
-  }
-
-  async findAllCategories() {
-    return this.prisma.category.findMany({
-      orderBy: { name: 'asc' },
-    });
   }
 }

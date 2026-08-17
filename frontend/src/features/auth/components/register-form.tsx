@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../../context/AuthContext'
 import { useRegister } from '../api/register'
 import { GoogleLoginButton } from './google-login-button'
@@ -17,7 +18,8 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const { setUser, setAccessToken } = useAuth()
+  const queryClient = useQueryClient()
+  const { setAccessToken } = useAuth()
   const registerMutation = useRegister()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +38,7 @@ export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
 
     try {
       const data = await registerMutation.mutateAsync({ email, username, password })
-      setUser(data.user)
+      queryClient.setQueryData(['auth-user'], data.user)
       setAccessToken(data.accessToken)
       onSuccess?.(data)
     } catch (err: unknown) {

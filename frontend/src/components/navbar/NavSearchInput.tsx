@@ -1,11 +1,11 @@
 export const NavSearchInput = () => {
   return (
-    <div className="relative w-full lg:w-72 mx-auto">
+    <div className="relative w-full lg:w-48 xl:w-60 focus-within:lg:w-60 xl:focus-within:w-72 transition-all">
       <form onSubmit={(e) => e.preventDefault()}>
         <input
           type="search"
-          placeholder="Tìm kiếm tên truyện, tác giả..."
-          className="w-full bg-[var(--bg-nav-elevated)] border border-[var(--border-nav)] text-[var(--text-nav-primary)] placeholder-[var(--text-nav-muted)] rounded-full pl-9 pr-4 py-2 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+          placeholder="Tìm kiếm..."
+          className="w-full bg-[var(--bg-nav-elevated)] border border-[var(--border-nav)] text-[var(--text-nav-primary)] placeholder-[var(--text-nav-muted)] rounded-full pl-8 pr-3 py-1.5 text-xs xl:text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
         />
         <svg
           className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-nav-muted)] pointer-events-none"

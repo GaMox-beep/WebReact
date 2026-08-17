@@ -3,6 +3,7 @@ import CustomerLayout from '../layout/CustomerLayout'
 import { HomePage } from './landing/home-page'
 import { TopNovelsPage } from './landing/top-novels-page'
 import { RechargePage } from './user/recharge-page'
+import { PaymentResultPage } from './user/payment-result-page'
 import { LoginPage } from './auth/login-page'
 import { RegisterPage } from './auth/register-page'
 import { GoogleOAuthCallbackPage } from './auth/google-oauth-callback-page'
@@ -20,6 +21,7 @@ export const CustomerRoutes = (
     <Route path={paths.novels.detail.path} element={<NovelDetailPage />} />
     <Route path={paths.novels.chapter.path} element={<ChapterReaderPage />} />
     <Route path={paths.payments.recharge.path} element={<RechargePage />} />
+    <Route path={paths.payments.result.path} element={<PaymentResultPage />} />
     <Route path={paths.auth.login.path} element={<LoginPage />} />
     <Route path={paths.auth.register.path} element={<RegisterPage />} />
     <Route path={paths.auth.googleCallback.path} element={<GoogleOAuthCallbackPage />} />

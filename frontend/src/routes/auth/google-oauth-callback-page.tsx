@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '../../context/AuthContext'
 import type { User } from '../../types'
 import { paths } from '../../config/paths'
@@ -7,7 +8,8 @@ import { paths } from '../../config/paths'
 export const GoogleOAuthCallbackPage = () => {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const { setUser, setAccessToken } = useAuth()
+  const queryClient = useQueryClient()
+  const { setAccessToken } = useAuth()
 
   useEffect(() => {
     const accessToken = searchParams.get('accessToken')
@@ -27,13 +29,13 @@ export const GoogleOAuthCallbackPage = () => {
       return
     }
 
-    setUser(user)
+    queryClient.setQueryData(['auth-user'], user)
     setAccessToken(accessToken)
     if (refreshToken) {
       localStorage.setItem('refreshToken', refreshToken)
     }
     navigate(paths.home.getHref(), { replace: true })
-  }, [searchParams, navigate, setUser, setAccessToken])
+  }, [searchParams, navigate, queryClient, setAccessToken])
 
   return (
     <div className="flex justify-center items-center min-h-[80vh]">

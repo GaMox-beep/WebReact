@@ -18,24 +18,24 @@ export const CategoryTableRow = ({
   })
 
   return (
-    <tr className="hover:bg-white/5 transition-colors">
+    <tr className="hover:bg-[var(--bg-surface-hover)] transition-colors">
       <td className="py-3.5 px-4">
-        <div className="font-semibold text-white">{category.name}</div>
+        <div className="font-semibold text-[var(--text-primary)]">{category.name}</div>
       </td>
       <td className="py-3.5 px-4">
-        <code className="text-xs text-amber-400/90 font-mono bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+        <code className="text-xs text-[var(--accent-gold)]/90 font-mono bg-[var(--accent-gold)]/10 px-2 py-0.5 rounded border border-[var(--accent-gold)]/20">
           {category.slug}
         </code>
       </td>
-      <td className="py-3.5 px-4 text-slate-400 max-w-xs truncate">
-        {category.description || <span className="text-slate-600 italic">Chưa có mô tả</span>}
+      <td className="py-3.5 px-4 text-[var(--text-secondary)] max-w-xs truncate">
+        {category.description || <span className="text-[var(--text-muted)] italic">Chưa có mô tả</span>}
       </td>
       <td className="py-3.5 px-4">
-        <span className="text-sm font-medium text-slate-300">
+        <span className="text-sm font-medium text-[var(--text-secondary)]">
           {category._count?.novels ?? 0} truyện
         </span>
       </td>
-      <td className="py-3.5 px-4 text-slate-400 text-xs">
+      <td className="py-3.5 px-4 text-[var(--text-secondary)] text-xs">
         {formattedDate}
       </td>
       <td className="py-3.5 px-4 text-right">
@@ -43,7 +43,7 @@ export const CategoryTableRow = ({
           <button
             type="button"
             onClick={() => onEdit(category)}
-            className="p-1.5 text-slate-400 hover:text-amber-400 hover:bg-white/5 rounded-lg transition-colors"
+            className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--accent-gold)] hover:bg-[var(--bg-surface-hover)] rounded-lg transition-colors"
             title="Chỉnh sửa thể loại"
           >
             <svg
@@ -64,7 +64,7 @@ export const CategoryTableRow = ({
           <button
             type="button"
             onClick={() => onDelete(category.id, category.name)}
-            className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors"
+            className="p-1.5 text-[var(--text-secondary)] hover:text-red-400 hover:bg-[var(--bg-surface-hover)] rounded-lg transition-colors"
             title="Xóa thể loại"
           >
             <svg
