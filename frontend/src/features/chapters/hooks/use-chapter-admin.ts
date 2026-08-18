@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useCreateChapter } from '../api/create-chapter'
 import { useUpdateChapter } from '../api/update-chapter'
 import { useDeleteChapter } from '../api/delete-chapter'
+import { getChapter } from '../api/get-chapter'
 import type { Chapter } from '../types'
 
 interface UseChapterAdminOptions {
@@ -29,6 +30,7 @@ export const useChapterAdmin = ({
   const [formTitle, setFormTitle] = useState('')
   const [formContent, setFormContent] = useState('')
   const [formIsVip, setFormIsVip] = useState(false)
+  const [formPrice, setFormPrice] = useState<number | ''>(5)
 
   const openCreateModal = () => {
     setFormError(null)
@@ -43,17 +45,36 @@ export const useChapterAdmin = ({
     setFormTitle(`Chương ${nextChapterNum}: `)
     setFormContent('')
     setFormIsVip(false)
+    setFormPrice(5)
     setIsModalOpen(true)
   }
 
-  const openEditModal = (chapter: Chapter) => {
+  const openEditModal = async (chapter: Chapter) => {
     setFormError(null)
     setEditingChapter(chapter)
     setFormChapterNumber(chapter.chapterNumber)
     setFormTitle(chapter.title)
     setFormContent(chapter.content || '')
     setFormIsVip(chapter.isVip)
+    setFormPrice(chapter.price !== undefined ? chapter.price : chapter.isVip ? 5 : 0)
     setIsModalOpen(true)
+
+    // Novel summary list does not include full content to keep payload small.
+    // Fetch full chapter detail to populate the complete content for editing.
+    try {
+      const fullChapter = await getChapter(chapter.id)
+      if (fullChapter && fullChapter.content !== undefined) {
+        setFormContent(fullChapter.content)
+        if (fullChapter.price !== undefined) {
+          setFormPrice(fullChapter.price)
+        }
+        if (fullChapter.isVip !== undefined) {
+          setFormIsVip(fullChapter.isVip)
+        }
+      }
+    } catch (err: unknown) {
+      console.error('Failed to load full chapter content for editing:', err)
+    }
   }
 
   const closeModal = () => {
@@ -69,6 +90,12 @@ export const useChapterAdmin = ({
       return
     }
 
+    const calculatedPrice = formIsVip
+      ? formPrice === ''
+        ? 5
+        : Number(formPrice)
+      : 0
+
     try {
       if (editingChapter) {
         await updateChapterMutation.mutateAsync({
@@ -79,6 +106,7 @@ export const useChapterAdmin = ({
             title: formTitle,
             content: formContent,
             isVip: formIsVip,
+            price: calculatedPrice,
           },
         })
       } else {
@@ -88,6 +116,7 @@ export const useChapterAdmin = ({
           title: formTitle,
           content: formContent,
           isVip: formIsVip,
+          price: calculatedPrice,
         })
       }
       setIsModalOpen(false)
@@ -130,6 +159,8 @@ export const useChapterAdmin = ({
         setContent: setFormContent,
         isVip: formIsVip,
         setIsVip: setFormIsVip,
+        price: formPrice,
+        setPrice: setFormPrice,
       },
       actions: {
         openCreate: openCreateModal,

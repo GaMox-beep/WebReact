@@ -6,6 +6,7 @@ interface ChapterItem {
   chapterNumber: number
   title: string
   isVip?: boolean
+  price?: number
   views?: number
   createdAt?: string
 }

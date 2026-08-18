@@ -12,6 +12,7 @@ export const useCreateChapter = () => {
   return useMutation({
     mutationFn: (payload: CreateChapterPayload) => createChapter(payload),
     onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['chapter'] })
       queryClient.invalidateQueries({ queryKey: ['novel', variables.novelId] })
       queryClient.invalidateQueries({ queryKey: ['novels'] })
     },

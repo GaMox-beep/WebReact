@@ -18,7 +18,7 @@ export const useUpdateChapter = () => {
   return useMutation({
     mutationFn: ({ id, payload }: UpdateChapterParams) => updateChapter({ id, payload }),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['chapter', variables.id] })
+      queryClient.invalidateQueries({ queryKey: ['chapter'] })
       if (variables.novelId) {
         queryClient.invalidateQueries({ queryKey: ['novel', variables.novelId] })
       }

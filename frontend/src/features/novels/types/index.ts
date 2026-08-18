@@ -27,6 +27,8 @@ export interface Novel {
     content?: string
     views: number
     isVip: boolean
+    price?: number
+    isUnlocked?: boolean
     createdAt: string
     updatedAt: string
   }[]
