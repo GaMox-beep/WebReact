@@ -14,6 +14,8 @@ interface ChapterFormModalProps {
     setContent: (v: string) => void
     isVip: boolean
     setIsVip: (v: boolean) => void
+    price: number | ''
+    setPrice: (v: number | '') => void
   }
   actions: {
     close: () => void
@@ -102,17 +104,42 @@ export const ChapterFormModal = ({
             />
           </div>
 
-          <div className="flex items-center gap-2 p-3 bg-[var(--bg-main)] border border-[var(--border-color)] rounded-xl">
-            <input
-              type="checkbox"
-              id="isVipCheck"
-              checked={form.isVip}
-              onChange={(e) => form.setIsVip(e.target.checked)}
-              className="w-4 h-4 accent-[var(--accent-gold)] rounded cursor-pointer"
-            />
-            <label htmlFor="isVipCheck" className="text-xs font-medium text-[var(--text-secondary)] cursor-pointer">
-              Đánh dấu là <span className="text-[var(--accent-gold)] font-bold">Chương VIP</span> (Yêu cầu trả xu để đọc)
-            </label>
+          {/* VIP Checkbox & Price Field */}
+          <div className="p-3.5 bg-[var(--bg-main)] border border-[var(--border-color)] rounded-xl space-y-3">
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="isVipCheck"
+                checked={form.isVip}
+                onChange={(e) => form.setIsVip(e.target.checked)}
+                className="w-4 h-4 accent-[var(--accent-gold)] rounded cursor-pointer"
+              />
+              <label htmlFor="isVipCheck" className="text-xs font-medium text-[var(--text-secondary)] cursor-pointer">
+                Đánh dấu là <span className="text-[var(--accent-gold)] font-bold">Chương VIP</span> (Yêu cầu trả xu để đọc)
+              </label>
+            </div>
+
+            {form.isVip && (
+              <div className="pt-2 border-t border-[var(--border-color)] flex items-center gap-3">
+                <label className="text-xs font-medium text-[var(--text-secondary)] shrink-0">
+                  Giá Mở Khóa (Xu):
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="1000"
+                  value={form.price}
+                  onChange={(e) =>
+                    form.setPrice(e.target.value === '' ? '' : Number(e.target.value))
+                  }
+                  placeholder="5"
+                  className="w-28 bg-[var(--bg-surface)] border border-[var(--border-color)] text-[var(--text-primary)] text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-[var(--accent-gold)]"
+                />
+                <span className="text-xs text-[var(--text-muted)]">
+                  (Mặc định 5 xu)
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="flex justify-end gap-2 pt-4 border-t border-[var(--border-color)] mt-6">

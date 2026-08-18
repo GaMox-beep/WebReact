@@ -27,4 +27,9 @@ export class CreateChapterDto {
   @IsOptional()
   @IsBoolean()
   isVip?: boolean;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber({}, { message: 'price phải là chữ số' })
+  price?: number;
 }

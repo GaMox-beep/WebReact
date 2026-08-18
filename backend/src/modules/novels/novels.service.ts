@@ -141,6 +141,7 @@ export class NovelsService {
             title: true,
             views: true,
             isVip: true,
+            price: true,
             createdAt: true,
           },
           orderBy: { chapterNumber: 'asc' },

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useChapterByNumber } from '../../features/chapters/api/get-chapter-by-number'
 import { useNovel } from '../../features/novels/api/get-novel'
+import { useUnlockChapter } from '../../features/chapters/api/unlock-chapter'
 import { ChapterReaderSkeleton } from '../../features/chapters/components/chapter-reader-skeleton'
 import { ChapterReaderHeader } from '../../features/chapters/components/chapter-reader-header'
 import {
@@ -10,14 +11,19 @@ import {
   type LineHeightOption,
 } from '../../features/chapters/components/chapter-reader-content'
 import { ChapterReaderToolbar } from '../../features/chapters/components/chapter-reader-toolbar'
+import { ChapterReaderPaywall } from '../../features/chapters/components/chapter-reader-paywall'
+import { useAuth } from '../../context/AuthContext'
 import { paths } from '../../config/paths'
 
 const STORAGE_KEY_FONT_SIZE = 'webnovel_reader_font_size'
 const STORAGE_KEY_LINE_HEIGHT = 'webnovel_reader_line_height'
+const STORAGE_KEY_AUTO_UNLOCK = 'webnovel_auto_unlock_vip'
 
 export const ChapterReaderPage = () => {
   const { slug, chapterNumber } = useParams<{ slug: string; chapterNumber: string }>()
   const navigate = useNavigate()
+  const { user, isAuthenticated } = useAuth()
+  const unlockMutation = useUnlockChapter()
 
   // Reading preference states with localStorage persistence
   const [fontSize, setFontSize] = useState<FontSizeOption>(() => {
@@ -30,6 +36,11 @@ export const ChapterReaderPage = () => {
     return (saved as LineHeightOption) || 'relaxed'
   })
 
+  // Auto-unlock preference: defaulted to OFF (false) per strict user requirement
+  const [autoUnlock, setAutoUnlock] = useState<boolean>(() => {
+    return localStorage.getItem(STORAGE_KEY_AUTO_UNLOCK) === 'true'
+  })
+
   const handleFontSizeChange = (newSize: FontSizeOption) => {
     setFontSize(newSize)
     localStorage.setItem(STORAGE_KEY_FONT_SIZE, newSize)
@@ -38,6 +49,11 @@ export const ChapterReaderPage = () => {
   const handleLineHeightChange = (newLineHeight: LineHeightOption) => {
     setLineHeight(newLineHeight)
     localStorage.setItem(STORAGE_KEY_LINE_HEIGHT, newLineHeight)
+  }
+
+  const handleToggleAutoUnlock = (enabled: boolean) => {
+    setAutoUnlock(enabled)
+    localStorage.setItem(STORAGE_KEY_AUTO_UNLOCK, String(enabled))
   }
 
   // Fetch current chapter content and navigation
@@ -54,6 +70,54 @@ export const ChapterReaderPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [slug, chapterNumber])
+
+  const currentNum = chapter?.chapterNumber !== undefined
+    ? (typeof chapter.chapterNumber === 'number' ? chapter.chapterNumber : parseFloat(chapter.chapterNumber))
+    : 1
+
+  const handleUnlock = async () => {
+    if (!chapter?.id) return
+    try {
+      await unlockMutation.mutateAsync({
+        chapterId: chapter.id,
+        novelSlug: slug,
+        chapterNumber: currentNum,
+      })
+    } catch {
+      // Error handled by mutation state
+    }
+  }
+
+  // Auto-unlock trigger: only runs if user explicitly opted in
+  useEffect(() => {
+    if (
+      autoUnlock &&
+      chapter &&
+      chapter.isVip &&
+      chapter.isUnlocked === false &&
+      isAuthenticated &&
+      (user?.coins ?? 0) >= (chapter.price || 5) &&
+      !unlockMutation.isPending &&
+      !unlockMutation.isSuccess &&
+      !unlockMutation.isError
+    ) {
+      if (chapter.id) {
+        unlockMutation.mutate({
+          chapterId: chapter.id,
+          novelSlug: slug,
+          chapterNumber: currentNum,
+        })
+      }
+    }
+  }, [
+    autoUnlock,
+    chapter,
+    currentNum,
+    isAuthenticated,
+    user?.coins,
+    slug,
+    unlockMutation,
+  ])
 
   // Keyboard navigation (ArrowLeft: Previous chapter, ArrowRight: Next chapter)
   useEffect(() => {
@@ -135,7 +199,7 @@ export const ChapterReaderPage = () => {
     )
   }
 
-  const currentNum = typeof chapter.chapterNumber === 'number' ? chapter.chapterNumber : parseFloat(chapter.chapterNumber)
+  const isLocked = chapter.isVip && chapter.isUnlocked === false
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
@@ -162,6 +226,25 @@ export const ChapterReaderPage = () => {
           fontSize={fontSize}
           lineHeight={lineHeight}
         />
+
+        {/* Paywall Container for Locked VIP Chapters */}
+        {isLocked && (
+          <ChapterReaderPaywall
+            chapterId={chapter.id}
+            chapterPrice={chapter.price || 5}
+            user={user}
+            isAuthenticated={isAuthenticated}
+            isUnlocking={unlockMutation.isPending}
+            unlockError={
+              unlockMutation.error instanceof Error
+                ? unlockMutation.error.message
+                : null
+            }
+            autoUnlock={autoUnlock}
+            onToggleAutoUnlock={handleToggleAutoUnlock}
+            onUnlock={handleUnlock}
+          />
+        )}
       </div>
 
       {/* Bottom Navigation Toolbar */}

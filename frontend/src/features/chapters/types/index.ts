@@ -6,6 +6,8 @@ export interface Chapter {
   content?: string
   views: number
   isVip: boolean
+  price?: number
+  isUnlocked?: boolean
   createdAt: string
   updatedAt: string
 }
@@ -16,6 +18,7 @@ export interface CreateChapterPayload {
   title: string
   content: string
   isVip?: boolean
+  price?: number
 }
 
 export interface UpdateChapterPayload {
@@ -23,12 +26,15 @@ export interface UpdateChapterPayload {
   title?: string
   content?: string
   isVip?: boolean
+  price?: number
 }
 
 export interface ChapterNavigationItem {
   id: string
   chapterNumber: number
   title: string
+  isVip?: boolean
+  price?: number
 }
 
 export interface ChapterDetailNovel {
@@ -47,3 +53,9 @@ export interface ChapterDetailResponse extends Chapter {
   }
 }
 
+export interface UnlockChapterResponse {
+  success: boolean
+  message: string
+  chapter: ChapterDetailResponse
+  remainingCoins: number
+}

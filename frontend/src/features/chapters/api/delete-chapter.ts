@@ -16,7 +16,7 @@ export const useDeleteChapter = () => {
   return useMutation({
     mutationFn: ({ id }: DeleteChapterParams) => deleteChapter(id),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['chapter', variables.id] })
+      queryClient.invalidateQueries({ queryKey: ['chapter'] })
       if (variables.novelId) {
         queryClient.invalidateQueries({ queryKey: ['novel', variables.novelId] })
       }

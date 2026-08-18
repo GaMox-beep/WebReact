@@ -20,7 +20,8 @@ model User {
   updatedAt     DateTime       @updatedAt
   refreshTokens RefreshToken[]
   oauthAccounts OAuthAccount[]
-  transactions  Transaction[]
+  transactions     Transaction[]
+  unlockedChapters UnlockedChapter[]
 
   @@map("users")
 }
@@ -101,19 +102,37 @@ model NovelCategory {
 }
 
 model Chapter {
-  id            String   @id @default(uuid())
+  id            String            @id @default(uuid())
   novelId       String
-  novel         Novel    @relation(fields: [novelId], references: [id], onDelete: Cascade)
+  novel         Novel             @relation(fields: [novelId], references: [id], onDelete: Cascade)
   chapterNumber Float
   title         String
-  content       String   @db.Text
-  views         Int      @default(0)
-  isVip         Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  content       String            @db.Text
+  views         Int               @default(0)
+  isVip         Boolean           @default(false)
+  price         Int               @default(0)
+  unlockedBy    UnlockedChapter[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
 
   @@unique([novelId, chapterNumber])
   @@map("chapters")
+}
+
+model UnlockedChapter {
+  id         String   @id @default(uuid())
+  userId     String
+  chapterId  String
+  coinsSpent Int
+  createdAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, chapterId])
+  @@index([userId])
+  @@index([chapterId])
+  @@map("unlocked_chapters")
 }
 
 enum TransactionStatus {

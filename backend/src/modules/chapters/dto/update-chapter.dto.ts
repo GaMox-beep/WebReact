@@ -18,4 +18,9 @@ export class UpdateChapterDto {
   @IsOptional()
   @IsBoolean()
   isVip?: boolean;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  price?: number;
 }
