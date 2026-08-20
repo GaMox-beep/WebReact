@@ -22,6 +22,7 @@ model User {
   oauthAccounts OAuthAccount[]
   transactions     Transaction[]
   unlockedChapters UnlockedChapter[]
+  bookmarks        Bookmark[]
 
   @@map("users")
 }
@@ -85,9 +86,13 @@ model Novel {
   rating      Float           @default(5.0)
   categories  NovelCategory[]
   chapters    Chapter[]
+  bookmarks   Bookmark[]
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
 
+  @@index([views(sort: Desc)])
+  @@index([updatedAt(sort: Desc)])
+  @@index([status, createdAt(sort: Desc)])
   @@map("novels")
 }
 
@@ -116,6 +121,8 @@ model Chapter {
   updatedAt     DateTime          @updatedAt
 
   @@unique([novelId, chapterNumber])
+  @@index([novelId, chapterNumber(sort: Asc)])
+  @@index([views(sort: Desc)])
   @@map("chapters")
 }
 
@@ -177,6 +184,21 @@ model Transaction {
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
 
+  @@index([userId, createdAt(sort: Desc)])
   @@map("transactions")
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String
+  novelId   String
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  novel Novel @relation(fields: [novelId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, novelId])
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("bookmarks")
 }
 

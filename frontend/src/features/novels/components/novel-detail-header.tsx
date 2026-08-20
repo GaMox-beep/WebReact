@@ -5,9 +5,10 @@ import { StatusBadge } from './status-badge'
 
 interface NovelDetailHeaderProps {
   novel: Novel
+  actionSlot?: React.ReactNode
 }
 
-export const NovelDetailHeader = ({ novel }: NovelDetailHeaderProps) => {
+export const NovelDetailHeader = ({ novel, actionSlot }: NovelDetailHeaderProps) => {
   const chapterCount = novel.chapters?.length ?? (novel._count?.chapters ?? 0)
   const firstChapter = novel.chapters?.[0]
 
@@ -133,15 +134,7 @@ export const NovelDetailHeader = ({ novel }: NovelDetailHeaderProps) => {
               </button>
             )}
 
-            <button
-              type="button"
-              className="px-5 py-2.5 bg-[var(--bg-surface-elevated)] hover:bg-[var(--bg-surface-hover)] border border-[var(--border-color)] text-[var(--text-primary)] font-medium text-sm rounded-xl transition-all flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
-              </svg>
-              <span>Lưu Vào Tủ Truyện</span>
-            </button>
+            {actionSlot}
           </div>
         </div>
       </div>

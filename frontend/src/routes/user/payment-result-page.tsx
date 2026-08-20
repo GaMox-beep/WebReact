@@ -20,11 +20,13 @@ export const PaymentResultPage = () => {
     queryParams,
   );
 
-  // Invalidate and immediately refetch user profile & coins when payment verifies
+  // Invalidate and immediately refetch user profile, coins & transactions when payment verifies
   useEffect(() => {
     if (data?.success) {
       queryClient.invalidateQueries({ queryKey: ['auth-user'] });
       queryClient.refetchQueries({ queryKey: ['auth-user'] });
+      queryClient.invalidateQueries({ queryKey: ['my-transactions'] });
+      queryClient.refetchQueries({ queryKey: ['my-transactions'] });
     }
   }, [data?.success, queryClient]);
 

@@ -7,6 +7,7 @@ import { AdminChaptersPage } from './admin/admin-chapters-page'
 import ProtectedRoute from './ProtectedRoute'
 import { paths } from '../config/paths'
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AdminRoutes = (
   <Route element={<ProtectedRoute redirectPath={paths.home.path} />}>
     <Route element={<AdminLayout />}>

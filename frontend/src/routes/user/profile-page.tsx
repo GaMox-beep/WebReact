@@ -3,14 +3,13 @@ import { Navigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { paths } from '../../config/paths'
 import { ProfileDetailsTab } from '../../features/users/components/ProfileDetailsTab'
-import { BookmarksTab } from '../../features/users/components/BookmarksTab'
 import { ReadingHistoryTab } from '../../features/users/components/ReadingHistoryTab'
 import { AccountSettingsTab } from '../../features/users/components/AccountSettingsTab'
 import { ProfileTransactionsTab } from '../../features/payments/components/profile-transactions-tab'
 
 export const ProfilePage = () => {
   const { user, isAuthenticated, accessToken, isLoadingUser, logout } = useAuth()
-  const [activeTab, setActiveTab] = useState<'profile' | 'bookmarks' | 'history' | 'transactions' | 'settings'>('profile')
+  const [activeTab, setActiveTab] = useState<'profile' | 'history' | 'transactions' | 'settings'>('profile')
 
   if (accessToken && isLoadingUser) {
     return (
@@ -88,16 +87,6 @@ export const ProfilePage = () => {
           Hồ Sơ
         </button>
         <button
-          onClick={() => setActiveTab('bookmarks')}
-          className={`px-3.5 py-2 rounded-lg font-medium text-xs transition-colors flex items-center gap-1.5 ${
-            activeTab === 'bookmarks'
-              ? 'bg-[var(--accent-gold)] text-slate-950 font-semibold'
-              : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-hover)]'
-          }`}
-        >
-          Tủ Truyện
-        </button>
-        <button
           onClick={() => setActiveTab('history')}
           className={`px-3.5 py-2 rounded-lg font-medium text-xs transition-colors flex items-center gap-1.5 ${
             activeTab === 'history'
@@ -132,7 +121,6 @@ export const ProfilePage = () => {
       {/* Tab Content Panels */}
       <div className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-xl p-6 transition-colors">
         {activeTab === 'profile' && <ProfileDetailsTab user={user} onLogout={logout} />}
-        {activeTab === 'bookmarks' && <BookmarksTab />}
         {activeTab === 'history' && <ReadingHistoryTab />}
         {activeTab === 'transactions' && <ProfileTransactionsTab />}
         {activeTab === 'settings' && <AccountSettingsTab />}

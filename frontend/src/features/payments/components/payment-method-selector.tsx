@@ -5,9 +5,24 @@ interface PaymentMethodSelectorProps {
   onSelect: (method: PaymentMethod) => void
 }
 
-const PAYMENT_OPTIONS: { id: PaymentMethod; name: string; description: string; bgColor: string }[] = [
-  { id: 'MOMO', name: 'Ví MoMo', description: 'Quét mã QR / App MoMo', bgColor: '#A50064' },
-  { id: 'VNPAY', name: 'Cổng VNPAY', description: 'Thẻ ATM / QR / Tài khoản Ngân hàng', bgColor: '#005BAA' },
+const PAYMENT_OPTIONS: {
+  id: PaymentMethod
+  name: string
+  description: string
+  bgColor: string
+}[] = [
+  {
+    id: 'VNPAY',
+    name: 'Cổng VNPAY',
+    description: 'Thẻ ATM / QR / Tài khoản Ngân hàng',
+    bgColor: '#005BAA',
+  },
+  {
+    id: 'MOMO',
+    name: 'Ví MoMo',
+    description: 'Quét mã QR / App MoMo',
+    bgColor: '#A50064',
+  },
 ]
 
 export const PaymentMethodSelector = ({
@@ -23,7 +38,7 @@ export const PaymentMethodSelector = ({
             key={option.id}
             type="button"
             onClick={() => onSelect(option.id)}
-            className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+            className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between relative overflow-hidden ${
               isSelected
                 ? 'border-[var(--accent-gold)] bg-[var(--accent-gold)]/5 ring-1 ring-[var(--accent-gold)]'
                 : 'border-[var(--border-color)] bg-[var(--bg-surface)] hover:border-[var(--accent-gold)]/50'
@@ -47,7 +62,7 @@ export const PaymentMethodSelector = ({
             </div>
 
             <div
-              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
                 isSelected ? 'border-[var(--accent-gold)]' : 'border-[var(--border-color)]'
               }`}
             >

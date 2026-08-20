@@ -13,6 +13,7 @@ import {
 import { ChapterReaderToolbar } from '../../features/chapters/components/chapter-reader-toolbar'
 import { ChapterReaderPaywall } from '../../features/chapters/components/chapter-reader-paywall'
 import { useAuth } from '../../context/AuthContext'
+import { BookmarkButton } from '../../features/bookmarks/components/bookmark-button'
 import { paths } from '../../config/paths'
 
 const STORAGE_KEY_FONT_SIZE = 'webnovel_reader_font_size'
@@ -204,7 +205,10 @@ export const ChapterReaderPage = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
       {/* Header with Title & Metadata */}
-      <ChapterReaderHeader chapter={chapter} />
+      <ChapterReaderHeader
+        chapter={chapter}
+        actionSlot={<BookmarkButton novelId={chapter.novel.id} variant="compact" />}
+      />
 
       {/* Top Navigation & Settings Bar */}
       <ChapterReaderToolbar

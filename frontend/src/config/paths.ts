@@ -31,6 +31,10 @@ export const paths = {
       path: '/top-truyen',
       getHref: () => '/top-truyen',
     },
+    bookmarks: {
+      path: '/tu-truyen',
+      getHref: () => '/tu-truyen',
+    },
     detail: {
       path: '/novels/:slug',
       getHref: (slug: string) => `/novels/${slug}`,

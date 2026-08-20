@@ -21,7 +21,7 @@ export class QueryNovelDto {
 
   @IsOptional()
   @IsString()
-  sortBy?: 'createdAt' | 'views' | 'rating' = 'createdAt';
+  sortBy?: 'createdAt' | 'updatedAt' | 'views' | 'rating' = 'createdAt';
 
   @IsOptional()
   @IsString()

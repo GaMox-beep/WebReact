@@ -4,17 +4,25 @@ import type { Novel } from '../types'
 
 interface NovelCardProps {
   novel: Novel
+  topRightSlot?: React.ReactNode
 }
 
-export const NovelCard = ({ novel }: NovelCardProps) => {
+export const NovelCard = ({ novel, topRightSlot }: NovelCardProps) => {
   const chapterCount = novel._count?.chapters ?? 0
   const mainCategory = novel.categories?.[0]?.category
 
   return (
-    <Link
-      to={paths.novels.detail.getHref(novel.slug)}
-      className="group flex flex-col bg-[var(--bg-surface)] border border-[var(--border-color)] hover:border-[var(--accent-gold)] rounded-xl overflow-hidden transition-colors duration-150"
-    >
+    <div className="relative group flex flex-col bg-[var(--bg-surface)] border border-[var(--border-color)] hover:border-[var(--accent-gold)] rounded-xl overflow-hidden transition-colors duration-150">
+      {topRightSlot && (
+        <div className="absolute top-2 right-2 z-10">
+          {topRightSlot}
+        </div>
+      )}
+
+      <Link
+        to={paths.novels.detail.getHref(novel.slug)}
+        className="flex flex-col flex-1 h-full"
+      >
       {/* Cover Image Container (2:3 Aspect Ratio) */}
       <div className="relative w-full aspect-[2/3] bg-[var(--bg-surface-elevated)] overflow-hidden">
         {novel.coverUrl ? (
@@ -138,5 +146,6 @@ export const NovelCard = ({ novel }: NovelCardProps) => {
         </div>
       </div>
     </Link>
-  )
+  </div>
+)
 }
