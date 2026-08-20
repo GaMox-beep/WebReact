@@ -20,7 +20,7 @@ export const RechargePage = () => {
   const createPaymentMutation = useCreatePayment();
 
   const [userSelectedPackageId, setUserSelectedPackageId] = useState<string | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('MOMO');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('VNPAY');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const defaultPackage =

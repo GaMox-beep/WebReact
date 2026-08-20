@@ -29,10 +29,10 @@ export const customerNavItems: CustomerMenuItem[] = [
     icon: 'grid',
   },
   {
-    id: 'top',
-    label: 'Top Truyện',
-    path: paths.novels.top.getHref(),
-    icon: 'trophy',
+    id: 'bookmarks',
+    label: 'Tủ Truyện',
+    path: paths.novels.bookmarks.getHref(),
+    icon: 'bookmark',
   },
   {
     id: 'recharge',

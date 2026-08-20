@@ -1,12 +1,25 @@
+import { paths } from '../../config/paths'
 import { useNovels } from '../../features/novels/api/get-novels'
-import { NovelGrid } from '../../features/novels/components/novel-grid'
+import { NovelSection } from '../../features/novels/components/novel-section'
 
 export const HomePage = () => {
-  const { data: novelsData, isLoading, error } = useNovels({ limit: 18 })
-  const novels = novelsData?.items || []
+  const {
+    data: recentNovelsData,
+    isLoading: isLoadingRecent,
+    error: recentError,
+  } = useNovels({ sortBy: 'updatedAt', sortOrder: 'desc', limit: 6 })
+
+  const {
+    data: topNovelsData,
+    isLoading: isLoadingTop,
+    error: topError,
+  } = useNovels({ sortBy: 'views', sortOrder: 'desc', limit: 6 })
+
+  const recentNovels = recentNovelsData?.items || []
+  const topNovels = topNovelsData?.items || []
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-10">
       {/* Subtle Welcome Hero Banner */}
       <section className="relative overflow-hidden bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8">
         <div className="max-w-2xl space-y-3">
@@ -22,27 +35,27 @@ export const HomePage = () => {
         </div>
       </section>
 
-      {/* Main Section: Newly Updated Novels */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
-          <div className="flex items-center gap-2.5">
-            <h2 className="text-lg sm:text-xl font-bold text-[var(--text-primary)]">
-              Truyện Mới Cập Nhật
-            </h2>
-          </div>
-          <span className="text-xs text-[var(--text-muted)] font-medium">
-            {novels.length > 0 ? `${novels.length} bộ truyện` : ''}
-          </span>
-        </div>
+      {/* Section 1: Truyện Mới Cập Nhật */}
+      <NovelSection
+        title="Truyện Mới Cập Nhật"
+        viewAllHref={paths.novels.categories.getHref()}
+        novels={recentNovels}
+        isLoading={isLoadingRecent}
+        error={recentError}
+        skeletonCount={6}
+        emptyMessage="Hiện chưa có truyện mới cập nhật."
+      />
 
-        {error && (
-          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-400">
-            Không thể tải danh sách truyện: {error instanceof Error ? error.message : 'Lỗi kết nối máy chủ'}
-          </div>
-        )}
-
-        <NovelGrid novels={novels} isLoading={isLoading} />
-      </section>
+      {/* Section 2: Truyện Đọc Nhiều Nhất */}
+      <NovelSection
+        title="Truyện Đọc Nhiều Nhất"
+        viewAllHref={paths.novels.top.getHref()}
+        novels={topNovels}
+        isLoading={isLoadingTop}
+        error={topError}
+        skeletonCount={6}
+        emptyMessage="Hiện chưa có truyện nào được xếp hạng."
+      />
     </div>
   )
 }

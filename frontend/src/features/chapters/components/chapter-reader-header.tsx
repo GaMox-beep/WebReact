@@ -4,33 +4,38 @@ import type { ChapterDetailResponse } from '../types'
 
 interface ChapterReaderHeaderProps {
   chapter: ChapterDetailResponse
+  actionSlot?: React.ReactNode
 }
 
-export const ChapterReaderHeader = ({ chapter }: ChapterReaderHeaderProps) => {
+export const ChapterReaderHeader = ({ chapter, actionSlot }: ChapterReaderHeaderProps) => {
   const { novel } = chapter
 
   return (
     <header className="space-y-4 pb-6 border-b border-[var(--border-color)]">
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-2 text-xs text-[var(--text-muted)]">
-        <Link
-          to={paths.home.getHref()}
-          className="hover:text-[var(--text-primary)] transition-colors"
-        >
-          Trang Chủ
-        </Link>
-        <span>/</span>
-        <Link
-          to={paths.novels.detail.getHref(novel.slug)}
-          className="hover:text-[var(--text-primary)] transition-colors max-w-[200px] truncate"
-        >
-          {novel.title}
-        </Link>
-        <span>/</span>
-        <span className="text-[var(--text-secondary)] font-medium">
-          Chương {chapter.chapterNumber}
-        </span>
-      </nav>
+      {/* Breadcrumb and Action Slot */}
+      <div className="flex items-center justify-between gap-3">
+        <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-2 text-xs text-[var(--text-muted)]">
+          <Link
+            to={paths.home.getHref()}
+            className="hover:text-[var(--text-primary)] transition-colors"
+          >
+            Trang Chủ
+          </Link>
+          <span>/</span>
+          <Link
+            to={paths.novels.detail.getHref(novel.slug)}
+            className="hover:text-[var(--text-primary)] transition-colors max-w-[200px] truncate"
+          >
+            {novel.title}
+          </Link>
+          <span>/</span>
+          <span className="text-[var(--text-secondary)] font-medium">
+            Chương {chapter.chapterNumber}
+          </span>
+        </nav>
+
+        {actionSlot}
+      </div>
 
       {/* Chapter & Novel Titles */}
       <div className="text-center space-y-2 pt-2">

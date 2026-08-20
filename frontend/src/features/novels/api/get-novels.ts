@@ -7,7 +7,7 @@ export interface GetNovelsParams {
   categoryId?: string
   categorySlug?: string
   status?: string
-  sortBy?: 'createdAt' | 'views' | 'rating'
+  sortBy?: 'createdAt' | 'updatedAt' | 'views' | 'rating'
   sortOrder?: 'asc' | 'desc'
   page?: number
   limit?: number
@@ -32,5 +32,7 @@ export const useNovels = (params?: GetNovelsParams) => {
   return useQuery({
     queryKey: ['novels', params],
     queryFn: () => getNovels(params),
+    placeholderData: (previousData) => previousData,
+    staleTime: 1000 * 60 * 3, // 3 minutes cache freshness
   })
 }

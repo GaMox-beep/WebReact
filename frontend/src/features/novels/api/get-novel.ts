@@ -11,5 +11,7 @@ export const useNovel = (slug: string) => {
     queryKey: ['novel', slug],
     queryFn: () => getNovel(slug),
     enabled: !!slug,
+    staleTime: 1000 * 60 * 3, // 3 minutes cache
+    placeholderData: (previousData) => previousData,
   })
 }

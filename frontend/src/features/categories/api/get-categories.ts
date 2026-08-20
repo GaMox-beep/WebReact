@@ -10,5 +10,7 @@ export const useCategories = () => {
   return useQuery({
     queryKey: ['categories'],
     queryFn: getCategories,
+    staleTime: 1000 * 60 * 10, // 10 minutes cache
+    placeholderData: (previousData) => previousData,
   })
 }

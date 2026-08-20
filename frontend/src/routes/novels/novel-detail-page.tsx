@@ -3,6 +3,7 @@ import { useNovel } from '../../features/novels/api/get-novel'
 import { NovelDetailHeader } from '../../features/novels/components/novel-detail-header'
 import { NovelChapterList } from '../../features/novels/components/novel-chapter-list'
 import { NovelDetailSkeleton } from '../../features/novels/components/novel-detail-skeleton'
+import { BookmarkButton } from '../../features/bookmarks/components/bookmark-button'
 import { paths } from '../../config/paths'
 
 export const NovelDetailPage = () => {
@@ -61,7 +62,10 @@ export const NovelDetailPage = () => {
       </nav>
 
       {/* Novel Header Info Component */}
-      <NovelDetailHeader novel={novel} />
+      <NovelDetailHeader
+        novel={novel}
+        actionSlot={<BookmarkButton novelId={novel.id} />}
+      />
 
       {/* Description Content Box */}
       <section className="bg-[var(--bg-surface)] border border-[var(--border-color)] rounded-2xl p-6 sm:p-8 space-y-3 transition-colors">
