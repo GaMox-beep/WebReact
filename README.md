@@ -4,6 +4,13 @@ Nền tảng đọc và quản lý tiểu thuyết trực tuyến full-stack đ�
 
 ---
 
+## 🌐 Live Demo & Production Links
+
+- 🚀 **Frontend Web Application (Vercel)**: [https://novel-web-taupe.vercel.app](https://novel-web-taupe.vercel.app)
+- ⚙️ **Backend RESTful API (Render)**: [https://novel-web-2rza.onrender.com/api](https://novel-web-2rza.onrender.com/api)
+
+---
+
 ## 🛠️ Công Nghệ Sử Dụng (Tech Stack)
 
 - **Frontend**: React 19, TypeScript, Vite 8, TailwindCSS v4, TanStack Query v5.
@@ -38,7 +45,7 @@ cd backend
 # Cấu hình file .env từ .env.example
 docker compose up -d --build
 ```
-Backend API sẽ chạy tại: `http://localhost:3000/api`
+Backend API cục bộ sẽ chạy tại: `http://localhost:3000/api`
 
 ### 3. Cài đặt và chạy Frontend
 ```bash
@@ -46,7 +53,7 @@ cd frontend
 pnpm install
 pnpm dev
 ```
-Frontend Web sẽ chạy tại: `http://localhost:5173`
+Frontend Web cục bộ sẽ chạy tại: `http://localhost:5173`
 
 ---
 
@@ -56,5 +63,5 @@ Frontend Web sẽ chạy tại: `http://localhost:5173`
 WebNovel/
 ├── backend/          # NestJS API Server, Prisma ORM, Module thanh toán, Chapters, Novels, Bookmarks
 ├── frontend/         # React 19 SPA, Feature Modules (Domain-driven), TanStack Query, Routes
-└── README.md         # Giới thiệu tổng quan dự án
+└── README.md         # Giới thiệu tổng quan dự án & Live Demo Links
 ```
