@@ -9,6 +9,8 @@ import { PaymentsModule } from './modules/payments/payments.module';
 import { BookmarksModule } from './modules/bookmarks/bookmarks.module';
 import { UploadModule } from './upload/upload.module';
 
+import { AppController } from './app.controller';
+
 @Module({
   imports: [
     PrismaModule,
@@ -21,7 +23,7 @@ import { UploadModule } from './upload/upload.module';
     BookmarksModule,
     UploadModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
